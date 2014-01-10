@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  id="com.synconset.imagepicker"
+  version="1.0.0">
+
+	<name>ImagePicker</name>
+	 
+	<description>
+		This plugin allows selection of multiple images from the camera roll / gallery in a phonegap app
+	</description>
+
+	<engines>
+		<engine name="cordova" version=">=3.0.0" />
+	</engines>  
+
+
+
+	<!-- ios -->
+	<platform name="ios">
+		<config-file target="config.xml" parent="/*">
+			<feature name="ImagePicker">
+				<param name="ios-package" value="SOSPicker"/>
+			</feature>
+		</config-file>
+
+		<header-file src="src/ios/SOSPicker.h" />
+		<source-file src="src/ios/SOSPicker.m" />
+	</platform>
+
+	<!-- android -->
+	<platform name="android">
+	</platform>
+</plugin>
