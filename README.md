@@ -4,6 +4,10 @@ cordova-imagePicker
 Cordova Plugin For Multiple Image Selection - currently implemented only for
 iOS, Android coming soon.
 
+This plugin uses the ELCImagePickerController, with slight modifications for the iOS image picker.
+
+https://github.com/B-Sides/ELCImagePickerController
+
 ## Installing the plugin
 
 The plugin conforms to the Cordova plugin specification, it can be installed
@@ -49,16 +53,9 @@ options = {
 };
 ```
 
-This plugin uses the ELCImagePickerController for the iOS image picker.
-
-https://github.com/B-Sides/ELCImagePickerController
-
-
-## ELCImagePickerController License
+## License
 
 The MIT License
-
-Copyright (c) 2010 ELC Technologies
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
