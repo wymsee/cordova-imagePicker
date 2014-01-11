@@ -1,9 +1,53 @@
 cordova-imagePicker
 ===================
 
-Cordova Plugin For Multiple Image Selection
+Cordova Plugin For Multiple Image Selection - currently implemented only for
+iOS, Android coming soon.
 
+## Installing the plugin
 
+The plugin conforms to the Cordova plugin specification, it can be installed
+using the Cordova / Phonegap command line interface.
+
+```
+phonegap plugin add https://github.com/CSullivan102/cordova-imagePicker.git
+
+cordova plugin add https://github.com/CSullivan102/cordova-imagePicker.git
+```
+
+## Using the plugin
+
+The plugin creates the object `window.imagePicker` with the method `getPictures(success, fail, options)`
+
+Example:
+```javascript
+window.imagePicker.getPictures(
+	function(results) {
+		for (var i = 0; i < results.length; i++) {
+			console.log('Image URI: ' + results[i]);
+		}
+	}, function (error) {
+		console.log('Error: ' + error);
+	}, options
+);
+```
+
+### Options
+
+```javascript
+options = {
+	maximumImagesCount: int,
+	// max images to be selected, defaults to 15. If this is set to 1, upon
+	// selection of a single image, the plugin will return it.
+	width: int,
+	// width to resize image to (if one of height/width is 0, will resize 
+	// to fit the other while keeping aspect ratio)
+	height: int,
+	// height to resize image to
+	quality: int (0-100)
+	// quality of resized image, defaults to 100
+};
+```
 
 This plugin uses the ELCImagePickerController for the iOS image picker.
 

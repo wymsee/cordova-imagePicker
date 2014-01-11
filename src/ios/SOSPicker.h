@@ -10,13 +10,15 @@
 #import "ELCAlbumPickerController.h"
 #import "ELCImagePickerController.h"
 
-@interface SOSPicker : CDVPlugin
+@interface SOSPicker : CDVPlugin <ELCImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate>
 
 @property (copy)   NSString* callbackId;
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command;
-- (void) elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info;
-- (void) elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker;
 - (UIImage*)imageByScalingNotCroppingForSize:(UIImage*)anImage toSize:(CGSize)frameSize;
+
+@property (nonatomic, assign) NSInteger width;
+@property (nonatomic, assign) NSInteger height;
+@property (nonatomic, assign) NSInteger quality;
 
 @end
