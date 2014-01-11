@@ -21,7 +21,6 @@
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
 	NSDictionary *options = [command.arguments objectAtIndex: 0];
 
-	bool returnsOriginalImage = [[options objectForKey:@"returnsOriginalImage"] boolValue];
 	NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
 	self.width = [[options objectForKey:@"width"] integerValue];
 	self.height = [[options objectForKey:@"height"] integerValue];
@@ -40,7 +39,7 @@
    
    ELCImagePickerController *imagePicker = [[ELCImagePickerController alloc] initWithRootViewController:albumController];
    imagePicker.maximumImagesCount = maximumImagesCount;
-   imagePicker.returnsOriginalImage = returnsOriginalImage;
+   imagePicker.returnsOriginalImage = 1;
    imagePicker.imagePickerDelegate = self;
 
    albumController.parent = imagePicker;

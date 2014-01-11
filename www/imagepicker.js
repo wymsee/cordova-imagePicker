@@ -13,7 +13,6 @@ var ImagePicker = function() {
 *	success - success callback
 *	fail - error callback
 *	options
-*		.singleSelection
 *		.maximumImagesCount
 *		.maxWidth
 *		.maxHeight
@@ -25,7 +24,6 @@ ImagePicker.prototype.getPictures = function(success, fail, options) {
 	
 	var params = {
 		maximumImagesCount: options.maximumImagesCount ? options.maximumImagesCount : 15,
-		returnsOriginalImage: options.returnsOriginalImage ? options.returnsOriginalImage : 1,
 		width: options.width ? options.width : 0,
 		height: options.height ? options.height : 0,
 		quality: options.quality ? options.quality : 100
