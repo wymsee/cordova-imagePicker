@@ -48,8 +48,7 @@ window.imagePicker.getPictures(
 	}, {
 		maximumImagesCount: 10,
 		fullSizeImage: 0,
-		width: 800,
-		height: 800
+		width: 800
 	}
 );
 ```
