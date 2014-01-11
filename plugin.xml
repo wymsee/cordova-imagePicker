@@ -14,7 +14,9 @@
 		<engine name="cordova" version=">=3.0.0" />
 	</engines>  
 
-
+	<js-module src="www/imagepicker.js" name="ImagePicker">
+		<clobbers target="plugins.imagePicker" />
+	</js-module>
 
 	<!-- ios -->
 	<platform name="ios">
@@ -26,6 +28,30 @@
 
 		<header-file src="src/ios/SOSPicker.h" />
 		<source-file src="src/ios/SOSPicker.m" />
+
+		<header-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.h" />
+		<source-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.m" />
+
+		<header-file src="src/ios/ELCImagePicker/ELCAsset.h" />
+		<source-file src="src/ios/ELCImagePicker/ELCAsset.m" />
+
+		<header-file src="src/ios/ELCImagePicker/ELCAssetCell.h" />
+		<source-file src="src/ios/ELCImagePicker/ELCAssetCell.m" />
+
+		<header-file src="src/ios/ELCImagePicker/ELCAssetPickerFilterDelegate.h" />
+		<header-file src="src/ios/ELCImagePicker/ELCAssetSelectionDelegate.h" />
+
+		<header-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.h" />
+		<source-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.m" />
+
+		<header-file src="src/ios/ELCImagePicker/ELCImagePickerController.h" />
+		<source-file src="src/ios/ELCImagePicker/ELCImagePickerController.m" />
+
+		<resource-file src="src/ios/ELCImagePicker/Resources/ELCAlbumPickerController.xib" />
+		<resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetPicker.xib" />
+		<resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetTablePicker.xib" />
+		<resource-file src="src/ios/ELCImagePicker/Resources/Overlay.png" />
+		<resource-file src="src/ios/ELCImagePicker/Resources/Overlay@2x.png" />
 	</platform>
 
 	<!-- android -->

@@ -14,8 +14,8 @@
 
 @property (nonatomic, weak) id<ELCAssetSelectionDelegate> parent;
 @property (nonatomic, strong) NSMutableArray *assetGroups;
-@property (nonatomic, weak) BOOL singleSelection;
-@property (nonatomic, weak) BOOL immediateReturn;
+@property (nonatomic, assign) BOOL singleSelection;
+@property (nonatomic, assign) BOOL immediateReturn;
 
 // optional, can be used to filter the assets displayed
 @property (nonatomic, weak) id<ELCAssetPickerFilterDelegate> assetPickerFilterDelegate;

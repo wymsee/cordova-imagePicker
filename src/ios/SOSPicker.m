@@ -19,12 +19,18 @@
 @synthesize callbackId;
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
-    NSString* maxPhotos = [command.arguments objectAtIndex:0];
+	NSDictionary *options = [command.arguments objectAtIndex: 0];
+
+	bool returnsOriginalImage = [[options objectForKey:@"returnsOriginalImage"] boolValue];
+	NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
+	self.width = [[options objectForKey:@"width"] integerValue];
+	self.height = [[options objectForKey:@"height"] integerValue];
+	self.quality = [[options objectForKey:@"quality"] integerValue];
 
 	// Create the an album controller and image picker
 	ELCAlbumPickerController *albumController = [[ELCAlbumPickerController alloc] init];
-   int max = [maxPhotos intValue];
-	if (max == 1) {
+	
+	if (maximumImagesCount == 1) {
       albumController.immediateReturn = true;
       albumController.singleSelection = true;
    } else {
@@ -33,10 +39,11 @@
    }
    
    ELCImagePickerController *imagePicker = [[ELCImagePickerController alloc] initWithRootViewController:albumController];
-   imagePicker.maximumImagesCount = max;
-   
-	[albumController setParent:imagePicker];
-	[imagePicker setDelegate:self];
+   imagePicker.maximumImagesCount = maximumImagesCount;
+   imagePicker.returnsOriginalImage = returnsOriginalImage;
+   imagePicker.imagePickerDelegate = self;
+
+   albumController.parent = imagePicker;
 	self.callbackId = command.callbackId;
 	// Present modally
 	[self.viewController presentViewController:imagePicker
@@ -54,11 +61,10 @@
 		UIImage* image = nil;
 		image = [dict objectForKey:UIImagePickerControllerOriginalImage];
 
-		//Hard code this for now...
-		CGSize targetSize = CGSizeMake(750,960);
+		CGSize targetSize = CGSizeMake(self.width, self.height);
 		UIImage* scaledImage = nil;
 		scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
-		NSData* data = UIImageJPEGRepresentation(scaledImage, 50/100.0f);
+		NSData* data = UIImageJPEGRepresentation(scaledImage, self.quality/100.0f);
 
 		NSString* docsPath = [NSTemporaryDirectory()stringByStandardizingPath];
 		NSError* err = nil;
@@ -72,12 +78,16 @@
 
 		if (![data writeToFile:filePath options:NSAtomicWrite error:&err]) {
 			result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
+			break;
 		} else {
 			[resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
 		}
 	}
+	
+	if (nil == result) {
+		result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resultStrings];
+	}
 
-	result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resultStrings];
 	[self.viewController dismissViewControllerAnimated:YES completion:nil];
 	[self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
 }
@@ -106,7 +116,11 @@
         CGFloat heightFactor = targetHeight / height;
 
         // opposite comparison to imageByScalingAndCroppingForSize in order to contain the image within the given bounds
-        if (widthFactor > heightFactor) {
+        if (widthFactor == 0.0) {
+        	   scaleFactor = heightFactor;
+        } else if (heightFactor == 0.0) {
+        	   scaleFactor = widthFactor;
+        } else if (widthFactor > heightFactor) {
             scaleFactor = heightFactor; // scale to fit height
         } else {
             scaleFactor = widthFactor; // scale to fit width
