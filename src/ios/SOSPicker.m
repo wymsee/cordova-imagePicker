@@ -22,6 +22,7 @@
 	NSDictionary *options = [command.arguments objectAtIndex: 0];
 
 	NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
+	self.fullSizeImage = [[options objectForKey:@"fullSizeImage"] boolValue];
 	self.width = [[options objectForKey:@"width"] integerValue];
 	self.height = [[options objectForKey:@"height"] integerValue];
 	self.quality = [[options objectForKey:@"quality"] integerValue];
@@ -60,10 +61,16 @@
 		UIImage* image = nil;
 		image = [dict objectForKey:UIImagePickerControllerOriginalImage];
 
-		CGSize targetSize = CGSizeMake(self.width, self.height);
-		UIImage* scaledImage = nil;
-		scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
-		NSData* data = UIImageJPEGRepresentation(scaledImage, self.quality/100.0f);
+		NSData* data = nil;
+		if (self.fullSizeImage == YES) {
+			data = UIImageJPEGRepresentation(image, self.quality/100.0f);
+		} else {
+			CGSize targetSize = CGSizeMake(self.width, self.height);
+			UIImage* scaledImage = nil;
+			scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
+			data = UIImageJPEGRepresentation(scaledImage, self.quality/100.0f);
+		}
+		
 
 		NSString* docsPath = [NSTemporaryDirectory()stringByStandardizingPath];
 		NSError* err = nil;

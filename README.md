@@ -23,7 +23,7 @@ cordova plugin add https://github.com/CSullivan102/cordova-imagePicker.git
 
 The plugin creates the object `window.imagePicker` with the method `getPictures(success, fail, options)`
 
-Example:
+Example - Get Full Size Images (all default options):
 ```javascript
 window.imagePicker.getPictures(
 	function(results) {
@@ -32,7 +32,25 @@ window.imagePicker.getPictures(
 		}
 	}, function (error) {
 		console.log('Error: ' + error);
-	}, options
+	}
+);
+```
+
+Example - Get at most 10 images scaled to width of 800:
+```javascript
+window.imagePicker.getPictures(
+	function(results) {
+		for (var i = 0; i < results.length; i++) {
+			console.log('Image URI: ' + results[i]);
+		}
+	}, function (error) {
+		console.log('Error: ' + error);
+	}, {
+		maximumImagesCount: 10,
+		fullSizeImage: 0,
+		width: 800,
+		height: 800
+	}
 );
 ```
 
@@ -43,6 +61,9 @@ options = {
 	maximumImagesCount: int,
 	// max images to be selected, defaults to 15. If this is set to 1, upon
 	// selection of a single image, the plugin will return it.
+	fullSizeImage: bool,
+	// whether to return the full size image, defaults to true. If this value
+	// is true, width and height are ignored.
 	width: int,
 	// width to resize image to (if one of height/width is 0, will resize 
 	// to fit the other while keeping aspect ratio)
