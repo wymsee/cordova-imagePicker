@@ -22,7 +22,6 @@
 	NSDictionary *options = [command.arguments objectAtIndex: 0];
 
 	NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
-	self.fullSizeImage = [[options objectForKey:@"fullSizeImage"] boolValue];
 	self.width = [[options objectForKey:@"width"] integerValue];
 	self.height = [[options objectForKey:@"height"] integerValue];
 	self.quality = [[options objectForKey:@"quality"] integerValue];
@@ -62,7 +61,7 @@
 		image = [dict objectForKey:UIImagePickerControllerOriginalImage];
 
 		NSData* data = nil;
-		if (self.fullSizeImage == YES) {
+		if (self.width == 0 && self.height == 0) {
 			data = UIImageJPEGRepresentation(image, self.quality/100.0f);
 		} else {
 			CGSize targetSize = CGSizeMake(self.width, self.height);
