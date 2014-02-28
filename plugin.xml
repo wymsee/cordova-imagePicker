@@ -64,10 +64,7 @@
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 		    <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity">
-                <intent-filter>
-                    <action android:name="com.synconset.imagepicker.PICK" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                </intent-filter>
+                <intent-filter />
             </activity>
 		</config-file>
 

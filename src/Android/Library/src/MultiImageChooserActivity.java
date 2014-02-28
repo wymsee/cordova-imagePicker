@@ -146,7 +146,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     }
 
     private void setupHeader() {
-        // From Roman Nurik's code
+        // From Roman Nkk's code
         // https://plus.google.com/113735310430199015092/posts/R49wVvcDoEW
         // Inflate a "Done/Discard" custom action bar view.
         LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext().getSystemService(
@@ -280,7 +280,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         if (fileNames.isEmpty()) {
             this.setResult(RESULT_CANCELED);
         } else {
-
             ArrayList<String> al = new ArrayList<String>();
             al.addAll(fileNames);
             Bundle res = new Bundle();
