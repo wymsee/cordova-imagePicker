@@ -1,3 +1,33 @@
+/*
+ * Copyright (c) 2012, David Erosa
+ *
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without 
+ * modification, are permitted provided that the following  conditions are met:
+ *
+ *   Redistributions of source code must retain the above copyright notice, 
+ *      this list of conditions and the following disclaimer.
+ *   Redistributions in binary form must reproduce the above copyright notice, 
+ *      this list of conditions and the following  disclaimer in the 
+ *      documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED TO, THE 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ * ARE DISCLAIMED. IN NO EVENT  SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR  BUSINESS 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDIN G NEGLIGENCE OR OTHERWISE) 
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH  DAMAGE
+ *
+ * Code modified by Andrew Stephan for Sync OnSet
+ *
+ */
+
 package com.synconset;
 
 import java.util.ArrayList;
@@ -59,9 +89,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
     private SparseBooleanArray checkStatus = new SparseBooleanArray();
 
-    private TextView freeLabel = null;
     private int maxImages;
-    private boolean unlimitedImages = false;
 
     private GridView gridView;
 
@@ -78,28 +106,17 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
         maxImages = getIntent().getIntExtra(MAX_IMAGES_KEY, NOLIMIT);
 
-        unlimitedImages = maxImages == NOLIMIT;
-        if (!unlimitedImages) {
-            freeLabel = (TextView) findViewById(R.id.label_images_left);
-            freeLabel.setVisibility(View.VISIBLE);
-            updateLabel();
-        }
-
         colWidth = getIntent().getIntExtra(COL_WIDTH_KEY, DEFAULT_COLUMN_WIDTH);
 
         Display display = getWindowManager().getDefaultDisplay();
-        @SuppressWarnings("deprecation")
         int width = display.getWidth();
-        int testColWidth = width / 3;
-
-        if (testColWidth > colWidth) {
-            colWidth = width / 4;
-        }
+        
+        colWidth = width / 4;
 
         // int bgColor = getIntent().getIntExtra("BG_COLOR", Color.BLACK);
 
         gridView = (GridView) findViewById(R.id.gridview);
-        gridView.setColumnWidth(colWidth);
+        //gridView.setColumnWidth(colWidth);
         gridView.setOnItemClickListener(this);
         gridView.setOnScrollListener(new OnScrollListener() {
 
@@ -109,7 +126,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 if (scrollState == SCROLL_STATE_IDLE) {
-                    Log.d(TAG, "IDLE - Reload!");
+                    // Log.d(TAG, "IDLE - Reload!");
                     shouldRequestThumb = true;
                     ia.notifyDataSetChanged();
                 }
@@ -122,7 +139,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                     double speed = 1 / dt * 1000;
                     lastFirstItem = firstVisibleItem;
                     timestamp = System.currentTimeMillis();
-                    Log.d(TAG, "Speed: " + speed + " elements/second");
+                    // Log.d(TAG, "Speed: " + speed + " elements/second");
 
                     // Limitarlo si vamos a más de una página por segundo...
                     shouldRequestThumb = speed < visibleItemCount;
@@ -148,7 +165,22 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private void setupHeader() {
         // From Roman Nkk's code
         // https://plus.google.com/113735310430199015092/posts/R49wVvcDoEW
-        // Inflate a "Done/Discard" custom action bar view.
+        // Inflate a "Done/Discard" custom action bar view
+        /*
+         * Copyright 2013 The Android Open Source Project
+         *
+         * Licensed under the Apache License, Version 2.0 (the "License");
+         * you may not use this file except in compliance with the License.
+         * You may obtain a copy of the License at
+         *
+         *     http://www.apache.org/licenses/LICENSE-2.0
+         *
+         * Unless required by applicable law or agreed to in writing, software
+         * distributed under the License is distributed on an "AS IS" BASIS,
+         * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+         * See the License for the specific language governing permissions and
+         * limitations under the License.
+         */
         LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext().getSystemService(
                 LAYOUT_INFLATER_SERVICE);
         final View customActionBarView = inflater.inflate(R.layout.actionbar_custom_view_done_discard, null);
@@ -174,16 +206,15 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
     }
+    
+    public class SquareImageView extends ImageView {
+        public SquareImageView(Context context) {
+			super(context);
+		}
 
-    private void updateLabel() {
-        if (freeLabel != null) {
-            String text = String.format(getString(R.string.free_version_label), maxImages);
-            freeLabel.setText(text);
-            if (maxImages == 0) {
-                freeLabel.setTextColor(Color.RED);
-            } else {
-                freeLabel.setTextColor(Color.WHITE);
-            }
+		@Override
+        public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            super.onMeasure(widthMeasureSpec, widthMeasureSpec);
         }
     }
 
@@ -219,10 +250,12 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         public View getView(int pos, View convertView, ViewGroup parent) {
 
             if (convertView == null) {
-                convertView = new ImageView(MultiImageChooserActivity.this);
+                ImageView temp = new SquareImageView(MultiImageChooserActivity.this);
+                temp.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                convertView = (View)temp;
             }
 
-            ImageView imageView = (ImageView) convertView;
+            ImageView imageView = (ImageView)convertView;
             imageView.setImageBitmap(null);
 
             final int position = pos;
@@ -237,8 +270,10 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
             final int id = imagecursor.getInt(image_column_index);
             if (isChecked(pos)) {
+                imageView.setImageAlpha(128);
                 imageView.setBackgroundColor(selectedColor);
             } else {
+                imageView.setImageAlpha(255);
                 imageView.setBackgroundColor(Color.TRANSPARENT);
             }
             if (shouldRequestThumb) {
@@ -291,7 +326,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             data.putExtras(res);
             this.setResult(RESULT_OK, data);
         }
-        Log.d(TAG, "Returning " + fileNames.size() + " items");
+        // Log.d(TAG, "Returning " + fileNames.size() + " items");
         finish();
     }
 
@@ -303,18 +338,15 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             return;
         }
         boolean isChecked = !isChecked(position);
-        // PhotoMix.Log("DAVID", "Posicion " + position + " isChecked: " +
-        // isChecked);
-        if (!unlimitedImages && maxImages == 0 && isChecked) {
-            // PhotoMix.Log("DAVID", "Aquí no debería entrar...");
+        if (maxImages == 0 && isChecked) {
             isChecked = false;
         }
 
         if (isChecked) {
-            // Solo se resta un slot si hemos introducido un
-            // filename de verdad...
             if (fileNames.add(name)) {
                 maxImages--;
+                ImageView imageView = (ImageView)view;
+                imageView.setImageAlpha(128);
                 view.setBackgroundColor(selectedColor);
             }
         } else {
@@ -322,14 +354,14 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 // Solo incrementa los slots libres si hemos
                 // "liberado" uno...
                 maxImages++;
+                ImageView imageView = (ImageView)view;
+                imageView.setImageAlpha(255);
                 view.setBackgroundColor(Color.TRANSPARENT);
             }
         }
 
         setChecked(position, isChecked);
         updateAcceptButton();
-        updateLabel();
-
     }
 
     private void updateAcceptButton() {

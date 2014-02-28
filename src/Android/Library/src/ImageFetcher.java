@@ -118,7 +118,7 @@ public class ImageFetcher {
         if (bitmapDownloaderTask != null) {
             Integer bitmapPosition = bitmapDownloaderTask.position;
             if ((bitmapPosition == null) || (!bitmapPosition.equals(position))) {
-                Log.d("DAVID", "Canceling...");
+                // Log.d("DAVID", "Canceling...");
                 MediaStore.Images.Thumbnails.cancelThumbnailRequest(imageView.getContext().getContentResolver(),
                         origId, 12345);
                 bitmapDownloaderTask.cancel(true);
@@ -180,7 +180,7 @@ public class ImageFetcher {
                 return null;
             }
             Bitmap thumb = MediaStore.Images.Thumbnails.getThumbnail(mContext.getContentResolver(), position, 12345,
-                    MediaStore.Images.Thumbnails.MICRO_KIND, null);
+                    MediaStore.Images.Thumbnails.MINI_KIND, null);
             if (isCancelled()) {
                 return null;
             }
@@ -197,7 +197,7 @@ public class ImageFetcher {
         }
 
         private void setInvisible() {
-            Log.d("COLLAGE", "Setting something invisible...");
+            // Log.d("COLLAGE", "Setting something invisible...");
             if (imageViewReference != null) {
                 final ImageView imageView = imageViewReference.get();
                 BitmapFetcherTask bitmapDownloaderTask = getBitmapDownloaderTask(imageView);
@@ -324,7 +324,7 @@ public class ImageFetcher {
         synchronized (sHardBitmapCache) {
             final Bitmap bitmap = sHardBitmapCache.get(position);
             if (bitmap != null) {
-                Log.d("CACHE ****** ", "Hard hit!");
+                // Log.d("CACHE ****** ", "Hard hit!");
                 // Bitmap found in hard cache
                 // Move element to first position, so that it is removed last
                 return bitmap;
@@ -337,7 +337,7 @@ public class ImageFetcher {
             final Bitmap bitmap = bitmapReference.get();
             if (bitmap != null) {
                 // Bitmap found in soft cache
-                Log.d("CACHE ****** ", "Soft hit!");
+                // Log.d("CACHE ****** ", "Soft hit!");
                 return bitmap;
             } else {
                 // Soft reference has been Garbage Collected

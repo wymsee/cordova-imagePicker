@@ -3,31 +3,21 @@
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
     android:orientation="vertical" > <!-- android:background="@drawable/image_bg" -->
-    <TextView
-        android:gravity="center"
-        android:id="@+id/label_images_left"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:layout_width="fill_parent"
-        android:paddingBottom="2dip"
-        android:paddingTop="2dip"
-        android:text=""
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="gone" />
+
     <GridView
-        android:fadingEdgeLength="10dip"
-        android:requiresFadingEdge="vertical"
+        android:id="@+id/gridview"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:columnWidth="0dip"
+        android:fadingEdgeLength="10dip"
         android:fastScrollEnabled="true"
         android:gravity="center"
         android:horizontalSpacing="8dip"
-        android:id="@+id/gridview"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:layout_width="fill_parent"
-        android:numColumns="auto_fit"
+        android:numColumns="3"
+        android:requiresFadingEdge="vertical"
         android:scrollingCache="true"
         android:stretchMode="columnWidth"
         android:verticalSpacing="8dip" />
+
 </LinearLayout>

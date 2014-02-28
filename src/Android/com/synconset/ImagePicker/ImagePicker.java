@@ -1,9 +1,5 @@
 /**
  * An Image Picker Plugin for Cordova/PhoneGap.
- *
- * The software is open source, MIT Licensed.
- * Portions taken from Copyright (C) 2012, webXells GmbH All Rights Reserved.
- *
  */
 package com.synconset;
 
@@ -39,7 +35,11 @@ public class ImagePicker extends CordovaPlugin {
 	    this.params = args.getJSONObject(0);
 		if (action.equals("getPictures")) {
 			Intent intent = new Intent(cordova.getActivity(), MultiImageChooserActivity.class);
-			intent.putExtra("MAX_IMAGES", this.params.getInt("maximumImagesCount"));
+			int max = 20;
+			if (this.params.has("maximumImagesCount")) {
+			    max = this.params.getInt("maximumImagesCount");
+			}
+			intent.putExtra("MAX_IMAGES", max);
             if (this.cordova != null) {
                 this.cordova.startActivityForResult((CordovaPlugin) this, intent, 0);
             }
@@ -57,17 +57,22 @@ public class ImagePicker extends CordovaPlugin {
                 	Bitmap bmp = this.getBitmap(file);
                 	int width = bmp.getWidth();
             		int height = bmp.getHeight();
-                	int desiredWidth = this.params.getInt("width");
-                	int desiredHeight = this.params.getInt("height");
+                	int desiredWidth = 0;
+                	int desiredHeight = 0;
+                	if (this.params.has("width")) {
+                	    desiredWidth = this.params.getInt("width");
+                	}
+                	if (this.params.has("height")) {
+                	    desiredHeight = this.params.getInt("height");
+                	}
                 	float widthScale = 1.0f;
                 	float heightScale = 1.0f;
+                	float scale = 1.0f;
                 	if (desiredWidth > 0 || desiredHeight > 0) {
                 		if (desiredHeight == 0 && desiredWidth < width) {
-                			widthScale = (float)desiredWidth/width;
-                			heightScale = widthScale;
+                			scale = (float)desiredWidth/width;
                 		} else if (desiredWidth == 0 && desiredHeight < height) {
-                			heightScale = (float)desiredHeight/height;
-                			widthScale = heightScale;
+                			scale = (float)desiredHeight/height;
                 		} else {
                 			if (desiredWidth > 0 && desiredWidth < width) {
                 				widthScale = (float)desiredWidth/width;
@@ -75,10 +80,15 @@ public class ImagePicker extends CordovaPlugin {
                 			if (desiredHeight > 0 && desiredHeight < height) {
                 				heightScale = (float)desiredHeight/height;
                 			}
+                			if (widthScale < heightScale) {
+                			    scale = widthScale;
+                			} else {
+                			    scale = heightScale;
+                			}
                 		}
                 	}
-                	if (widthScale < 1 || heightScale < 1) {
-                		bmp = this.getResizedBitmap(bmp, widthScale, heightScale);
+                	if (scale < 1) {
+                		bmp = this.getResizedBitmap(bmp, scale);
                 	}
                 	file = this.storeImage(bmp, file.getName());
                     res.put(Uri.fromFile(file).toString());
@@ -89,38 +99,53 @@ public class ImagePicker extends CordovaPlugin {
             } catch (JSONException e) {
             	this.callbackContext.error("There was an error importing pictures");
 			}
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            JSONArray res = new JSONArray();
+            this.callbackContext.success(res);
         } else {
             this.callbackContext.error("No images selected");
         }
 	}
 	
+
+    /*
+    * The following functions are originally from
+    * https://github.com/raananw/PhoneGap-Image-Resizer
+    * 
+    * They have been modified by Andrew Stephan for Sync OnSet
+    *
+	* The software is open source, MIT Licensed.
+    * Copyright (C) 2012, webXells GmbH All Rights Reserved.
+    */
 	private File storeImage(Bitmap bmp, String fileName) throws JSONException, IOException {
-	    int quality = this.params.getInt("quality");
-	    int index = fileName.lastIndexOf('.');
-	    String name = fileName.substring(0, index);
-	    String ext = fileName.substring(index);
-	    File file = File.createTempFile(name, ext);
-	    OutputStream outStream = new FileOutputStream(file);
-	    if (ext.compareToIgnoreCase(".png") == 0) {
-	    	bmp.compress(Bitmap.CompressFormat.PNG, quality, outStream);
-	    } else {
-	    	bmp.compress(Bitmap.CompressFormat.JPEG, quality, outStream);
-	    }
+        int quality = 100;
+        if (this.params.has("quality")) {
+            quality = this.params.getInt("quality");
+        }
+        int index = fileName.lastIndexOf('.');
+        String name = fileName.substring(0, index);
+        String ext = fileName.substring(index);
+        File file = File.createTempFile(name, ext);
+        OutputStream outStream = new FileOutputStream(file);
+        if (ext.compareToIgnoreCase(".png") == 0) {
+            bmp.compress(Bitmap.CompressFormat.PNG, quality, outStream);
+        } else {
+            bmp.compress(Bitmap.CompressFormat.JPEG, quality, outStream);
+        }
 		outStream.flush();
 		outStream.close();
 		return file;
 	}
 
-	private Bitmap getResizedBitmap(Bitmap bm, float widthFactor, float heightFactor) {
+	private Bitmap getResizedBitmap(Bitmap bm, float factor) {
 		int width = bm.getWidth();
 		int height = bm.getHeight();
 		// create a matrix for the manipulation
 		Matrix matrix = new Matrix();
 		// resize the bit map
-		matrix.postScale(widthFactor, heightFactor);
+		matrix.postScale(factor, factor);
 		// recreate the new Bitmap
-		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-				matrix, false);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
 		return resizedBitmap;
 	}
 
