@@ -1,12 +1,19 @@
 cordova-imagePicker
 ===================
 
-Cordova Plugin For Multiple Image Selection - currently implemented only for
-iOS, Android coming soon.
+Cordova Plugin For Multiple Image Selection - implemented for iOS and Android 4.0 and above.
 
-This plugin uses the ELCImagePickerController, with slight modifications for the iOS image picker.
+For iOS this plugin uses the ELCImagePickerController, with slight modifications for the iOS image picker.
 
 https://github.com/B-Sides/ELCImagePickerController
+
+For Android this plugin uses MultiImageChooser, with modifications.
+
+https://github.com/derosa/MultiImageChooser
+
+Code(FakeR) was also taken from the phonegap BarCodeScanner plugin
+
+https://github.com/wildabeast/BarcodeScanner
 
 ## Installing the plugin
 
