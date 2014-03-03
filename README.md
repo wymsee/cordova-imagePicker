@@ -20,11 +20,10 @@ https://github.com/wildabeast/BarcodeScanner
 The plugin conforms to the Cordova plugin specification, it can be installed
 using the Cordova / Phonegap command line interface.
 
-```
-phonegap plugin add https://github.com/CSullivan102/cordova-imagePicker.git
+    phonegap plugin add https://github.com/wymsee/cordova-imagePicker.git
 
-cordova plugin add https://github.com/CSullivan102/cordova-imagePicker.git
-```
+    cordova plugin add https://github.com/wymsee/cordova-imagePicker.git
+
 
 ## Using the plugin
 
