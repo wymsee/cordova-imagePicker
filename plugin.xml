@@ -69,6 +69,7 @@
 		</config-file>
 
 		<source-file src="src/android/com/synconset/ImagePicker/ImagePicker.java" target-dir="src/com/synconset" />
+		<source-file src="src/android/com/synconset/ImagePicker/FakeR.java" target-dir="src/com/synconset" />
 		
 		<source-file src="src/android/Library/src/ImageFetcher.java" target-dir="src/com/synconset"/>
 		<source-file src="src/android/Library/src/MultiImageChooserActivity.java" target-dir="src/com/synconset"/>

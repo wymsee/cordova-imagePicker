@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.wymsee.apps.synconset.R;
+import com.synconset.FakeR;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -100,11 +100,14 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
     private int selectedColor = Color.GREEN;
     private boolean shouldRequestThumb = true;
+    
+    private FakeR fakeR;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.multiselectorgrid);
+        fakeR = new FakeR(this);
+        setContentView(fakeR.getId("layout", "multiselectorgrid"));
         fileNames.clear();
 
         maxImages = getIntent().getIntExtra(MAX_IMAGES_KEY, NOLIMIT);
@@ -118,8 +121,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         colWidth = width / 4;
 
         // int bgColor = getIntent().getIntExtra("BG_COLOR", Color.BLACK);
-
-        gridView = (GridView) findViewById(R.id.gridview);
+        gridView = (GridView) findViewById(fakeR.getId("id", "gridview"));
         //gridView.setColumnWidth(colWidth);
         gridView.setOnItemClickListener(this);
         gridView.setOnScrollListener(new OnScrollListener() {
@@ -187,15 +189,15 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
          */
         LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext().getSystemService(
                 LAYOUT_INFLATER_SERVICE);
-        final View customActionBarView = inflater.inflate(R.layout.actionbar_custom_view_done_discard, null);
-        customActionBarView.findViewById(R.id.actionbar_done).setOnClickListener(new View.OnClickListener() {
+        final View customActionBarView = inflater.inflate(fakeR.getId("layout", "actionbar_custom_view_done_discard"), null);
+        customActionBarView.findViewById(fakeR.getId("id", "actionbar_done")).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // "Done"
                 selectClicked(null);
             }
         });
-        customActionBarView.findViewById(R.id.actionbar_discard).setOnClickListener(new View.OnClickListener() {
+        customActionBarView.findViewById(fakeR.getId("id", "actionbar_discard")).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -226,7 +228,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         private final Bitmap mPlaceHolderBitmap;
 
         public ImageAdapter(Context c) {
-            Bitmap tmpHolderBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.loading_icon);
+            Bitmap tmpHolderBitmap = BitmapFactory.decodeResource(getResources(), fakeR.getId("drawable", "loading_icon"));
             mPlaceHolderBitmap = Bitmap.createScaledBitmap(tmpHolderBitmap, colWidth, colWidth, false);
             if (tmpHolderBitmap != mPlaceHolderBitmap) {
                 tmpHolderBitmap.recycle();
@@ -383,9 +385,9 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     }
 
     private void updateAcceptButton() {
-        ((TextView) getActionBar().getCustomView().findViewById(R.id.actionbar_done_textview))
+        ((TextView) getActionBar().getCustomView().findViewById(fakeR.getId("id", "actionbar_done_textview")))
                 .setEnabled(fileNames.size() != 0);
-        getActionBar().getCustomView().findViewById(R.id.actionbar_done).setEnabled(fileNames.size() != 0);
+        getActionBar().getCustomView().findViewById(fakeR.getId("id", "actionbar_done")).setEnabled(fileNames.size() != 0);
 
     }
 
