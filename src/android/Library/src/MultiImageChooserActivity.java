@@ -37,9 +37,11 @@ import java.util.Set;
 import com.wymsee.apps.synconset.R;
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -90,6 +92,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private SparseBooleanArray checkStatus = new SparseBooleanArray();
 
     private int maxImages;
+    private int maxImageCount;
 
     private GridView gridView;
 
@@ -105,6 +108,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         fileNames.clear();
 
         maxImages = getIntent().getIntExtra(MAX_IMAGES_KEY, NOLIMIT);
+        maxImageCount = maxImages;
 
         colWidth = getIntent().getIntExtra(COL_WIDTH_KEY, DEFAULT_COLUMN_WIDTH);
 
@@ -340,14 +344,28 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         boolean isChecked = !isChecked(position);
         if (maxImages == 0 && isChecked) {
             isChecked = false;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Maximum " + maxImageCount + " Photos");
+            builder.setMessage("You can only select " + maxImageCount + " photos at a time.");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) { 
+                    dialog.cancel();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
         }
 
         if (isChecked) {
             if (fileNames.add(name)) {
-                maxImages--;
-                ImageView imageView = (ImageView)view;
-                imageView.setImageAlpha(128);
-                view.setBackgroundColor(selectedColor);
+                if (maxImageCount == 1) {
+                    this.selectClicked(null);
+                } else {
+                    maxImages--;
+                    ImageView imageView = (ImageView)view;
+                    imageView.setImageAlpha(128);
+                    view.setBackgroundColor(selectedColor);
+                }
             }
         } else {
             if (fileNames.remove(name)) {
@@ -389,7 +407,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         }
 
         cl = new CursorLoader(MultiImageChooserActivity.this, MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                img.toArray(new String[img.size()]), null, null, null);
+                img.toArray(new String[img.size()]), null, null, "DATE_MODIFIED DESC");
         return cl;
     }
 

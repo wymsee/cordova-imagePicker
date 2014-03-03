@@ -63,12 +63,12 @@
 		</config-file>
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
-		    <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity">
+		    <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@android:style/Theme.Holo.Light">
                 <intent-filter />
             </activity>
 		</config-file>
 
-		<source-file src="src/Android/com/synconset/ImagePicker/ImagePicker.java" target-dir="src/com/synconset" />
+		<source-file src="src/android/com/synconset/ImagePicker/ImagePicker.java" target-dir="src/com/synconset" />
 		
 		<source-file src="src/android/Library/src/ImageFetcher.java" target-dir="src/com/synconset"/>
 		<source-file src="src/android/Library/src/MultiImageChooserActivity.java" target-dir="src/com/synconset"/>
