@@ -76,6 +76,10 @@ window.imagePicker.getPictures(
     	// quality of resized image, defaults to 100
     	quality: int (0-100)
     };
+    
+### Note for Android Use
+
+The plugin returns images that are stored in a temporary directory.  These images will often not be deleted automatically though.  The files should be moved or deleted after you get their filepaths in javascript.
 
 ## License
 
