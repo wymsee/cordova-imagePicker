@@ -9,6 +9,8 @@
 	<description>
 		This plugin allows selection of multiple images from the camera roll / gallery in a phonegap app
 	</description>
+	
+	<license>MIT</license>
 
 	<engines>
 		<engine name="cordova" version=">=3.0.0" />

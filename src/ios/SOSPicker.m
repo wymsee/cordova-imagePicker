@@ -10,7 +10,6 @@
 #import "ELCAlbumPickerController.h"
 #import "ELCImagePickerController.h"
 #import "ELCAssetTablePicker.h"
-#import "CDVCamera.h"
 
 #define CDV_PHOTO_PREFIX @"cdv_photo_"
 
