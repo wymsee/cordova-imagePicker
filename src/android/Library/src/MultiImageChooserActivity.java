@@ -276,10 +276,18 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
             final int id = imagecursor.getInt(image_column_index);
             if (isChecked(pos)) {
-                imageView.setImageAlpha(128);
+                if (android.os.Build.VERSION.SDK_INT>=16) {
+                  imageView.setImageAlpha(128);
+                } else {
+                  imageView.setAlpha(128);	
+                }
                 imageView.setBackgroundColor(selectedColor);
             } else {
-                imageView.setImageAlpha(255);
+                if (android.os.Build.VERSION.SDK_INT>=16) {
+                  imageView.setImageAlpha(255);
+                } else {
+                  imageView.setAlpha(255);	
+                }
                 imageView.setBackgroundColor(Color.TRANSPARENT);
             }
             if (shouldRequestThumb) {
@@ -365,7 +373,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 } else {
                     maxImages--;
                     ImageView imageView = (ImageView)view;
-                    imageView.setImageAlpha(128);
+                    if (android.os.Build.VERSION.SDK_INT>=16) {
+                      imageView.setImageAlpha(128);
+                    } else {
+                      imageView.setAlpha(128);
+                    }
                     view.setBackgroundColor(selectedColor);
                 }
             }
@@ -375,7 +387,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 // "liberado" uno...
                 maxImages++;
                 ImageView imageView = (ImageView)view;
-                imageView.setImageAlpha(255);
+                if (android.os.Build.VERSION.SDK_INT>=16) {
+                 imageView.setImageAlpha(255);
+                } else {
+                 imageView.setAlpha(255);
+                }
                 view.setBackgroundColor(Color.TRANSPARENT);
             }
         }
