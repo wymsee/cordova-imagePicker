@@ -121,15 +121,15 @@
 
         // opposite comparison to imageByScalingAndCroppingForSize in order to contain the image within the given bounds
         if (widthFactor == 0.0) {
-        	   scaleFactor = heightFactor;
+            scaleFactor = heightFactor;
         } else if (heightFactor == 0.0) {
-        	   scaleFactor = widthFactor;
+            scaleFactor = widthFactor;
         } else if (widthFactor > heightFactor) {
             scaleFactor = heightFactor; // scale to fit height
         } else {
             scaleFactor = widthFactor; // scale to fit width
         }
-        scaledSize = CGSizeMake(MIN(width * scaleFactor, targetWidth), MIN(height * scaleFactor, targetHeight));
+        scaledSize = CGSizeMake(width * scaleFactor, height * scaleFactor);
     }
 
     UIGraphicsBeginImageContext(scaledSize); // this will resize
