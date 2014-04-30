@@ -53,39 +53,52 @@
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info {
 	CDVPluginResult* result = nil;
 	NSMutableArray *resultStrings = [[NSMutableArray alloc] init];
-	NSString *url;
-	for (NSDictionary *dict in info) {   
-		url = [[dict objectForKey:UIImagePickerControllerReferenceURL] absoluteString];
-		UIImage* image = nil;
-		image = [dict objectForKey:UIImagePickerControllerOriginalImage];
+    NSData* data = nil;
+    NSString* docsPath = [NSTemporaryDirectory()stringByStandardizingPath];
+    NSError* err = nil;
+    NSFileManager* fileMgr = [[NSFileManager alloc] init];
+    NSString* filePath;
+    ALAsset* asset = nil;
+    UIImageOrientation orientation = UIImageOrientationUp;;
+    CGSize targetSize = CGSizeMake(self.width, self.height);
+	for (NSDictionary *dict in info) {
+        asset = [dict objectForKey:@"ALAsset"];
+        // From ELCImagePickerController.m
 
-		NSData* data = nil;
-		if (self.width == 0 && self.height == 0) {
-			data = UIImageJPEGRepresentation(image, self.quality/100.0f);
-		} else {
-			CGSize targetSize = CGSizeMake(self.width, self.height);
-			UIImage* scaledImage = nil;
-			scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
-			data = UIImageJPEGRepresentation(scaledImage, self.quality/100.0f);
-		}
-		
+        int i = 1;
+        do {
+            filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, CDV_PHOTO_PREFIX, i++, @"jpg"];
+        } while ([fileMgr fileExistsAtPath:filePath]);
+        
+        @autoreleasepool {
+            ALAssetRepresentation *assetRep = [asset defaultRepresentation];
+            CGImageRef imgRef = NULL;
+            
+            //defaultRepresentation returns image as it appears in photo picker, rotated and sized,
+            //so use UIImageOrientationUp when creating our image below.
+            if (picker.returnsOriginalImage) {
+                imgRef = [assetRep fullResolutionImage];
+                orientation = [assetRep orientation];
+            } else {
+                imgRef = [assetRep fullScreenImage];
+            }
+            
+            UIImage* image = [UIImage imageWithCGImage:imgRef scale:1.0f orientation:orientation];
+            if (self.width == 0 && self.height == 0) {
+                data = UIImageJPEGRepresentation(image, self.quality/100.0f);
+            } else {
+                UIImage* scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
+                data = UIImageJPEGRepresentation(scaledImage, self.quality/100.0f);
+            }
+            
+            if (![data writeToFile:filePath options:NSAtomicWrite error:&err]) {
+                result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
+                break;
+            } else {
+                [resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+            }
+        }
 
-		NSString* docsPath = [NSTemporaryDirectory()stringByStandardizingPath];
-		NSError* err = nil;
-		NSFileManager* fileMgr = [[NSFileManager alloc] init];
-		NSString* filePath;
-
-		int i = 1;
-		do {
-			filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, CDV_PHOTO_PREFIX, i++, @"jpg"];
-		} while ([fileMgr fileExistsAtPath:filePath]);
-
-		if (![data writeToFile:filePath options:NSAtomicWrite error:&err]) {
-			result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
-			break;
-		} else {
-			[resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
-		}
 	}
 	
 	if (nil == result) {
@@ -99,7 +112,8 @@
 - (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker {
 	[self.viewController dismissViewControllerAnimated:YES completion:nil];
 	CDVPluginResult* pluginResult = nil;
-	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Canceled"];
+    NSArray* emptyArray = [NSArray array];
+	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:emptyArray];
 	[self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
 }
 
