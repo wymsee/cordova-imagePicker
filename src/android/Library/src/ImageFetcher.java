@@ -30,6 +30,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -62,14 +63,14 @@ public class ImageFetcher {
         executor = Executors.newCachedThreadPool();
     }
 
-    public void fetch(Integer id, ImageView imageView, int colWidth) {
+    public void fetch(Integer id, ImageView imageView, int colWidth, int rotate) {
         resetPurgeTimer();
         this.colWidth = colWidth;
         this.origId = id;
         Bitmap bitmap = getBitmapFromCache(id);
 
         if (bitmap == null) {
-            forceDownload(id, imageView);
+            forceDownload(id, imageView, rotate);
         } else {
             cancelPotentialDownload(id, imageView);
             imageView.setImageBitmap(bitmap);
@@ -80,14 +81,14 @@ public class ImageFetcher {
      * Same as download but the image is always downloaded and the cache is not
      * used. Kept private at the moment as its interest is not clear.
      */
-    private void forceDownload(Integer position, ImageView imageView) {
+    private void forceDownload(Integer position, ImageView imageView, int rotate) {
         if (position == null) {
             imageView.setImageDrawable(null);
             return;
         }
 
         if (cancelPotentialDownload(position, imageView)) {
-            BitmapFetcherTask task = new BitmapFetcherTask(imageView.getContext(), imageView);
+            BitmapFetcherTask task = new BitmapFetcherTask(imageView.getContext(), imageView, rotate);
             DownloadedDrawable downloadedDrawable = new DownloadedDrawable(imageView.getContext(), task, origId);
             imageView.setImageDrawable(downloadedDrawable);
             imageView.setMinimumHeight(colWidth);
@@ -164,10 +165,12 @@ public class ImageFetcher {
         private Integer position;
         private final WeakReference<ImageView> imageViewReference;
         private final Context mContext;
+        private final int rotate;
 
-        public BitmapFetcherTask(Context context, ImageView imageView) {
+        public BitmapFetcherTask(Context context, ImageView imageView, int rotate) {
             imageViewReference = new WeakReference<ImageView>(imageView);
             mContext = context;
+            this.rotate = rotate;
         }
 
         /**
@@ -190,6 +193,11 @@ public class ImageFetcher {
                 if (isCancelled()) {
                     return null;
                 } else {
+                    if (rotate != 0) {
+                        Matrix matrix = new Matrix();
+                        matrix.setRotate(rotate);
+                        thumb = Bitmap.createBitmap(thumb, 0, 0, thumb.getWidth(), thumb.getHeight(), matrix, true);
+                    }
                     return thumb;
                 }
             }
