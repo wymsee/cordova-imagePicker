@@ -3,18 +3,6 @@ cordova-imagePicker
 
 Cordova Plugin For Multiple Image Selection - implemented for iOS and Android 4.0 and above.
 
-For iOS this plugin uses the ELCImagePickerController, with slight modifications for the iOS image picker.  ELCImagePicker uses the MIT License which can be found in the file LICENSE.
-
-https://github.com/B-Sides/ELCImagePickerController
-
-For Android this plugin uses MultiImageChooser, with modifications.  MultiImageChooser uses the BSD 2-Clause License which can be found in the file BSD_LICENSE.  Some code inside MultImageChooser is licensed under the Apache license which can be found in the file APACHE_LICENSE.
-
-https://github.com/derosa/MultiImageChooser
-
-Code(FakeR) was also taken from the phonegap BarCodeScanner plugin.  This code uses the MIT license.
-
-https://github.com/wildabeast/BarcodeScanner
-
 ## Installing the plugin
 
 The plugin conforms to the Cordova plugin specification, it can be installed
@@ -80,6 +68,26 @@ window.imagePicker.getPictures(
 ### Note for Android Use
 
 The plugin returns images that are stored in a temporary directory.  These images will often not be deleted automatically though.  The files should be moved or deleted after you get their filepaths in javascript.
+
+## Libraries used
+
+#### ELCImagePicker
+
+For iOS this plugin uses the ELCImagePickerController, with slight modifications for the iOS image picker.  ELCImagePicker uses the MIT License which can be found in the file LICENSE.
+
+https://github.com/B-Sides/ELCImagePickerController
+
+#### MultiImageChooser
+
+For Android this plugin uses MultiImageChooser, with modifications.  MultiImageChooser uses the BSD 2-Clause License which can be found in the file BSD_LICENSE.  Some code inside MultImageChooser is licensed under the Apache license which can be found in the file APACHE_LICENSE.
+
+https://github.com/derosa/MultiImageChooser
+
+#### FakeR
+
+Code(FakeR) was also taken from the phonegap BarCodeScanner plugin.  This code uses the MIT license.
+
+https://github.com/wildabeast/BarcodeScanner
 
 ## License
 
