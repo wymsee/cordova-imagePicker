@@ -511,7 +511,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                             bmp = this.tryToGetBitmap(file, options, rotate, true);
                         } catch (OutOfMemoryError e) {
                             options.inSampleSize = calculateNextSampleSize(options.inSampleSize);
-                            bmp = this.tryToGetBitmap(file, options, rotate, false);
+                            try {
+                                bmp = this.tryToGetBitmap(file, options, rotate, false);
+                            } catch (OutOfMemoryError e2) {
+                                throw new IOException("Unable to load image into memory.");
+                            }
                         }
                     } else {
                         try {
@@ -524,7 +528,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                             } catch(OutOfMemoryError e2) {
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bmp = this.tryToGetBitmap(file, options, rotate, false);
+                                try {
+                                    bmp = this.tryToGetBitmap(file, options, rotate, false);
+                                } catch (OutOfMemoryError e3) {
+                                    throw new IOException("Unable to load image into memory.");
+                                }
                             }
                         }
                     }
