@@ -178,29 +178,33 @@ public class ImageFetcher {
          */
         @Override
         protected Bitmap doInBackground(Integer... params) {
-            position = params[0];
-            if (isCancelled()) {
-                return null;
-            }
-            Bitmap thumb = MediaStore.Images.Thumbnails.getThumbnail(mContext.getContentResolver(), position, 12345,
-                    MediaStore.Images.Thumbnails.MINI_KIND, null);
-            if (isCancelled()) {
-                return null;
-            }
-            if (thumb == null) {
-                return null;
-            } else {
-                if (isCancelled()) {
-                    return null;
-                } else {
-                    if (rotate != 0) {
-                        Matrix matrix = new Matrix();
-                        matrix.setRotate(rotate);
-                        thumb = Bitmap.createBitmap(thumb, 0, 0, thumb.getWidth(), thumb.getHeight(), matrix, true);
-                    }
-                    return thumb;
-                }
-            }
+        	try {
+	            position = params[0];
+	            if (isCancelled()) {
+	                return null;
+	            }
+	            Bitmap thumb = MediaStore.Images.Thumbnails.getThumbnail(mContext.getContentResolver(), position, 12345,
+	                    MediaStore.Images.Thumbnails.MINI_KIND, null);
+	            if (isCancelled()) {
+	                return null;
+	            }
+	            if (thumb == null) {
+	                return null;
+	            } else {
+	                if (isCancelled()) {
+	                    return null;
+	                } else {
+	                    if (rotate != 0) {
+	                        Matrix matrix = new Matrix();
+	                        matrix.setRotate(rotate);
+	                        thumb = Bitmap.createBitmap(thumb, 0, 0, thumb.getWidth(), thumb.getHeight(), matrix, true);
+	                    }
+	                    return thumb;
+	                }
+	            }
+        	}catch(OutOfMemoryError error) {
+        		return null;
+        	}
 
         }
 
@@ -278,7 +282,7 @@ public class ImageFetcher {
      * Garbage Collector.
      */
 
-    private static final int HARD_CACHE_CAPACITY = 100;
+    private static final int HARD_CACHE_CAPACITY = 0;
     private static final int DELAY_BEFORE_PURGE = 10 * 1000; // in milliseconds
 
     // Hard cache, with a fixed maximum capacity and a life duration
