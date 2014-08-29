@@ -493,6 +493,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 while(i.hasNext()) {
                     Entry<String, Integer> imageInfo = i.next();
                     File file = new File(imageInfo.getKey());
+                    int rotate = imageInfo.getValue().intValue();
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inSampleSize = 1;
                     options.inJustDecodeBounds = true;
@@ -506,35 +507,28 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                         int inSampleSize = calculateInSampleSize(options, finalWidth, finalHeight);
                         options = new BitmapFactory.Options();
                         options.inSampleSize = inSampleSize;
-                        bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                        if (bmp == null) {
-                            throw new IOException("The image file could not be opened.");
+                        try {
+                            bmp = this.tryToGetBitmap(file, options, rotate, true);
+                        } catch (OutOfMemoryError e) {
+                            options.inSampleSize = calculateNextSampleSize(options.inSampleSize);
+                            bmp = this.tryToGetBitmap(file, options, rotate, false);
                         }
-                        scale = calculateScale(options.outWidth, options.outHeight);
-                        bmp = this.getResizedBitmap(bmp, scale);
                     } else {
                         try {
-                            bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            bmp = this.tryToGetBitmap(file, null, rotate, false);
                         } catch(OutOfMemoryError e) {
                             options = new BitmapFactory.Options();
                             options.inSampleSize = 2;
                             try {
-                                bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                                bmp = this.tryToGetBitmap(file, options, rotate, false);
                             } catch(OutOfMemoryError e2) {
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
-                                bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                                bmp = this.tryToGetBitmap(file, options, rotate, false);
                             }
                         }
                     }
-                    
-                    int rotate = imageInfo.getValue().intValue();
-                    if (rotate != 0) {
-                        Matrix matrix = new Matrix();
-                        matrix.setRotate(rotate);
-                        bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
-                    }
-                    
+
                     file = this.storeImage(bmp, file.getName());
                     al.add(Uri.fromFile(file).toString());
                 }
@@ -572,6 +566,28 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             }
             progress.dismiss();
             finish();
+        }
+
+        private Bitmap tryToGetBitmap(File file, BitmapFactory.Options options, int rotate, boolean shouldScale) throws IOException, OutOfMemoryError {
+            Bitmap bmp;
+            if (options == null) {
+                bmp = BitmapFactory.decodeFile(file.getAbsolutePath());
+            } else {
+                bmp = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+            }
+            if (bmp == null) {
+                throw new IOException("The image file could not be opened.");
+            }
+            if (options != null && shouldScale) {
+                float scale = calculateScale(options.outWidth, options.outHeight);
+                bmp = this.getResizedBitmap(bmp, scale);
+            }
+            if (rotate != 0) {
+                Matrix matrix = new Matrix();
+                matrix.setRotate(rotate);
+                bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+            }
+            return bmp;
         }
         
         /*
@@ -630,6 +646,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         }
     
         return inSampleSize;
+    }
+
+    private int calculateNextSampleSize(int sampleSize) {
+        double logBaseTwo = (int)(Math.log(sampleSize) / Math.log(2));
+        return (int)Math.pow(logBaseTwo + 1, 2);
     }
     
     private float calculateScale(int width, int height) {
