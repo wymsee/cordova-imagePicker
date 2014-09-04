@@ -61,7 +61,7 @@ public class ImagePicker extends CordovaPlugin {
 			this.callbackContext.success(res);
 		} else if (resultCode == Activity.RESULT_CANCELED && data != null) {
 			String error = data.getStringExtra("ERRORMESSAGE");
-			this.callbackContext.error("An error occurred loading one of the selected images");
+			this.callbackContext.error(error);
 		} else if (resultCode == Activity.RESULT_CANCELED) {
 			JSONArray res = new JSONArray();
 			this.callbackContext.success(res);
