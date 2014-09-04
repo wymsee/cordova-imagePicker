@@ -483,6 +483,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     
     
     private class ResizeImagesTask extends AsyncTask<Set<Entry<String, Integer>>, Void, ArrayList<String>> {
+        private Exception asyncTaskError = null;
+
         @Override
         protected ArrayList<String> doInBackground(Set<Entry<String, Integer>>... fileSets) {
             Set<Entry<String, Integer>> fileNames = fileSets[0];
@@ -543,6 +545,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 return al;
             } catch(IOException e) {
                 try {
+                    asyncTaskError = e;
                     for (int i = 0; i < al.size(); i++) {
                         URI uri = new URI(al.get(i));
                         File file = new File(uri);
@@ -559,19 +562,24 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         @Override
         protected void onPostExecute(ArrayList<String> al) {
             Intent data = new Intent();
-            
-            if (al.size() > 0) {
+
+            if (asyncTaskError != null) {
+                Bundle res = new Bundle();
+                res.putString("ERRORMESSAGE", asyncTaskError.getMessage());
+                data.putExtras(res);
+                setResult(RESULT_CANCELED, data);
+            } else if (al.size() > 0) {
                 Bundle res = new Bundle();
                 res.putStringArrayList("MULTIPLEFILENAMES", al);
                 if (imagecursor != null) {
                     res.putInt("TOTALFILES", imagecursor.getCount());
                 }
-        
                 data.putExtras(res);
                 setResult(RESULT_OK, data);
             } else {
                 setResult(RESULT_CANCELED, data);
             }
+
             progress.dismiss();
             finish();
         }
