@@ -30,10 +30,15 @@ ImagePicker.prototype.getPictures = function(success, fail, options) {
 		maximumImagesCount: options.maximumImagesCount ? options.maximumImagesCount : 15,
 		width: options.width ? options.width : 0,
 		height: options.height ? options.height : 0,
-		quality: options.quality ? options.quality : 100
+		quality: options.quality ? options.quality : 100,
+		storage: options.storage ? options.storage : 'temporary'
 	};
 
 	return cordova.exec(success, fail, "ImagePicker", "getPictures", [params]);
+};
+
+ImagePicker.prototype.cleanupPersistentDirectory = function(success, fail) {
+	return cordova.exec(success, fail, "ImagePicker", "cleanupPersistentDirectory", []);
 };
 
 window.imagePicker = new ImagePicker();
