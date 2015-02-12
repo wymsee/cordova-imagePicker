@@ -244,12 +244,12 @@ public class ImagePicker extends CordovaPlugin {
 			ArrayList<String> fileNames = data.getStringArrayListExtra("MULTIPLEFILENAMES");
 			ArrayList<String> newfiles=null;
 			try {
-				fileNames=ResizeImages(fileNames);
+				newfiles=ResizeImages(fileNames);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			JSONArray res = new JSONArray(fileNames);
+			JSONArray res = new JSONArray(newfiles);
 			this.callbackContext.success(res);
 		} else if (resultCode == Activity.RESULT_CANCELED && data != null) {
 			String error = data.getStringExtra("ERRORMESSAGE");
