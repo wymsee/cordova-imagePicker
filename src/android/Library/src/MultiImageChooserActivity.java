@@ -496,74 +496,61 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         protected ArrayList<String> doInBackground(Set<Entry<String, Integer>>... fileSets) {
             Set<Entry<String, Integer>> fileNames = fileSets[0];
             ArrayList<String> al = new ArrayList<String>();
-            try {
-                Iterator<Entry<String, Integer>> i = fileNames.iterator();
-                Bitmap bmp;
-                while(i.hasNext()) {
-                    Entry<String, Integer> imageInfo = i.next();
-                    File file = new File(imageInfo.getKey());
-                    int rotate = imageInfo.getValue().intValue();
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 1;
-                    options.inJustDecodeBounds = true;
-                    BitmapFactory.decodeFile(file.getAbsolutePath(), options);
-                    int width = options.outWidth;
-                    int height = options.outHeight;
-                    float scale = calculateScale(width, height);
-                    if (scale < 1) {
-                        int finalWidth = (int)(width * scale);
-                        int finalHeight = (int)(height * scale);
-                        int inSampleSize = calculateInSampleSize(options, finalWidth, finalHeight);
-                        options = new BitmapFactory.Options();
-                        options.inSampleSize = inSampleSize;
-                        try {
-                            bmp = this.tryToGetBitmap(file, options, rotate, true);
-                        } catch (OutOfMemoryError e) {
-                            options.inSampleSize = calculateNextSampleSize(options.inSampleSize);
-                            try {
-                                bmp = this.tryToGetBitmap(file, options, rotate, false);
-                            } catch (OutOfMemoryError e2) {
-                                throw new IOException("Unable to load image into memory.");
-                            }
-                        }
-                    } else {
-                        try {
-                            bmp = this.tryToGetBitmap(file, null, rotate, false);
-                        } catch(OutOfMemoryError e) {
-                            options = new BitmapFactory.Options();
-                            options.inSampleSize = 2;
-                            try {
-                                bmp = this.tryToGetBitmap(file, options, rotate, false);
-                            } catch(OutOfMemoryError e2) {
-                                options = new BitmapFactory.Options();
-                                options.inSampleSize = 4;
-                                try {
-                                    bmp = this.tryToGetBitmap(file, options, rotate, false);
-                                } catch (OutOfMemoryError e3) {
-                                    throw new IOException("Unable to load image into memory.");
-                                }
-                            }
-                        }
-                    }
+            Iterator<Entry<String, Integer>> i = fileNames.iterator();
+			Bitmap bmp;
+			while(i.hasNext()) {
+			    Entry<String, Integer> imageInfo = i.next();
+			    File file = new File(imageInfo.getKey());
+			    /*
+			    int rotate = imageInfo.getValue().intValue();
+			    BitmapFactory.Options options = new BitmapFactory.Options();
+			    options.inSampleSize = 1;
+			    options.inJustDecodeBounds = true;
+			    BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+			    int width = options.outWidth;
+			    int height = options.outHeight;
+			    float scale = calculateScale(width, height);
+			    if (scale < 1) {
+			        int finalWidth = (int)(width * scale);
+			        int finalHeight = (int)(height * scale);
+			        int inSampleSize = calculateInSampleSize(options, finalWidth, finalHeight);
+			        options = new BitmapFactory.Options();
+			        options.inSampleSize = inSampleSize;
+			        try {
+			            bmp = this.tryToGetBitmap(file, options, rotate, true);
+			        } catch (OutOfMemoryError e) {
+			            options.inSampleSize = calculateNextSampleSize(options.inSampleSize);
+			            try {
+			                bmp = this.tryToGetBitmap(file, options, rotate, false);
+			            } catch (OutOfMemoryError e2) {
+			                throw new IOException("Unable to load image into memory.");
+			            }
+			        }
+			    } else {
+			        try {
+			            bmp = this.tryToGetBitmap(file, null, rotate, false);
+			        } catch(OutOfMemoryError e) {
+			            options = new BitmapFactory.Options();
+			            options.inSampleSize = 2;
+			            try {
+			                bmp = this.tryToGetBitmap(file, options, rotate, false);
+			            } catch(OutOfMemoryError e2) {
+			                options = new BitmapFactory.Options();
+			                options.inSampleSize = 4;
+			                try {
+			                    bmp = this.tryToGetBitmap(file, options, rotate, false);
+			                } catch (OutOfMemoryError e3) {
+			                    throw new IOException("Unable to load image into memory.");
+			                }
+			            }
+			        }
+			    }
 
-                    file = this.storeImage(bmp, file.getName());
-                    al.add(Uri.fromFile(file).toString());
-                }
-                return al;
-            } catch(IOException e) {
-                try {
-                    asyncTaskError = e;
-                    for (int i = 0; i < al.size(); i++) {
-                        URI uri = new URI(al.get(i));
-                        File file = new File(uri);
-                        file.delete();
-                    }
-                } catch(Exception exception) {
-                    // the finally does what we want to do
-                } finally {
-                    return new ArrayList<String>();
-                }
-            }
+			    file = this.storeImage(bmp, file.getName());
+			    */
+			    al.add(Uri.fromFile(file).toString());
+			}
+			return al;
         }
         
         @Override
@@ -627,48 +614,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             String name = "Temp_" + fileName.substring(0, index);
             String ext = fileName.substring(index);
 
-            String tempRoot = null;
-            String persistentRoot = null;
-
-            String packageName = getPackageName();
-
-            String location = getIntent().getStringExtra("androidpersistentfilelocation");
-            if (location == null) {
-                    location = "compatibility";
-            }
-            tempRoot = getCacheDir().getAbsolutePath();
-            if ("internal".equalsIgnoreCase(location)) {
-                    persistentRoot = getFilesDir().getAbsolutePath() + "/files/";
-            } else if ("compatibility".equalsIgnoreCase(location)) {
-                    /*
-                     *  Fall-back to compatibility mode -- this is the logic implemented in
-                     *  earlier versions of this plugin, and should be maintained here so
-                     *  that apps which were originally deployed with older versions of the
-                     *  plugin can continue to provide access to files stored under those
-                     *  versions.
-                     */
-                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                            persistentRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
-                            tempRoot = Environment.getExternalStorageDirectory().getAbsolutePath() +
-                                            "/Android/data/" + packageName + "/cache/";
-                    } else {
-                            persistentRoot = "/data/data/" + packageName;
-                    }
-            }
-            File file = null;
-            if(tempRoot!=null)
-                name = tempRoot+name;
-            else if(persistentRoot!=null)
-                name = persistentRoot+name;
-            if(tempRoot!=null || persistentRoot!=null)
-            {
-                name = name+ext;
-                file = new File(name);
-            }
-            else
-            {
-                file = File.createTempFile(name, ext);
-            }
+            File file = File.createTempFile(name, ext);
 
             OutputStream outStream = new FileOutputStream(file);
             if (ext.compareToIgnoreCase(".png") == 0) {
