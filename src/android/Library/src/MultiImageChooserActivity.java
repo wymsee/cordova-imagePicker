@@ -30,6 +30,9 @@
 
 package com.synconset;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,7 +45,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.cordova.PluginManager;
+import org.apache.cordova.file.FileUtils;
+
 import com.synconset.FakeR;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -61,6 +68,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -117,7 +125,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private FakeR fakeR;
     
     private ProgressDialog progress;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -619,7 +626,50 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             int index = fileName.lastIndexOf('.');
             String name = "Temp_" + fileName.substring(0, index);
             String ext = fileName.substring(index);
-            File file = File.createTempFile(name, ext);
+
+            String tempRoot = null;
+            String persistentRoot = null;
+
+            String packageName = getPackageName();
+
+            String location = getIntent().getStringExtra("androidpersistentfilelocation");
+            if (location == null) {
+                    location = "compatibility";
+            }
+            tempRoot = getCacheDir().getAbsolutePath();
+            if ("internal".equalsIgnoreCase(location)) {
+                    persistentRoot = getFilesDir().getAbsolutePath() + "/files/";
+            } else if ("compatibility".equalsIgnoreCase(location)) {
+                    /*
+                     *  Fall-back to compatibility mode -- this is the logic implemented in
+                     *  earlier versions of this plugin, and should be maintained here so
+                     *  that apps which were originally deployed with older versions of the
+                     *  plugin can continue to provide access to files stored under those
+                     *  versions.
+                     */
+                    if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+                            persistentRoot = Environment.getExternalStorageDirectory().getAbsolutePath();
+                            tempRoot = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                                            "/Android/data/" + packageName + "/cache/";
+                    } else {
+                            persistentRoot = "/data/data/" + packageName;
+                    }
+            }
+            File file = null;
+            if(tempRoot!=null)
+                name = tempRoot+name;
+            else if(persistentRoot!=null)
+                name = persistentRoot+name;
+            if(tempRoot!=null || persistentRoot!=null)
+            {
+                name = name+ext;
+                file = new File(name);
+            }
+            else
+            {
+                file = File.createTempFile(name, ext);
+            }
+
             OutputStream outStream = new FileOutputStream(file);
             if (ext.compareToIgnoreCase(".png") == 0) {
                 bmp.compress(Bitmap.CompressFormat.PNG, quality, outStream);
