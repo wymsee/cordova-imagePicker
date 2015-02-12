@@ -178,6 +178,7 @@ public class ImagePicker extends CordovaPlugin {
     	for(int i=0; i<fileNames.size();i++)
     	{
     		String filename=fileNames.get(i);
+    		filename = filename.replaceAll("file://", "");
     		File file = new File(filename);
 		    BitmapFactory.Options options = new BitmapFactory.Options();
 		    options.inSampleSize = 1;
@@ -241,6 +242,7 @@ public class ImagePicker extends CordovaPlugin {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK && data != null) {
 			ArrayList<String> fileNames = data.getStringArrayListExtra("MULTIPLEFILENAMES");
+			ArrayList<String> newfiles=null;
 			try {
 				fileNames=ResizeImages(fileNames);
 			} catch (IOException e) {
