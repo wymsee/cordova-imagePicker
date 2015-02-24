@@ -178,8 +178,11 @@ public class ImagePicker extends CordovaPlugin {
     	for(int i=0; i<fileNames.size();i++)
     	{
     		String filename=fileNames.get(i);
-    		filename = filename.replaceAll("file://", "");
-    		File file = new File(filename);
+            int index = filename.lastIndexOf('.');
+            String ext = filename.substring(index);
+            if (ext.compareToIgnoreCase(".gif") != 0) {
+            filename = filename.replaceAll("file://", "");
+            File file = new File(filename);
 		    BitmapFactory.Options options = new BitmapFactory.Options();
 		    options.inSampleSize = 1;
 		    options.inJustDecodeBounds = true;
@@ -235,6 +238,11 @@ public class ImagePicker extends CordovaPlugin {
 
 		    file = this.storeImage(bmp, file.getName());
 		    al.add(Uri.fromFile(file).toString());
+            }
+            else
+            {
+                al.add(filename);
+            }
     	}
     	return al;
     }
