@@ -50,6 +50,16 @@
 	                     completion:nil];
 }
 
+- (BOOL)checkIfGif:(ALAsset *)asset{
+    NSArray *strArray = [[NSString stringWithFormat:@"%@", [[asset defaultRepresentation] url]] componentsSeparatedByString:@"="];
+    NSString *ext = [strArray objectAtIndex:([strArray count]-1)];
+    if ([[ext lowercaseString] isEqualToString:@"gif"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info {
 	CDVPluginResult* result = nil;
 	NSMutableArray *resultStrings = [[NSMutableArray alloc] init];
@@ -87,7 +97,9 @@
             }
             
             UIImage* image = [UIImage imageWithCGImage:imgRef scale:1.0f orientation:orientation];
-            if (self.width == 0 && self.height == 0) {
+            if ([self checkIfGif:asset]) {
+                data = UIImageJPEGRepresentation(image, 1.0f);
+            } else if (self.width == 0 && self.height == 0) {
                 data = UIImageJPEGRepresentation(image, self.quality/100.0f);
             } else {
                 UIImage* scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
