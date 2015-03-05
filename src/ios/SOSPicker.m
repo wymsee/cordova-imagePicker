@@ -24,6 +24,7 @@
 	self.width = [[options objectForKey:@"width"] integerValue];
 	self.height = [[options objectForKey:@"height"] integerValue];
 	self.quality = [[options objectForKey:@"quality"] integerValue];
+    self.storage = [options objectForKey:@"storage"];   //persistent, temporary
 
 	// Create the an album controller and image picker
 	ELCAlbumPickerController *albumController = [[ELCAlbumPickerController alloc] init];
@@ -49,6 +50,15 @@
 	                     completion:nil];
 }
 
+- (BOOL)checkIfGif:(ALAsset *)asset{
+    NSArray *strArray = [[NSString stringWithFormat:@"%@", [[asset defaultRepresentation] url]] componentsSeparatedByString:@"="];
+    NSString *ext = [strArray objectAtIndex:([strArray count]-1)];
+    if ([[ext lowercaseString] isEqualToString:@"gif"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
 
 - (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info {
 	CDVPluginResult* result = nil;
@@ -61,6 +71,9 @@
     ALAsset* asset = nil;
     UIImageOrientation orientation = UIImageOrientationUp;;
     CGSize targetSize = CGSizeMake(self.width, self.height);
+    if ([self.storage isEqualToString:@"persistent"]) {
+        docsPath = [self getDraftsDirectory];
+    }
 	for (NSDictionary *dict in info) {
         asset = [dict objectForKey:@"ALAsset"];
         // From ELCImagePickerController.m
@@ -84,7 +97,9 @@
             }
             
             UIImage* image = [UIImage imageWithCGImage:imgRef scale:1.0f orientation:orientation];
-            if (self.width == 0 && self.height == 0) {
+            if ([self checkIfGif:asset]) {
+                data = UIImageJPEGRepresentation(image, 1.0f);
+            } else if (self.width == 0 && self.height == 0) {
                 data = UIImageJPEGRepresentation(image, self.quality/100.0f);
             } else {
                 UIImage* scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
@@ -158,6 +173,77 @@
     // pop the context to get back to the default
     UIGraphicsEndImageContext();
     return newImage;
+}
+
+- (NSString*)createDirectory:(NSString*)dir
+{
+    BOOL isDir = FALSE;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isDirExist = [fileManager fileExistsAtPath:dir isDirectory:&isDir];
+    
+    //If dir is not exist, create it
+    if(!(isDirExist && isDir))
+    {
+        BOOL bCreateDir =[[NSFileManager defaultManager] createDirectoryAtPath:dir withIntermediateDirectories:YES attributes:nil error:nil];
+        if (bCreateDir == NO)
+        {
+            NSLog(@"Failed to create Directory:%@", dir);
+            return nil;
+        }
+    } else{
+        //NSLog(@"Directory exist:%@", dir);
+    }
+
+    return dir;
+}
+
+- (NSString *)applicationDocumentsDirectory 
+{    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    return basePath;
+}
+
+- (NSString *)getDraftsDirectory
+{
+    NSString *draftsDirectory = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"drafts"];
+    [self createDirectory:draftsDirectory];
+    return draftsDirectory;
+}
+
+- (void)cleanupPersistentDirectory:(CDVInvokedUrlCommand*)command
+{
+    // empty the tmp directory
+    NSFileManager* fileMgr = [[NSFileManager alloc] init];
+    NSError* err = nil;
+    BOOL hasErrors = NO;
+
+    // clear contents of NSTemporaryDirectory
+    NSString* tempDirectoryPath = [self getDraftsDirectory];
+    NSDirectoryEnumerator* directoryEnumerator = [fileMgr enumeratorAtPath:tempDirectoryPath];
+    NSString* fileName = nil;
+    BOOL result;
+
+    while ((fileName = [directoryEnumerator nextObject])) {
+        // only delete the files we created
+        if (![fileName hasPrefix:CDV_PHOTO_PREFIX]) {
+            continue;
+        }
+        NSString* filePath = [tempDirectoryPath stringByAppendingPathComponent:fileName];
+        result = [fileMgr removeItemAtPath:filePath error:&err];
+        if (!result && err) {
+            NSLog(@"Failed to delete: %@ (error: %@)", filePath, err);
+            hasErrors = YES;
+        }
+    }
+
+    CDVPluginResult* pluginResult;
+    if (hasErrors) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:@"One or more files failed to be deleted."];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    }
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 @end
