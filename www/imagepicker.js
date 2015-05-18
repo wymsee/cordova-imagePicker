@@ -35,19 +35,24 @@ ImagePicker.prototype.validateOutputType = function(options){
 *		         image will be returned)
 *		.height - height to resize image to
 *		.quality - quality of resized image, defaults to 100
+*       .outputType - type of output returned. defaults to file URIs. 
+*					  Please see ImagePicker.OutputType for available values.
 */
 ImagePicker.prototype.getPictures = function(success, fail, options) {
 	if (!options) {
 		options = {};
 	}
+
+	this.validateOutputType(options);
 	
 	var params = {
 		maximumImagesCount: options.maximumImagesCount ? options.maximumImagesCount : 15,
 		width: options.width ? options.width : 0,
 		height: options.height ? options.height : 0,
-		quality: options.quality ? options.quality : 100
+		quality: options.quality ? options.quality : 100,
+		outputType: options.outputType ? options.outputType : this.OutputType.FILE_URI
 	};
-
+	
 	return cordova.exec(success, fail, "ImagePicker", "getPictures", [params]);
 };
 
