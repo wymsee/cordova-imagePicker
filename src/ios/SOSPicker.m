@@ -101,7 +101,11 @@ typedef enum : NSUInteger {
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
                 break;
             } else {
-                [resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+                if(self.outputType == BASE64_STRING){
+                    [resultStrings addObject:[data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+                } else {
+                    [resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+                }
             }
         }
 
