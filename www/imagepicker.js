@@ -13,6 +13,17 @@ ImagePicker.prototype.OutputType = {
 	FILE_URI: 0,
 	BASE64_STRING: 1
 };
+
+ImagePicker.prototype.validateOutputType = function(options){
+	var outputType = options.outputType;
+	if(outputType){
+		if(outputType !== this.OutputType.FILE_URI && outputType !== this.OutputType.BASE64_STRING){
+			console.log('Invalid output type option entered. Defaulting to FILE_URI. Please use window.imagePicker.OutputType.FILE_URI or window.imagePicker.OutputType.BASE64_STRING');
+			options.outputType = this.OutputType.FILE_URI;
+		}
+	}
+};
+
 /*
 *	success - success callback
 *	fail - error callback
