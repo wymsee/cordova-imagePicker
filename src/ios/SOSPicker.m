@@ -13,6 +13,11 @@
 
 #define CDV_PHOTO_PREFIX @"cdv_photo_"
 
+typedef enum : NSUInteger {
+    FILE_URI = 0,
+    BASE64_STRING = 1
+} SOSPickerOutputType;
+
 @implementation SOSPicker
 
 @synthesize callbackId;
