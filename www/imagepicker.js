@@ -9,6 +9,10 @@ var ImagePicker = function() {
 
 };
 
+ImagePicker.prototype.OutputType = {
+	FILE_URI: 0,
+	BASE64_STRING: 1
+};
 /*
 *	success - success callback
 *	fail - error callback
