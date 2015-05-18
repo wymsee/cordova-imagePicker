@@ -642,6 +642,13 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
             return resizedBitmap;
         }
+
+       private String getBase64OfImage(Bitmap bm) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
     }
     
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
