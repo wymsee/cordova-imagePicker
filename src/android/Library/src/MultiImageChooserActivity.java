@@ -693,4 +693,24 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         
         return scale;
     }
+
+    enum OutputType {
+
+        FILE_URI(0), BASE64_STRING(1);
+
+        int value;
+
+        OutputType(int value) {
+            this.value = value;
+        }
+
+        public static OutputType fromValue(int value) {
+            for (OutputType type : OutputType.values()) {
+                if (type.value == value) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("Invalid enum value specified");
+        }
+    }
 }
