@@ -29,6 +29,7 @@ typedef enum : NSUInteger {
 	self.width = [[options objectForKey:@"width"] integerValue];
 	self.height = [[options objectForKey:@"height"] integerValue];
 	self.quality = [[options objectForKey:@"quality"] integerValue];
+    self.outputType = [[options objectForKey:@"outputType"] integerValue];
 
 	// Create the an album controller and image picker
 	ELCAlbumPickerController *albumController = [[ELCAlbumPickerController alloc] init];
