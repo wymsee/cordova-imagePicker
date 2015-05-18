@@ -106,6 +106,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private int desiredWidth;
     private int desiredHeight;
     private int quality;
+    private OutputType outputType;
 
     private GridView gridView;
 
@@ -130,6 +131,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         desiredHeight = getIntent().getIntExtra(HEIGHT_KEY, 0);
         quality = getIntent().getIntExtra(QUALITY_KEY, 0);
         maxImageCount = maxImages;
+        outputType = OutputType.fromValue(getIntent().getIntExtra(OUTPUT_TYPE_KEY, 0));
 
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
