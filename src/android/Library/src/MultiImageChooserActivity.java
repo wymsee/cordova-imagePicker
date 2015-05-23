@@ -542,10 +542,10 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                         }
                     }
 
-                    if(output == OutputType.FILE_URI) {
+                    if(outputType == OutputType.FILE_URI) {
                         file = this.storeImage(bmp, file.getName());
                         al.add(Uri.fromFile(file).toString());                      
-                    } else if (output == OutputType.BASE64_STRING){
+                    } else if (outputType == OutputType.BASE64_STRING){
                         al.add(getBase64OfImage(bmp));
                     }
                 }
