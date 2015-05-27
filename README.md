@@ -77,7 +77,7 @@ window.imagePicker.getPictures(
     
 ### Note for Android Use
 
-When outputType is FILE_URI the plugin returns images that are stored in a temporary directory.  These images will often not be deleted automatically though.  The files should be moved or deleted after you get their filepaths in javascript. If Base64 Strings are being returned, there is nothing to clean up.
+When outputType is FILE_URI the plugin returns images that are stored in a temporary directory.  These images will often not be deleted automatically though.  The files should be moved or deleted after you get their filepaths in javascript.
 
 ## Libraries used
 
