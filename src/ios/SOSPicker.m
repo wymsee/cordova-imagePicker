@@ -13,6 +13,11 @@
 
 #define CDV_PHOTO_PREFIX @"cdv_photo_"
 
+typedef enum : NSUInteger {
+    FILE_URI = 0,
+    BASE64_STRING = 1
+} SOSPickerOutputType;
+
 @implementation SOSPicker
 
 @synthesize callbackId;
@@ -24,6 +29,7 @@
 	self.width = [[options objectForKey:@"width"] integerValue];
 	self.height = [[options objectForKey:@"height"] integerValue];
 	self.quality = [[options objectForKey:@"quality"] integerValue];
+    self.outputType = [[options objectForKey:@"outputType"] integerValue];
 
 	// Create the an album controller and image picker
 	ELCAlbumPickerController *albumController = [[ELCAlbumPickerController alloc] init];
@@ -95,7 +101,11 @@
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
                 break;
             } else {
-                [resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+                if(self.outputType == BASE64_STRING){
+                    [resultStrings addObject:[data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+                } else {
+                    [resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+                }
             }
         }
 

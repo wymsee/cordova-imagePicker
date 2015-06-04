@@ -31,6 +31,7 @@
 package com.synconset;
 
 import java.net.URI;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,6 +63,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Display;
@@ -86,6 +88,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     public static final String WIDTH_KEY = "WIDTH";
     public static final String HEIGHT_KEY = "HEIGHT";
     public static final String QUALITY_KEY = "QUALITY";
+    public static final String OUTPUT_TYPE_KEY = "OUTPUT_TYPE";
 
     private ImageAdapter ia;
 
@@ -106,6 +109,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private int desiredWidth;
     private int desiredHeight;
     private int quality;
+    private OutputType outputType;
 
     private GridView gridView;
 
@@ -130,6 +134,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         desiredHeight = getIntent().getIntExtra(HEIGHT_KEY, 0);
         quality = getIntent().getIntExtra(QUALITY_KEY, 0);
         maxImageCount = maxImages;
+        outputType = OutputType.fromValue(getIntent().getIntExtra(OUTPUT_TYPE_KEY, 0));
 
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
@@ -537,8 +542,12 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                         }
                     }
 
-                    file = this.storeImage(bmp, file.getName());
-                    al.add(Uri.fromFile(file).toString());
+                    if(outputType == OutputType.FILE_URI) {
+                        file = this.storeImage(bmp, file.getName());
+                        al.add(Uri.fromFile(file).toString());                      
+                    } else if (outputType == OutputType.BASE64_STRING){
+                        al.add(getBase64OfImage(bmp));
+                    }
                 }
                 return al;
             } catch(IOException e) {
@@ -640,6 +649,13 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
             return resizedBitmap;
         }
+
+       private String getBase64OfImage(Bitmap bm) {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();  
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+        }
     }
     
     private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
@@ -692,5 +708,25 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         }
         
         return scale;
+    }
+
+    enum OutputType {
+
+        FILE_URI(0), BASE64_STRING(1);
+
+        int value;
+
+        OutputType(int value) {
+            this.value = value;
+        }
+
+        public static OutputType fromValue(int value) {
+            for (OutputType type : OutputType.values()) {
+                if (type.value == value) {
+                    return type;
+                }
+            }
+            throw new IllegalArgumentException("Invalid enum value specified");
+        }
     }
 }

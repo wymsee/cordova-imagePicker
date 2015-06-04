@@ -3,14 +3,18 @@ cordova-imagePicker
 
 Cordova Plugin For Multiple Image Selection - implemented for iOS and Android 4.0 and above.
 
+This fork has the following merged into master:
+* https://github.com/wymsee/cordova-imagePicker/pull/34 - changes album selection appearance
+* https://github.com/wymsee/cordova-imagePicker/pull/65 - adds output Type option for Base64 Encoded Strings
+
 ## Installing the plugin
 
 The plugin conforms to the Cordova plugin specification, it can be installed
 using the Cordova / Phonegap command line interface.
 
-    phonegap plugin add https://github.com/wymsee/cordova-imagePicker.git
+    phonegap plugin add https://github.com/rabeyta/cordova-imagePicker.git
 
-    cordova plugin add https://github.com/wymsee/cordova-imagePicker.git
+    cordova plugin add https://github.com/rabeyta/cordova-imagePicker.git
 
 
 ## Using the plugin
@@ -20,29 +24,29 @@ The plugin creates the object `window.imagePicker` with the method `getPictures(
 Example - Get Full Size Images (all default options):
 ```javascript
 window.imagePicker.getPictures(
-	function(results) {
-		for (var i = 0; i < results.length; i++) {
-			console.log('Image URI: ' + results[i]);
-		}
-	}, function (error) {
-		console.log('Error: ' + error);
-	}
+    function(results) {
+        for (var i = 0; i < results.length; i++) {
+            console.log('Image URI: ' + results[i]);
+        }
+    }, function (error) {
+        console.log('Error: ' + error);
+    }
 );
 ```
 
 Example - Get at most 10 images scaled to width of 800:
 ```javascript
 window.imagePicker.getPictures(
-	function(results) {
-		for (var i = 0; i < results.length; i++) {
-			console.log('Image URI: ' + results[i]);
-		}
-	}, function (error) {
-		console.log('Error: ' + error);
-	}, {
-		maximumImagesCount: 10,
-		width: 800
-	}
+    function(results) {
+        for (var i = 0; i < results.length; i++) {
+            console.log('Image URI: ' + results[i]);
+        }
+    }, function (error) {
+        console.log('Error: ' + error);
+    }, {
+        maximumImagesCount: 10,
+        width: 800
+    }
 );
 ```
 
@@ -50,24 +54,30 @@ window.imagePicker.getPictures(
 
     options = {
         // max images to be selected, defaults to 15. If this is set to 1, upon
-    	// selection of a single image, the plugin will return it.
-    	maximumImagesCount: int,
-    	
-    	// max width and height to allow the images to be.  Will keep aspect
-    	// ratio no matter what.  So if both are 800, the returned image
-    	// will be at most 800 pixels wide and 800 pixels tall.  If the width is
-    	// 800 and height 0 the image will be 800 pixels wide if the source
-    	// is at least that wide.
-    	width: int,
-    	height: int,
-    	
-    	// quality of resized image, defaults to 100
-    	quality: int (0-100)
+        // selection of a single image, the plugin will return it.
+        maximumImagesCount: int,
+        
+        // max width and height to allow the images to be.  Will keep aspect
+        // ratio no matter what.  So if both are 800, the returned image
+        // will be at most 800 pixels wide and 800 pixels tall.  If the width is
+        // 800 and height 0 the image will be 800 pixels wide if the source
+        // is at least that wide.
+        width: int,
+        height: int,
+        
+        // quality of resized image, defaults to 100
+        quality: int (0-100),
+
+        // output type, defaults to FILE_URIs.
+        // available options are 
+        // window.imagePicker.OutputType.FILE_URI (0) or 
+        // window.imagePicker.OutputType.BASE64_STRING (1)
+        outputType: int
     };
     
 ### Note for Android Use
 
-The plugin returns images that are stored in a temporary directory.  These images will often not be deleted automatically though.  The files should be moved or deleted after you get their filepaths in javascript.
+When outputType is FILE_URI the plugin returns images that are stored in a temporary directory.  These images will often not be deleted automatically though.  The files should be moved or deleted after you get their filepaths in javascript.
 
 ## Libraries used
 
