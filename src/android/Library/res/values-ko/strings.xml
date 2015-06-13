@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ImagePicker</string>
+    <string name="LiveSyncToken">ignore</string>
+    <string name="Host">https://app.icenium.com/appbuilder</string>
+    <string name="Telerik_LiveSync_CustomUrlSchemePrefix">icenium:</string>
+</resources>

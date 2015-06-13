@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.synconset.imagepicker"
-  version="1.0.6">
+  version="1.0.7">
 
 	<name>ImagePicker</name>
 	 
@@ -106,5 +106,13 @@
 		<source-file src="src/android/Library/res/values-hu/multiimagechooser_strings_hu.xml" target-dir="res/values-hu"/>
 		<source-file src="src/android/Library/res/values-ja/multiimagechooser_strings_ja.xml" target-dir="res/values-ja"/>
 		<source-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target-dir="res/values-ko"/>
+
+		<!-- TODO added for Telerik LiveSync, should be able to remove these when LS uses translatable="false" -->
+		<source-file src="src/android/Library/res/values-de/strings.xml" target-dir="res/values-de"/>
+		<source-file src="src/android/Library/res/values-es/strings.xml" target-dir="res/values-es"/>
+		<source-file src="src/android/Library/res/values-fr/strings.xml" target-dir="res/values-fr"/>
+		<source-file src="src/android/Library/res/values-hu/strings.xml" target-dir="res/values-hu"/>
+		<source-file src="src/android/Library/res/values-ja/strings.xml" target-dir="res/values-ja"/>
+		<source-file src="src/android/Library/res/values-ko/strings.xml" target-dir="res/values-ko"/>
 	</platform>
 </plugin>
