@@ -85,6 +85,7 @@
         if (CGRectContainsPoint(frame, point)) {
             ELCAsset *asset = [_rowAssets objectAtIndex:i];
             asset.selected = !asset.selected;
+            asset.index = CACurrentMediaTime();
             UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
             overlayView.hidden = !asset.selected;
             break;

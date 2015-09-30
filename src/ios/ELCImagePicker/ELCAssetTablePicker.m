@@ -44,7 +44,7 @@
     } else {
         UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
         [self.navigationItem setRightBarButtonItem:doneButtonItem];
-        [self.navigationItem setTitle:@"Loading..."];
+        [self.navigationItem setTitle:@"Lade..."];
     }
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
@@ -107,20 +107,34 @@
                                                       animated:NO];
             }
             
-            [self.navigationItem setTitle:self.singleSelection ? @"Pick Photo" : @"Pick Photos"];
+            [self.navigationItem setTitle:self.singleSelection ? @"Selektiere ein Foto" : @"Selektiere Fotos"];
         });
     }
 }
 
+
 - (void)doneAction:(id)sender
-{	
+{
+    
+    	NSMutableArray *temp = [[NSMutableArray alloc] init];
+    for (ELCAsset *elcAsset in self.elcAssets) {
+        if ([elcAsset selected]) {
+
+           [temp addObject:elcAsset];
+        }
+    }
+ [temp sortUsingSelector:@selector(compareWithIndex:)];
+    
 	NSMutableArray *selectedAssetsImages = [[NSMutableArray alloc] init];
 	    
-	for (ELCAsset *elcAsset in self.elcAssets) {
+	for (ELCAsset *elcAsset in temp) {
 		if ([elcAsset selected]) {
 			[selectedAssetsImages addObject:[elcAsset asset]];
+          	//[selectedAssetsImages addObject:elcAsset];
 		}
 	}
+    
+   
     [self.parent selectedAssets:selectedAssetsImages];
 }
 

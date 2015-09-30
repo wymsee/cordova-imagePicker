@@ -44,6 +44,18 @@
     }
 }
 
+- (NSComparisonResult)compareWithIndex:(ELCAsset *)_ass
+{
+    if (self.index > _ass.index) {
+        return NSOrderedDescending;
+    }
+    else if (self.index < _ass.index)
+    {
+        return NSOrderedAscending;
+    }
+    return NSOrderedSame;
+}
+
 
 @end
 
