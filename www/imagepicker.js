@@ -50,6 +50,9 @@ ImagePicker.prototype.getPictures = function(success, fail, options) {
 		width: options.width ? options.width : 0,
 		height: options.height ? options.height : 0,
 		quality: options.quality ? options.quality : 100,
+		allow_video: options.allow_video ? options.allow_video : false,
+		title: options.title ? options.title : 'Custom Title',
+		message: options.message ? options.message : 'Custom helper message',	
 		outputType: options.outputType ? options.outputType : this.OutputType.FILE_URI
 	};
 	

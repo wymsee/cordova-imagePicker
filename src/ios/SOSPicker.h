@@ -7,10 +7,9 @@
 //
 
 #import <Cordova/CDVPlugin.h>
-#import "ELCAlbumPickerController.h"
-#import "ELCImagePickerController.h"
 
-@interface SOSPicker : CDVPlugin <ELCImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate>
+
+@interface SOSPicker : CDVPlugin < UINavigationControllerDelegate, UIScrollViewDelegate>
 
 @property (copy)   NSString* callbackId;
 
