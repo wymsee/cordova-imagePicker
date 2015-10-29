@@ -140,7 +140,7 @@ static UIColor *disabledColor;
         _fetch.textColor = titleColor;
         _fetch.textAlignment = NSTextAlignmentCenter;
         _fetch.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-        _fetch.text = @"fetching";
+        _fetch.text = @""; // removed 'fetching'
         [self addSubview:_fetch];
         
     }
