@@ -16,32 +16,23 @@
 
 package com.synconset;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.apache.commons.io.FileUtils;
-
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -63,43 +54,13 @@ import android.widget.ImageView;
  * performance.
  */
 public class ImageFetcher {
-	
+
     private int colWidth;
     private long origId;
     private ExecutorService executor;
 
-    File dir_thumb;
-    private Context context;
-    private Map<Integer, String> thumbnails = new HashMap<Integer, String>();
-
-    public ImageFetcher( Context ct ) {
-    	context = ct;
+    public ImageFetcher() {
         executor = Executors.newCachedThreadPool();
-        
-        dir_thumb = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),"thumb");
-    	if( !dir_thumb.isDirectory() && !dir_thumb.mkdir() ){
-    		// failed
-    	}
-    	
-    	try {
-			FileUtils.cleanDirectory(dir_thumb);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    }
-    
-    /**
-     * Get Thumb URL
-     * @param id
-     * @return
-     */
-    public String getThumbFilePath( Integer id ){
-    	
-    	String url = thumbnails.get(id);
-    	
-    	return url;
     }
 
     public void fetch(Integer id, ImageView imageView, int colWidth, int rotate) {
@@ -269,10 +230,6 @@ public class ImageFetcher {
             if (isCancelled()) {
                 bitmap = null;
             }
-            
-            // store bitmap to private storage
-            storeBitmapToPrivate(position, bitmap);
-            
             addBitmapToCache(position, bitmap);
             if (imageViewReference != null) {
                 ImageView imageView = imageViewReference.get();
@@ -288,86 +245,6 @@ public class ImageFetcher {
             }
         }
     }
-    
-    /**
-     * Save Thumbnail to private storage.
-     */
-    boolean storeBitmapToPrivate( Integer position, Bitmap bitmap ){
-    	
-    	if( thumbnails.containsKey(position) ){
-    		return true;
-    	}
-    	
-    	/*String state = Environment.getExternalStorageState();
-    	if ( !Environment.MEDIA_MOUNTED.equals(state)) {
-            return false;
-        }
-    	*/
-    	
-    	if( !dir_thumb.isDirectory() ){
-    		return false;
-    	}
-    	
-    	String state = Environment.getExternalStorageState();
-    	if ( !Environment.MEDIA_MOUNTED.equals(state)) {
-            return false;
-        }
-    	
-    	File file_thumb;
-    	
-    	try {
-			file_thumb = File.createTempFile("thumb", null, dir_thumb );
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-    	
-    	String url_thumb = file_thumb.getAbsolutePath();
-    	
-    	if( !saveBitmapToFileCache(bitmap, file_thumb) ){
-    		file_thumb.delete();
-    		return false;
-    	}
-    	
-    	thumbnails.put( position, url_thumb );
-    	
-    	return true;
-    }
-    
-    private boolean saveBitmapToFileCache(Bitmap bitmap, File file_thumb ) {
-        
-        //File fileCacheItem = new File(strFilePath);
-        OutputStream out = null;
-        
-        boolean result = false;
- 
-        try
-        {
-            //result= fileCacheItem.createNewFile();
-            out = new FileOutputStream(file_thumb);
- 
-            bitmap.compress(CompressFormat.JPEG, 100, out);
-        }
-        catch (Exception e) 
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
-                out.close();
-                result = true;
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        
-        return result;
-  }
 
     /**
      * A fake Drawable that will be attached to the imageView while the download

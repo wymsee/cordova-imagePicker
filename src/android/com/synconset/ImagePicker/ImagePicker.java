@@ -3,24 +3,17 @@
  */
 package com.synconset;
 
-import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 public class ImagePicker extends CordovaPlugin {
@@ -38,6 +31,7 @@ public class ImagePicker extends CordovaPlugin {
 			int desiredWidth = 0;
 			int desiredHeight = 0;
 			int quality = 100;
+			int outputType = 0;
 			if (this.params.has("maximumImagesCount")) {
 				max = this.params.getInt("maximumImagesCount");
 			}
@@ -50,10 +44,14 @@ public class ImagePicker extends CordovaPlugin {
 			if (this.params.has("quality")) {
 				quality = this.params.getInt("quality");
 			}
+			if (this.params.has("outputType")) {
+				outputType = this.params.getInt("outputType");
+			}
 			intent.putExtra("MAX_IMAGES", max);
 			intent.putExtra("WIDTH", desiredWidth);
 			intent.putExtra("HEIGHT", desiredHeight);
 			intent.putExtra("QUALITY", quality);
+			intent.putExtra("OUTPUT_TYPE", outputType);
 			if (this.cordova != null) {
 				this.cordova.startActivityForResult((CordovaPlugin) this, intent, 0);
 			}
@@ -63,47 +61,8 @@ public class ImagePicker extends CordovaPlugin {
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == Activity.RESULT_OK && data != null) {
-			
-			//HashMap<String, Object> result = new HashMap<String, Object>();
-			
-			//ArrayList<String> fileNames = data.getStringArrayListExtra("MULTIPLEFILENAMES");
-			//ArrayList<String> fileThumbNames = data.getStringArrayListExtra("MULTIPLEFILETHUMBNAMES");
-			
-			ArrayList<FileNameItem> fileNameList = new ArrayList<FileNameItem>();
-			
-			Bundle bundle = data.getExtras();
-			if( bundle != null ){
-				 fileNameList = bundle.getParcelableArrayList("MULTIPLEFILENAMES");
-			}
-			
-			Gson gson = new Gson();
-			String str_json = gson.toJson(fileNameList);
-			JSONArray res;
-			try {
-				res = new JSONArray(str_json);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				String error = "error";
-				this.callbackContext.error(error);
-				return;
-			}
-			//JsonArray res = gson.toJsonTree(fileNameList).getAsJsonArray();
-			
-			//result.put( "actual", fileNames );
-			//result.put("thumb", fileThumbNames );
-			
-			//JSONObject res_object = new JSONObject(result);
-			//JSONArray res = new JSONArray(fileNameList);
-			
-			//JSONArray res = new JSONArray(fileNames);
-			/*JSONArray res = new JSONArray();
-			try {
-				res = new JSONArray( "[" + res_object.toString() + "]" );
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
-			
+			ArrayList<String> fileNames = data.getStringArrayListExtra("MULTIPLEFILENAMES");
+			JSONArray res = new JSONArray(fileNames);
 			this.callbackContext.success(res);
 		} else if (resultCode == Activity.RESULT_CANCELED && data != null) {
 			String error = data.getStringExtra("ERRORMESSAGE");
