@@ -99,12 +99,6 @@
 		<source-file src="src/android/Library/res/layout/multiselectorgrid.xml" target-dir="res/layout"/>
 		<source-file src="src/android/Library/res/values/multiimagechooser_strings_en.xml" target-dir="res/values"/>
 		<source-file src="src/android/Library/res/values/themes.xml" target-dir="res/values"/>
-		
-		<source-file src="src/android/Library/res/values-de/multiimagechooser_strings_de.xml" target-dir="res/values-de"/>
-		<source-file src="src/android/Library/res/values-es/multiimagechooser_strings_es.xml" target-dir="res/values-es"/>
-		<source-file src="src/android/Library/res/values-fr/multiimagechooser_strings_fr.xml" target-dir="res/values-fr"/>
-		<source-file src="src/android/Library/res/values-hu/multiimagechooser_strings_hu.xml" target-dir="res/values-hu"/>
-		<source-file src="src/android/Library/res/values-ja/multiimagechooser_strings_ja.xml" target-dir="res/values-ja"/>
-		<source-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target-dir="res/values-ko"/>
+	
 	</platform>
 </plugin>
