@@ -4,4 +4,6 @@
     <string name="free_version_label">Free version - Images left: %d</string>
     <string name="error_database">There was an error opening the images database. Please report the problem.</string>
     <string name="requesting_thumbnails">Requesting thumbnails, please be patient</string>
+    <string name="discard">Cancel</string>
+    <string name="done">OK</string>
 </resources>

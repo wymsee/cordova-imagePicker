@@ -4,4 +4,6 @@
     <string name="free_version_label">無料版 - 残りの画像: %d</string>
     <string name="error_database">画像データベースを開く際にエラーがありました。問題を報告してください。</string>
     <string name="requesting_thumbnails">サムネイルをリクエスト中です。お待ちください。</string>
+	<string name="discard">Cancel</string>
+    <string name="done">OK</string>
 </resources>

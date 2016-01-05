@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="multi_app_name">MultiImageChooser</string>
-   
     <string name="free_version_label">Ingyenes verzió - hátralévő képek: %d</string>
     <string name="error_database">Képadatbázis megnyitási hiba történt. Kérjük, jelentse a problémát.</string>
     <string name="requesting_thumbnails">Miniatűrök lekérése, kérjük legyen türelemmel</string>
+    <string name="discard">Cancel</string>
+    <string name="done">OK</string>
 </resources>
