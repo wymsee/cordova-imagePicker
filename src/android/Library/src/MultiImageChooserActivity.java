@@ -43,8 +43,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import android.app.Activity;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
@@ -62,6 +60,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.SparseBooleanArray;
 import android.view.Display;
@@ -77,7 +77,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 
-public class MultiImageChooserActivity extends Activity implements OnItemClickListener,
+public class MultiImageChooserActivity extends AppCompatActivity implements
+        OnItemClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "ImagePicker";
@@ -118,6 +119,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private boolean shouldRequestThumb = true;
 
     private FakeR fakeR;
+    private View abDoneView;
+    private View abDiscardView;
 
     private ProgressDialog progress;
 
@@ -168,7 +171,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             }
         });
 
-        ia = new ImageAdapter(this);
+        ia = new ImageAdapter();
         gridView.setAdapter(ia);
 
         LoaderManager.enableDebugLogging(false);
@@ -208,7 +211,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         } else if (isChecked) {
             fileNames.put(name, rotation);
             if (maxImageCount == 1) {
-                this.selectClicked(null);
+                this.selectClicked();
 
             } else {
                 maxImages--;
@@ -301,20 +304,14 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         }
     }
 
-    public void cancelClicked(View ignored) {
+    public void cancelClicked() {
         setResult(RESULT_CANCELED);
         finish();
     }
 
-    public void selectClicked(View ignored) {
-        getActionBar().getCustomView()
-                .findViewById(fakeR.getId("id", "actionbar_done_textview"))
-                .setEnabled(false);
-
-        getActionBar().getCustomView()
-                .findViewById(fakeR.getId("id", "actionbar_done"))
-                .setEnabled(false);
-
+    public void selectClicked() {
+        abDiscardView.setEnabled(false);
+        abDoneView.setEnabled(false);
         progress.show();
 
         if (fileNames.isEmpty()) {
@@ -331,13 +328,10 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
      * Helper Methods
      ********************/
     private void updateAcceptButton() {
-        getActionBar().getCustomView()
-                .findViewById(fakeR.getId("id", "actionbar_done_textview"))
-                .setEnabled(fileNames.size() != 0);
-
-        getActionBar().getCustomView()
-                .findViewById(fakeR.getId("id", "actionbar_done"))
-                .setEnabled(fileNames.size() != 0);
+        if (abDoneView != null && abDiscardView != null) {
+            abDiscardView.setEnabled(fileNames.size() != 0);
+            abDoneView.setEnabled(fileNames.size() != 0);
+        }
     }
 
     private void setupHeader() {
@@ -359,31 +353,43 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
          * See the License for the specific language governing permissions and
          * limitations under the License.
          */
-        LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext().getSystemService(
-                LAYOUT_INFLATER_SERVICE);
-        final View customActionBarView = inflater.inflate(fakeR.getId("layout", "actionbar_custom_view_done_discard"), null);
-        customActionBarView.findViewById(fakeR.getId("id", "actionbar_done")).setOnClickListener(new View.OnClickListener() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customActionBarView = inflater.inflate(
+                fakeR.getId("layout", "actionbar_custom_view_done_discard"),
+                null
+        );
+
+        abDoneView = customActionBarView.findViewById(fakeR.getId("id", "actionbar_done"));
+        abDoneView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // "Done"
-                selectClicked(null);
+                selectClicked();
             }
         });
-        customActionBarView.findViewById(fakeR.getId("id", "actionbar_discard")).setOnClickListener(new View.OnClickListener() {
+
+        abDiscardView = customActionBarView.findViewById(fakeR.getId("id", "actionbar_discard"));
+        abDiscardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                cancelClicked();
             }
         });
 
         // Show the custom action bar view and hide the normal Home icon and title.
-        final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM, ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-        ));
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(
+                    ActionBar.DISPLAY_SHOW_CUSTOM,
+                    ActionBar.DISPLAY_SHOW_CUSTOM
+                            | ActionBar.DISPLAY_SHOW_HOME
+                            | ActionBar.DISPLAY_SHOW_TITLE
+            );
+            actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            ));
+        }
     }
 
     private String getImageName(int position) {
@@ -433,24 +439,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
 
     private class ImageAdapter extends BaseAdapter {
-        private final Bitmap mPlaceHolderBitmap;
-
-        public ImageAdapter(Context c) {
-            Bitmap tmpHolderBitmap = BitmapFactory.decodeResource(
-                    getResources(),
-                    fakeR.getId("drawable", "loading_icon")
-            );
-            mPlaceHolderBitmap = Bitmap.createScaledBitmap(
-                    tmpHolderBitmap,
-                    colWidth,
-                    colWidth,
-                    false
-            );
-
-            if (tmpHolderBitmap != mPlaceHolderBitmap) {
-                tmpHolderBitmap.recycle();
-            }
-        }
 
         public int getCount() {
             if (imagecursor != null) {
