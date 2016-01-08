@@ -12,22 +12,27 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
--->
+  -->
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/actionbar_discard"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
     android:layout_width="0dp"
-    style="?android:actionButtonStyle" >
-    <TextView
+    android:layout_height="fill_parent"
+    android:layout_weight="1"
+    style="?android:actionButtonStyle">
+
+    <TextView android:id="@+id/actionbar_discard_textview"
+        android:text="@string/discard"
         android:drawableLeft="@drawable/ic_action_discard_light"
+        android:drawableStart="@drawable/ic_action_discard_light"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:id="@+id/actionbar_discard_textview"
-        android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="@string/discard"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         style="?android:actionBarTabTextStyle" />
 </FrameLayout>
