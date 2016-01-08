@@ -111,8 +111,6 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
     private int quality;
     private OutputType outputType;
 
-    private GridView gridView;
-
     private final ImageFetcher fetcher = new ImageFetcher();
 
     private int selectedColor = 0xff32b2e1;
@@ -143,7 +141,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
 
         colWidth = width / 4;
 
-        gridView = (GridView) findViewById(fakeR.getId("id", "gridview"));
+        GridView gridView = (GridView) findViewById(fakeR.getId("id", "gridview"));
         gridView.setOnItemClickListener(this);
         gridView.setOnScrollListener(new OnScrollListener() {
             private int lastFirstItem = 0;
@@ -197,21 +195,22 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
 
         if (maxImages == 0 && isChecked) {
             isChecked = false;
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Maximum " + maxImageCount + " Photos");
-            builder.setMessage("You can only select " + maxImageCount + " photos at a time.");
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alert = builder.create();
-            alert.show();
+            new AlertDialog.Builder(this)
+                    .setTitle("Maximum " + maxImageCount + " Photos")
+                    .setMessage("You can only select " + maxImageCount + " photos at a time.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .create()
+                    .show();
 
         } else if (isChecked) {
             fileNames.put(name, rotation);
+
             if (maxImageCount == 1) {
-                this.selectClicked();
+                selectClicked();
 
             } else {
                 maxImages--;
@@ -328,8 +327,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
      * Helper Methods
      ********************/
     private void updateAcceptButton() {
-        if (abDoneView != null && abDiscardView != null) {
-            abDiscardView.setEnabled(fileNames.size() != 0);
+        if (abDoneView != null) {
             abDoneView.setEnabled(fileNames.size() != 0);
         }
     }
@@ -515,7 +513,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
             try {
                 Iterator<Entry<String, Integer>> i = fileNames.iterator();
                 Bitmap bmp;
-                while(i.hasNext()) {
+                while (i.hasNext()) {
                     Entry<String, Integer> imageInfo = i.next();
                     File file = new File(imageInfo.getKey());
                     int rotate = imageInfo.getValue();
@@ -526,12 +524,14 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                     int width = options.outWidth;
                     int height = options.outHeight;
                     float scale = calculateScale(width, height);
+
                     if (scale < 1) {
                         int finalWidth = (int)(width * scale);
                         int finalHeight = (int)(height * scale);
                         int inSampleSize = calculateInSampleSize(options, finalWidth, finalHeight);
                         options = new BitmapFactory.Options();
                         options.inSampleSize = inSampleSize;
+
                         try {
                             bmp = this.tryToGetBitmap(file, options, rotate, true);
                         } catch (OutOfMemoryError e) {
@@ -548,11 +548,13 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                         } catch(OutOfMemoryError e) {
                             options = new BitmapFactory.Options();
                             options.inSampleSize = 2;
+
                             try {
                                 bmp = this.tryToGetBitmap(file, options, rotate, false);
                             } catch(OutOfMemoryError e2) {
                                 options = new BitmapFactory.Options();
                                 options.inSampleSize = 4;
+
                                 try {
                                     bmp = this.tryToGetBitmap(file, options, rotate, false);
                                 } catch (OutOfMemoryError e3) {
@@ -571,7 +573,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                     }
                 }
                 return al;
-            } catch(IOException e) {
+            } catch (IOException e) {
                 try {
                     asyncTaskError = e;
                     for (int i = 0; i < al.size(); i++) {
@@ -579,7 +581,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                         File file = new File(uri);
                         file.delete();
                     }
-                } catch(Exception ignore) {
+                } catch (Exception ignore) {
                 }
 
                 return new ArrayList<>();
@@ -685,7 +687,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
        private String getBase64OfImage(Bitmap bm) {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
             return Base64.encodeToString(byteArray, Base64.DEFAULT);
         }
     }
