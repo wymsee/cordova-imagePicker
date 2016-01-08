@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="multi_app_name">MultiImageChooser</string>
+    <string name="free_version_label">Gratisversion - Bilder kvar: %d</string>
+    <string name="error_database">Det gick inte att öppna bilddatabasen. Var vänlig rapportera detta problem.</string>
+    <string name="requesting_thumbnails">Hämtar tumnaglar, var god vänta</string>
+    <string name="multi_image_picker_processing_images_title">Behandlar bilder</string>
+    <string name="multi_image_picker_processing_images_message">Det här kan ta en stund</string>
+</resources>

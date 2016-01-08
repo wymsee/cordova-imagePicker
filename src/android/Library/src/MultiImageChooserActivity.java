@@ -76,6 +76,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import org.apache.cordova.R;
+
 
 public class MultiImageChooserActivity extends AppCompatActivity implements
         OnItemClickListener,
@@ -178,8 +180,8 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         setupHeader();
         updateAcceptButton();
         progress = new ProgressDialog(this);
-        progress.setTitle("Processing Images");
-        progress.setMessage("This may take a few moments");
+        progress.setTitle(getString(R.string.multi_image_picker_processing_images_title));
+        progress.setMessage(getString(R.string.multi_image_picker_processing_images_message));
     }
 
     @Override
