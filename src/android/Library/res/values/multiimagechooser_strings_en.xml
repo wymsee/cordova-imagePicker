@@ -4,6 +4,6 @@
     <string name="free_version_label">Free version - Images left: %d</string>
     <string name="error_database">There was an error opening the images database. Please report the problem.</string>
     <string name="requesting_thumbnails">Requesting thumbnails, please be patient</string>
-    <string name="discard" translatable="false">Cancel</string>
-    <string name="done" translatable="false">OK</string>
+    <string name="multi_image_picker_processing_images_title">Processing images</string>
+    <string name="multi_image_picker_processing_images_message">This may take a moment</string>
 </resources>
