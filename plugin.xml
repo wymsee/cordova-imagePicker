@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="com.synconset.imagepicker"
-  version="2.0.0">
+  version="2.1.0">
 
     <name>ImagePicker</name>
 
@@ -215,6 +215,8 @@
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
 
+        <framework src="com.android.support:appcompat-v7:23+" />
+
         <source-file src="src/android/com/synconset/ImagePicker/ImagePicker.java" target-dir="src/com/synconset" />
         <source-file src="src/android/com/synconset/ImagePicker/FakeR.java" target-dir="src/com/synconset" />
 
@@ -250,5 +252,6 @@
         <source-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target-dir="res/values-ko"/>
 
         <framework src="src/android/ignorelinterrors.gradle" custom="true" type="gradleReference"/>
+        <framework src="src/android/androidtarget.gradle" custom="true" type="gradleReference"/>
     </platform>
 </plugin>

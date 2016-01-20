@@ -58,17 +58,18 @@ public class ImagePicker extends CordovaPlugin {
             imagePickerIntent.putExtra("QUALITY", quality);
             imagePickerIntent.putExtra("OUTPUT_TYPE", outputType);
 
-            if (cordova != null) {
-                if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            // TODO re-implement these, with AppCompat classes
+//            if (cordova != null) {
+                // if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     cordova.startActivityForResult(this, imagePickerIntent, 0);
-                } else {
-                    cordova.requestPermission(
-                            this,
-                            PERMISSION_REQUEST_CODE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                    );
-                }
-            }
+                // } else {
+                    // cordova.requestPermission(
+                            // this,
+                            // PERMISSION_REQUEST_CODE,
+                            // Manifest.permission.READ_EXTERNAL_STORAGE
+                    // );
+                // }
+            // }
         }
         return true;
     }
@@ -92,6 +93,8 @@ public class ImagePicker extends CordovaPlugin {
         }
     }
 
+    // TODO re-implement these, with AppCompat classes
+/*
     @Override
     public void onRequestPermissionResult(int requestCode,
                                           String[] permissions,
@@ -105,4 +108,5 @@ public class ImagePicker extends CordovaPlugin {
             callbackContext.error("Permission denied");
         }
     }
+*/
 }

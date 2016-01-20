@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.synconset.FakeR;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.app.ProgressDialog;
@@ -76,9 +77,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import org.apache.cordova.R;
-
-
 public class MultiImageChooserActivity extends AppCompatActivity implements
         OnItemClickListener,
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -101,7 +99,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
     private static final int CURSORLOADER_THUMBS = 0;
     private static final int CURSORLOADER_REAL = 1;
 
-    private Map<String, Integer> fileNames = new HashMap<>();
+    private Map<String, Integer> fileNames = new HashMap<String, Integer>();
 
     private SparseBooleanArray checkStatus = new SparseBooleanArray();
 
@@ -180,8 +178,8 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         setupHeader();
         updateAcceptButton();
         progress = new ProgressDialog(this);
-        progress.setTitle(getString(R.string.multi_image_picker_processing_images_title));
-        progress.setMessage(getString(R.string.multi_image_picker_processing_images_message));
+        progress.setTitle(getString(fakeR.getId("string", "multi_image_picker_processing_images_title")));
+        progress.setMessage(getString(fakeR.getId("string", "multi_image_picker_processing_images_message")));
     }
 
     @Override
@@ -246,7 +244,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int cursorID, Bundle arg1) {
-        ArrayList<String> img = new ArrayList<>();
+        ArrayList<String> img = new ArrayList<String>();
         switch (cursorID) {
             case CURSORLOADER_THUMBS:
                 img.add(MediaStore.Images.Media._ID);
@@ -511,7 +509,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         @Override
         protected ArrayList<String> doInBackground(Set<Entry<String, Integer>>... fileSets) {
             Set<Entry<String, Integer>> fileNames = fileSets[0];
-            ArrayList<String> al = new ArrayList<>();
+            ArrayList<String> al = new ArrayList<String>();
             try {
                 Iterator<Entry<String, Integer>> i = fileNames.iterator();
                 Bitmap bmp;
@@ -586,7 +584,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                 } catch (Exception ignore) {
                 }
 
-                return new ArrayList<>();
+                return new ArrayList<String>();
             }
         }
 
