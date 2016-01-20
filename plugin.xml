@@ -5,16 +5,16 @@
   version="1.0.7">
 
 	<name>ImagePicker</name>
-	 
+
 	<description>
 		This plugin allows selection of multiple images from the camera roll / gallery in a phonegap app
 	</description>
-	
+
 	<license>MIT</license>
 
 	<engines>
 		<engine name="cordova" version=">=3.0.0" />
-	</engines>  
+	</engines>
 
 	<js-module src="www/imagepicker.js" name="ImagePicker">
 		<clobbers target="plugins.imagePicker" />
