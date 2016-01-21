@@ -24,6 +24,14 @@ ImagePicker.prototype.validateOutputType = function(options){
 	}
 };
 
+ImagePicker.prototype.hasReadPermission = function(callback) {
+  return cordova.exec(callback, null, "ImagePicker", "hasReadPermission", []);
+};
+
+ImagePicker.prototype.requestReadPermission = function(callback) {
+  return cordova.exec(callback, null, "ImagePicker", "requestReadPermission", []);
+};
+
 /*
 *	success - success callback
 *	fail - error callback

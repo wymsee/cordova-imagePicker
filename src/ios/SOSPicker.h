@@ -14,6 +14,9 @@
 @property (copy)   NSString* callbackId;
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command;
+- (void) hasReadPermission:(CDVInvokedUrlCommand *)command;
+- (void) requestReadPermission:(CDVInvokedUrlCommand *)command;
+
 - (UIImage*)imageByScalingNotCroppingForSize:(UIImage*)anImage toSize:(CGSize)frameSize;
 
 @property (nonatomic, assign) NSInteger width;

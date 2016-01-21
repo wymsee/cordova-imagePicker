@@ -26,6 +26,16 @@ typedef enum : NSUInteger {
 
 @synthesize callbackId;
 
+- (void) hasReadPermission:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void) requestReadPermission:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
     
     NSDictionary *options = [command.arguments objectAtIndex: 0];
