@@ -49,7 +49,7 @@ window.imagePicker.getPictures(
 ### Options
 
     options = {
-        // max images to be selected, defaults to 15. If this is set to 1, upon
+        // Android only. Max images to be selected, defaults to 15. If this is set to 1, upon
         // selection of a single image, the plugin will return it.
         maximumImagesCount: int,
         
