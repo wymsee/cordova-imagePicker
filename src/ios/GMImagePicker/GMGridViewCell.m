@@ -17,7 +17,7 @@
 
 @implementation GMGridViewCell
 
-@synthesize circularProgressView;
+//@synthesize circularProgressView;
 
 static UIFont *titleFont;
 static CGFloat titleHeight;
@@ -129,10 +129,10 @@ static UIColor *disabledColor;
         
         // circle progress
         
-        self.circularProgressView = [[MRCircularProgressView alloc] initWithFrame:CGRectMake(self.bounds.size.width/3, self.bounds.size.height/3, self.bounds.size.width/3, self.bounds.size.height/3)];
-        [self.circularProgressView.stopButton addTarget:self action:@selector(onCircularProgressViewTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-        //[self.circularProgressView setHidden:true];
-        [self addSubview:self.circularProgressView];
+//        self.circularProgressView = [[MRCircularProgressView alloc] initWithFrame:CGRectMake(self.bounds.size.width/3, self.bounds.size.height/3, self.bounds.size.width/3, self.bounds.size.height/3)];
+//        [self.circularProgressView.stopButton addTarget:self action:@selector(onCircularProgressViewTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.circularProgressView setHidden:true];
+//        [self addSubview:self.circularProgressView];
         
         
         _fetch = [UILabel new];
@@ -149,15 +149,15 @@ static UIColor *disabledColor;
 }
 
 -(void)show_progress{
-    [self.circularProgressView setHidden:false];
+//    [self.circularProgressView setHidden:false];
 }
 
 -(void)hide_progress{
-    [self.circularProgressView setHidden:true];
+//    [self.circularProgressView setHidden:true];
 }
 
 -(void)set_progress:(float)value animated:(BOOL)animated{
-    [self.circularProgressView setProgress:value animated:animated];
+//    [self.circularProgressView setProgress:value animated:animated];
 }
 
 -(void)show_fetching{
@@ -169,7 +169,7 @@ static UIColor *disabledColor;
 }
 
 - (void)onCircularProgressViewTouchUpInside:(id)sender {
-    self.circularProgressView.progress = 0;
+//    self.circularProgressView.progress = 0;
 }
 
 //Required to resize the CAGradientLayer because it does not support auto resizing.
