@@ -342,18 +342,6 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
         cell.selected = NO;
     }
     
-    [cell set_progress:fetch_item.percent animated:false];
-    
-    if ( fetch_item.be_finished ) {
-        [ cell hide_progress ];
-    }
-    else if ( fetch_item.be_progressed ) {
-        [ cell show_progress ];
-        [ cell set_progress:fetch_item.percent animated:false];
-    }else{
-        [ cell hide_progress ];
-    }
-    
     if ( fetch_item.be_saving_img ) {
         [ cell show_fetching ];
     }else{
@@ -447,7 +435,6 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
     if ( fetch_item.be_saving_img == false && fetch_item.image_fullsize == nil  ) {
         
         fetch_item.be_progressed = true;
-        [ cell show_progress ];
         
         PHImageRequestOptions *ph_options = [[PHImageRequestOptions alloc] init];
         
@@ -462,10 +449,6 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
             
             GMGridViewCell *cell = (GMGridViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
             
-            if ( cell ) {
-                [ cell set_progress:progress animated:false];
-            }
-            
         }];
         
         
@@ -477,7 +460,6 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
             GMGridViewCell *cell = (GMGridViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
             
             if ( cell ) {
-                [cell hide_progress];
                 [cell show_fetching];
             }
             

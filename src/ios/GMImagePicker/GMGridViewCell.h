@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Guillermo Muntaner Perelló. All rights reserved.
 //
 
-#import "MRCircularProgressView.h"
 #import <Photos/Photos.h>
 
 
@@ -27,11 +26,6 @@
 @property (nonatomic, assign, getter = isEnabled) BOOL enabled;
 
 - (void)bind:(PHAsset *)asset;
-
-@property (nonatomic, strong) MRCircularProgressView *circularProgressView;
--(void)show_progress;
--(void)set_progress:(float)value animated:(BOOL)animated;
--(void)hide_progress;
 
 @property (nonatomic, strong) UILabel *fetch;
 -(void)show_fetching;
