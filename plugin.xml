@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
-  id="com.synconset.imagepicker"
-  version="1.0.7">
+  id="cordova-plugin-image-picker"
+  version="1.0.8">
 
 	<name>ImagePicker</name>
 	 
