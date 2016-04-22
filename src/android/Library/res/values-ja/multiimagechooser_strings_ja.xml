@@ -4,6 +4,10 @@
     <string name="free_version_label">無料版 - 残りの画像: %d</string>
     <string name="error_database">画像データベースを開く際にエラーがありました。問題を報告してください。</string>
     <string name="requesting_thumbnails">サムネイルをリクエスト中です。お待ちください。</string>
-	<string name="discard">Cancel</string>
+    <string name="processing_images_header">Processing Images</string>
+    <string name="processing_images_message">This may take a few moments</string>
+    <string name="maximum_selection_count_error_header">Limit reached</string>
+    <string name="maximum_selection_count_error_message">You can only select %d photos at once.</string>
+    <string name="discard">Cancel</string>
     <string name="done">OK</string>
 </resources>
