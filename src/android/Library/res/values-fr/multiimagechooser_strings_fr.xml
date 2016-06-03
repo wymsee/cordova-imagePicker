@@ -3,6 +3,10 @@
     <string name="free_version_label">Version gratuite - Images restantes:%d"</string>
     <string name="error_database">"Il y eu une erreur avec les images. Veuillez nous signaler le problème."</string>
     <string name="requesting_thumbnails">Récupération des vignettes, soyez patient</string>
+    <string name="processing_images_header">Processing Images</string>
+    <string name="processing_images_message">This may take a few moments</string>
+    <string name="maximum_selection_count_error_header">Limit reached</string>
+    <string name="maximum_selection_count_error_message">You can only select %d photos at once.</string>
     <string name="discard">Annuler</string>
     <string name="done">OK</string>
 </resources>

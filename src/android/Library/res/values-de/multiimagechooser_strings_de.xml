@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="multi_app_name">MultiImageChooser</string>
-    <string name="free_version_label">Free version - Images left: %d</string>
-    <string name="error_database">There was an error opening the images database. Please report the problem.</string>
-    <string name="requesting_thumbnails">Requesting thumbnails, please be patient</string>
-    <string name="discard">Cancel</string>
+    <string name="free_version_label">Kostenlose Version - Sie können noch %d Bilder wählen</string>
+    <string name="error_database">Beim Öffnen der Bilder-Datenbank kam es zu einem Fehler.</string>
+    <string name="requesting_thumbnails">Lade Vorschaubilder, bitte warten</string>
+    <string name="processing_images_header">Verarbeite Bildauswahl</string>
+    <string name="processing_images_message">Dies kann einen kurzen Augenblick dauern.</string>
+    <string name="maximum_selection_count_error_header">Auswahllimit erreicht</string>
+    <string name="maximum_selection_count_error_message">Sie können maximal %d Bilder auf einmal auswählen.</string>
+    <string name="discard">Abbrechen</string>
     <string name="done">OK</string>
 </resources>
