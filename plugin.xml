@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
-  id="com.synconset.imagepicker"
-  version="1.0.4">
+  id="cordova-plugin-image-picker"
+  version="1.1.1">
 
 	<name>ImagePicker</name>
 	 
@@ -66,7 +66,6 @@
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 		    <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@android:style/Theme.Holo.Light">
-                <intent-filter />
             </activity>
 		</config-file>
 		
