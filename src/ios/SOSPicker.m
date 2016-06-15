@@ -22,24 +22,40 @@ typedef enum : NSUInteger {
 @interface SOSPicker () <GMImagePickerControllerDelegate>
 @end
 
-@implementation SOSPicker 
+@implementation SOSPicker
 
 @synthesize callbackId;
 
 - (void) hasReadPermission:(CDVInvokedUrlCommand *)command {
-    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:[PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void) requestReadPermission:(CDVInvokedUrlCommand *)command {
+    // [PHPhotoLibrary requestAuthorization:]
+    // this method works only when it is a first time, see
+    // https://developer.apple.com/library/ios/documentation/Photos/Reference/PHPhotoLibrary_Class/
+
+    PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+    if (status == PHAuthorizationStatusAuthorized) {
+        NSLog(@"Access has been granted.");
+    } else if (status == PHAuthorizationStatusDenied) {
+        NSLog(@"Access has been denied. Change your setting > this app > Photo enable");
+    } else if (status == PHAuthorizationStatusNotDetermined) {
+        // Access has not been determined. requestAuthorization: is available
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {}];
+    } else if (status == PHAuthorizationStatusRestricted) {
+        NSLog(@"Access has been restricted. Change your setting > Privacy > Photo enable");
+    }
+
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
-    
+
     NSDictionary *options = [command.arguments objectAtIndex: 0];
-  
+
     self.outputType = [[options objectForKey:@"outputType"] integerValue];
     BOOL allow_video = [[options objectForKey:@"allow_video" ] boolValue ];
     NSString * title = [options objectForKey:@"title"];
@@ -65,12 +81,12 @@ typedef enum : NSUInteger {
     picker.colsInLandscape = 6;
     picker.minimumInteritemSpacing = 2.0;
     picker.modalPresentationStyle = UIModalPresentationPopover;
-    
+
     UIPopoverPresentationController *popPC = picker.popoverPresentationController;
     popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popPC.sourceView = picker.view;
     //popPC.sourceRect = nil;
-    
+
     [self.viewController showViewController:picker sender:nil];
 }
 
@@ -139,9 +155,9 @@ typedef enum : NSUInteger {
 - (void)assetsPickerController:(GMImagePickerController *)picker didFinishPickingAssets:(NSArray *)fetchArray
 {
     [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    
+
     NSLog(@"GMImagePicker: User finished picking assets. Number of selected items is: %lu", (unsigned long)fetchArray.count);
-    
+
     NSMutableArray * result_all = [[NSMutableArray alloc] init];
     CGSize targetSize = CGSizeMake(self.width, self.height);
     NSFileManager* fileMgr = [[NSFileManager alloc] init];
@@ -153,11 +169,11 @@ typedef enum : NSUInteger {
     CDVPluginResult* result = nil;
 
     for (GMFetchItem *item in fetchArray) {
-        
+
         if ( !item.image_fullsize ) {
             continue;
         }
-      
+
         do {
             filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, CDV_PHOTO_PREFIX, i++, @"jpg"];
         } while ([fileMgr fileExistsAtPath:filePath]);
@@ -202,14 +218,14 @@ typedef enum : NSUInteger {
             }
         }
     }
-    
+
     if (result == nil) {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:result_all];
     }
 
     [self.viewController dismissViewControllerAnimated:YES completion:nil];
     [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
-    
+
 }
 
 //Optional implementation:
