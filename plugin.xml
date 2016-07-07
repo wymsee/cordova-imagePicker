@@ -68,7 +68,7 @@
         <resource-file src="src/ios/GMImagePicker/GMVideoIcon@2x.png" />
 
         <resource-file src="src/ios/GMImagePicker/ca.lproj" />
-	    	<resource-file src="src/ios/GMImagePicker/de.lproj" />
+        <resource-file src="src/ios/GMImagePicker/de.lproj" />
         <resource-file src="src/ios/GMImagePicker/en.lproj" />
         <resource-file src="src/ios/GMImagePicker/es.lproj" />
         <resource-file src="src/ios/GMImagePicker/fr.lproj" />
