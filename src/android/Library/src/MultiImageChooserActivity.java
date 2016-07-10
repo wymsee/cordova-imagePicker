@@ -196,9 +196,9 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
         if (maxImages == 0 && isChecked) {
             isChecked = false;
             new AlertDialog.Builder(this)
-                    .setTitle("Maximum " + maxImageCount + " Photos")
-                    .setMessage("You can only select " + maxImageCount + " photos at a time.")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setTitle("사진 개수 초과")
+                    .setMessage("사진은 최대 6장까지 등록 가능합니다.")
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                         }
@@ -688,7 +688,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+            return Base64.encodeToString(byteArray, Base64.NO_WRAP);
         }
     }
 

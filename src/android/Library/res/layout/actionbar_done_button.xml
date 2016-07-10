@@ -23,16 +23,13 @@
 
     <TextView android:id="@+id/actionbar_done_textview"
         android:text="@string/done"
-        android:drawableLeft="@drawable/ic_action_done_light"
-        android:drawableStart="@drawable/ic_action_done_light"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        style="?android:actionBarTabTextStyle" />
+        android:layout_gravity="center|right"
+        style="?android:actionBarTabTextStyle"
+        android:textSize="16dip"
+        android:textStyle="normal"
+        android:textColor="#f65949"  />
 </FrameLayout>

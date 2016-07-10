@@ -11,13 +11,15 @@
         android:layout_weight="1"
         android:columnWidth="0dip"
         android:fadingEdgeLength="10dip"
-        android:fastScrollEnabled="true"
+        android:fastScrollEnabled="false"
         android:gravity="center"
-        android:horizontalSpacing="8dip"
+        android:horizontalSpacing="10dip"
         android:numColumns="3"
         android:requiresFadingEdge="vertical"
         android:scrollingCache="true"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="8dip" />
+        android:verticalSpacing="10dip"
+        android:padding="10dip"
+        android:stackFromBottom="false" />
 
 </LinearLayout>

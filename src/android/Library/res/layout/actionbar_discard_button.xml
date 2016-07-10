@@ -23,16 +23,13 @@
 
     <TextView android:id="@+id/actionbar_discard_textview"
         android:text="@string/discard"
-        android:drawableLeft="@drawable/ic_action_discard_light"
-        android:drawableStart="@drawable/ic_action_discard_light"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="left|center"
+        android:textSize="16dip"
+        android:textStyle="normal"
+        android:textColor="#f65949"
         style="?android:actionBarTabTextStyle" />
 </FrameLayout>

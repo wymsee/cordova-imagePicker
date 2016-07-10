@@ -31,57 +31,36 @@
         <header-file src="src/ios/SOSPicker.h" />
         <source-file src="src/ios/SOSPicker.m" />
 
-        <header-file src="src/ios/GMImagePicker/UIImage+fixOrientation.h" />
-        <source-file src="src/ios/GMImagePicker/UIImage+fixOrientation.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.m" />
 
-        <header-file src="src/ios/GMImagePicker/GMAlbumsViewCell.h" />
-        <source-file src="src/ios/GMImagePicker/GMAlbumsViewCell.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCAsset.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAsset.m" />
 
-        <header-file src="src/ios/GMImagePicker/GMAlbumsViewController.h" />
-        <source-file src="src/ios/GMImagePicker/GMAlbumsViewController.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCAssetCell.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAssetCell.m" />
 
-        <header-file src="src/ios/GMImagePicker/GMFetchItem.h" />
-        <source-file src="src/ios/GMImagePicker/GMFetchItem.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCAssetPickerFilterDelegate.h" />
+        <header-file src="src/ios/ELCImagePicker/ELCAssetSelectionDelegate.h" />
 
-        <header-file src="src/ios/GMImagePicker/GMGridViewCell.h" />
-        <source-file src="src/ios/GMImagePicker/GMGridViewCell.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.m" />
 
-        <header-file src="src/ios/GMImagePicker/GMGridViewController.h" />
-        <source-file src="src/ios/GMImagePicker/GMGridViewController.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCImagePickerController.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCImagePickerController.m" />
 
-        <header-file src="src/ios/GMImagePicker/GMImagePickerController.h" />
-        <source-file src="src/ios/GMImagePicker/GMImagePickerController.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCConsole.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCConsole.m" />
 
-        <header-file src="src/ios/GMImagePicker/PSYBlockTimer.h" />
-        <source-file src="src/ios/GMImagePicker/PSYBlockTimer.m" />
+        <header-file src="src/ios/ELCImagePicker/ELCOverlayImageView.h" />
+        <source-file src="src/ios/ELCImagePicker/ELCOverlayImageView.m" />
 
-        <header-file src="src/ios/GMImagePicker/GMPHAsset.h" />
-        <source-file src="src/ios/GMImagePicker/GMPHAsset.m" />
-
-        <resource-file src="src/ios/GMImagePicker/GMEmptyFolder@1x.png" />
-        <resource-file src="src/ios/GMImagePicker/GMEmptyFolder@2x.png" />
-
-        <resource-file src="src/ios/GMImagePicker/GMSelected.png" />
-        <resource-file src="src/ios/GMImagePicker/GMSelected@2x.png" />
-
-        <resource-file src="src/ios/GMImagePicker/GMVideoIcon.png" />
-        <resource-file src="src/ios/GMImagePicker/GMVideoIcon@2x.png" />
-
-        <resource-file src="src/ios/GMImagePicker/Base.lproj/GMImagePicker.strings" target="res/strings-base/GMImagePicker.strings" />
-        <asset src="src/ios/GMImagePicker/ca.lproj/GMImagePicker.strings" target="res/strings-ca/GMImagePicker.strings" />
-        <asset src="src/ios/GMImagePicker/de.lproj/GMImagePicker.strings" target="res/strings-de/GMImagePicker.strings" />
-        <asset src="src/ios/GMImagePicker/en.lproj/GMImagePicker.strings" target="res/strings-en/GMImagePicker.strings" />
-        <asset src="src/ios/GMImagePicker/es.lproj/GMImagePicker.strings" target="res/strings-es/GMImagePicker.strings"/>
-        <asset src="src/ios/GMImagePicker/fr.lproj/GMImagePicker.strings" target="res/strings-fr/GMImagePicker.strings" />
-        <asset src="src/ios/GMImagePicker/it.lproj/GMImagePicker.strings" target="res/strings-it/GMImagePicker.strings" />
-        <asset src="src/ios/GMImagePicker/pt.lproj/GMImagePicker.strings" target="res/strings-pt/GMImagePicker.strings" />
-
-        <framework src="Accelerate.framework" />
-        <framework src="Security.framework" />
-        <framework src="Photos.framework" />
-        <framework src="SystemConfiguration.framework" />
-        <framework src="QuartzCore.framework" />
-
+        <resource-file src="src/ios/ELCImagePicker/Resources/ELCAlbumPickerController.xib" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetPicker.xib" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetTablePicker.xib" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/Overlay.png" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/Overlay@2x.png" />
+        <resource-file src="src/ios/ELCImagePicker/Resources/Overlay@3x.png" />
     </platform>
 
     <!-- android -->
