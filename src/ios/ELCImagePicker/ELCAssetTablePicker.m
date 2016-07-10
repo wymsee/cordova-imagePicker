@@ -9,7 +9,6 @@
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
 #import "ELCAlbumPickerController.h"
-#import "ELCConsole.h"
 
 @interface ELCAssetTablePicker ()
 
@@ -27,7 +26,7 @@
     if (self) {
         //Sets a reasonable default bigger then 0 for columns
         //So that we don't have a divide by 0 scenario
-        self.columns = 4;
+        self.columns = 3;
     }
     return self;
 }
@@ -45,26 +44,16 @@
     } else {
         UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
         [self.navigationItem setRightBarButtonItem:doneButtonItem];
-        [self.navigationItem setTitle:NSLocalizedString(@"Loading...", nil)];
+        [self.navigationItem setTitle:@"Loading..."];
     }
 
 	[self performSelectorInBackground:@selector(preparePhotos) withObject:nil];
-    
-    // Register for notifications when the photo library has changed
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preparePhotos) name:ALAssetsLibraryChangedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.columns = self.view.bounds.size.width / 80;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [[ELCConsole mainConsole] removeAllIndex];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:ALAssetsLibraryChangedNotification object:nil];
+    self.columns = self.view.bounds.size.width / 106;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -75,7 +64,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-    self.columns = self.view.bounds.size.width / 80;
+    self.columns = self.view.bounds.size.width / 106;
     [self.tableView reloadData];
 }
 
@@ -83,13 +72,14 @@
 {
     @autoreleasepool {
         
-        [self.elcAssets removeAllObjects];
+        NSMutableArray *tempArray = [[NSMutableArray alloc] init];
+
         [self.assetGroup enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
             
             if (result == nil) {
                 return;
             }
-            
+
             ELCAsset *elcAsset = [[ELCAsset alloc] initWithAsset:result];
             [elcAsset setParent:self];
             
@@ -101,29 +91,19 @@
             }
 
             if (!isAssetFiltered) {
-                [self.elcAssets addObject:elcAsset];
+                [tempArray addObject:elcAsset];
             }
 
          }];
+        
+        self.elcAssets = [[[tempArray reverseObjectEnumerator] allObjects] mutableCopy];
 
         dispatch_sync(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-            // scroll to bottom
-            long section = [self numberOfSectionsInTableView:self.tableView] - 1;
-            long row = [self tableView:self.tableView numberOfRowsInSection:section] - 1;
-            if (section >= 0 && row >= 0) {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:row
-                                                     inSection:section];
-                        [self.tableView scrollToRowAtIndexPath:ip
-                                              atScrollPosition:UITableViewScrollPositionBottom
-                                                      animated:NO];
-            }
-            
-            [self.navigationItem setTitle:self.singleSelection ? NSLocalizedString(@"Pick Photo", nil) : NSLocalizedString(@"Pick Photos", nil)];
+            [self.navigationItem setTitle: @"사진 선택"];
         });
     }
 }
-
 
 - (void)doneAction:(id)sender
 {	
@@ -131,12 +111,9 @@
 	    
 	for (ELCAsset *elcAsset in self.elcAssets) {
 		if ([elcAsset selected]) {
-			[selectedAssetsImages addObject:elcAsset];
+			[selectedAssetsImages addObject:[elcAsset asset]];
 		}
 	}
-    if ([[ELCConsole mainConsole] onOrder]) {
-        [selectedAssetsImages sortUsingSelector:@selector(compareWithIndex:)];
-    }
     [self.parent selectedAssets:selectedAssetsImages];
 }
 
@@ -165,58 +142,8 @@
         }
     }
     if (self.immediateReturn) {
-        NSArray *singleAssetArray = @[asset];
-        [(NSObject *)self.parent performSelector:@selector(selectedAssets:) withObject:singleAssetArray afterDelay:0];
-    }
-}
-
-- (BOOL)shouldDeselectAsset:(ELCAsset *)asset
-{
-    if (self.immediateReturn){
-        return NO;
-    }
-    return YES;
-}
-
-- (void)assetDeselected:(ELCAsset *)asset
-{
-    if (self.singleSelection) {
-        for (ELCAsset *elcAsset in self.elcAssets) {
-            if (asset != elcAsset) {
-                elcAsset.selected = NO;
-            }
-        }
-    }
-
-    if (self.immediateReturn) {
         NSArray *singleAssetArray = @[asset.asset];
         [(NSObject *)self.parent performSelector:@selector(selectedAssets:) withObject:singleAssetArray afterDelay:0];
-    }
-    
-    int numOfSelectedElements = [[ELCConsole mainConsole] numOfSelectedElements];
-    if (asset.index < numOfSelectedElements - 1) {
-        NSMutableArray *arrayOfCellsToReload = [[NSMutableArray alloc] initWithCapacity:1];
-        
-        for (int i = 0; i < [self.elcAssets count]; i++) {
-            ELCAsset *assetInArray = [self.elcAssets objectAtIndex:i];
-            if (assetInArray.selected && (assetInArray.index > asset.index)) {
-                assetInArray.index -= 1;
-                
-                int row = i / self.columns;
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:0];
-                BOOL indexExistsInArray = NO;
-                for (NSIndexPath *indexInArray in arrayOfCellsToReload) {
-                    if (indexInArray.row == indexPath.row) {
-                        indexExistsInArray = YES;
-                        break;
-                    }
-                }
-                if (!indexExistsInArray) {
-                    [arrayOfCellsToReload addObject:indexPath];
-                }
-            }
-        }
-        [self.tableView reloadRowsAtIndexPaths:arrayOfCellsToReload withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -232,7 +159,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.columns <= 0) { //Sometimes called before we know how many columns we have
-        self.columns = 4;
+        self.columns = 3;
     }
     NSInteger numRows = ceil([self.elcAssets count] / (float)self.columns);
     return numRows;
@@ -263,7 +190,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return 79;
+    return floor(self.view.bounds.size.width/3)+1;
 }
 
 - (int)totalSelectedAssets

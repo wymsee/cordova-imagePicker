@@ -10,8 +10,6 @@
 
 @interface ELCAssetCell : UITableViewCell
 
-@property (nonatomic, assign) BOOL alignmentLeft;
-
 - (void)setAssets:(NSArray *)assets;
 
 @end

@@ -11,10 +11,6 @@
 @implementation ELCAsset
 
 //Using auto synthesizers
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"ELCAsset index:%d",self.index];
-}
 
 - (id)initWithAsset:(ALAsset*)asset
 {
@@ -39,36 +35,15 @@
                 return;
             }
         }
-    } else {
-        if ([_parent respondsToSelector:@selector(shouldDeselectAsset:)]) {
-            if (![_parent shouldDeselectAsset:self]) {
-                return;
-            }
-        }
     }
     _selected = selected;
     if (selected) {
         if (_parent != nil && [_parent respondsToSelector:@selector(assetSelected:)]) {
             [_parent assetSelected:self];
         }
-    } else {
-        if (_parent != nil && [_parent respondsToSelector:@selector(assetDeselected:)]) {
-            [_parent assetDeselected:self];
-        }
     }
 }
 
-- (NSComparisonResult)compareWithIndex:(ELCAsset *)_ass
-{
-    if (self.index > _ass.index) {
-        return NSOrderedDescending;
-    }
-    else if (self.index < _ass.index)
-    {
-        return NSOrderedAscending;
-    }
-    return NSOrderedSame;
-}
 
 @end
 

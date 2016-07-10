@@ -15,8 +15,6 @@
 @optional
 - (void)assetSelected:(ELCAsset *)asset;
 - (BOOL)shouldSelectAsset:(ELCAsset *)asset;
-- (void)assetDeselected:(ELCAsset *)asset;
-- (BOOL)shouldDeselectAsset:(ELCAsset *)asset;
 @end
 
 
@@ -25,8 +23,7 @@
 @property (nonatomic, strong) ALAsset *asset;
 @property (nonatomic, weak) id<ELCAssetDelegate> parent;
 @property (nonatomic, assign) BOOL selected;
-@property (nonatomic,assign) int index;
 
 - (id)initWithAsset:(ALAsset *)asset;
-- (NSComparisonResult)compareWithIndex:(ELCAsset *)_ass;
+
 @end

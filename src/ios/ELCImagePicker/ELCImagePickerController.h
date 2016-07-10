@@ -34,23 +34,10 @@
 
 @property (nonatomic, weak) id<ELCImagePickerControllerDelegate> imagePickerDelegate;
 @property (nonatomic, assign) NSInteger maximumImagesCount;
-@property (nonatomic, assign) BOOL onOrder;
-/**
- * An array indicating the media types to be accessed by the media picker controller.
- * Same usage as for UIImagePickerController.
- */
-@property (nonatomic, strong) NSArray *mediaTypes;
-
-/**
- * YES if the picker should return a UIImage along with other meta info (this is the default),
- * NO if the picker should return the assetURL and other meta info, but no actual UIImage.
- */
-@property (nonatomic, assign) BOOL returnsImage;
 
 /**
  * YES if the picker should return the original image,
  * or NO for an image suitable for displaying full screen on the device.
- * Does nothing if `returnsImage` is NO.
  */
 @property (nonatomic, assign) BOOL returnsOriginalImage;
 
