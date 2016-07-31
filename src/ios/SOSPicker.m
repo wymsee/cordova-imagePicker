@@ -60,6 +60,7 @@ typedef enum : NSUInteger {
     BOOL allow_video = [[options objectForKey:@"allow_video" ] boolValue ];
     NSString * title = [options objectForKey:@"title"];
     NSString * message = [options objectForKey:@"message"];
+	BOOL disable_popover = [[options objectForKey:@"disable_popover" ] boolValue];
     if (message == (id)[NSNull null]) {
       message = nil;
     }
@@ -68,10 +69,10 @@ typedef enum : NSUInteger {
     self.quality = [[options objectForKey:@"quality"] integerValue];
 
     self.callbackId = command.callbackId;
-    [self launchGMImagePicker:allow_video title:title message:message];
+    [self launchGMImagePicker:allow_video title:title message:message disable_popover:disable_popover];
 }
 
-- (void)launchGMImagePicker:(bool)allow_video title:(NSString *)title message:(NSString *)message
+- (void)launchGMImagePicker:(bool)allow_video title:(NSString *)title message:(NSString *)message disable_popover:(BOOL)disable_popover
 {
     GMImagePickerController *picker = [[GMImagePickerController alloc] init:allow_video];
     picker.delegate = self;
@@ -80,12 +81,15 @@ typedef enum : NSUInteger {
     picker.colsInPortrait = 4;
     picker.colsInLandscape = 6;
     picker.minimumInteritemSpacing = 2.0;
-    picker.modalPresentationStyle = UIModalPresentationPopover;
 
-    UIPopoverPresentationController *popPC = picker.popoverPresentationController;
-    popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    popPC.sourceView = picker.view;
-    //popPC.sourceRect = nil;
+	if(!disable_popover) {
+	    picker.modalPresentationStyle = UIModalPresentationPopover;
+
+	    UIPopoverPresentationController *popPC = picker.popoverPresentationController;
+	    popPC.permittedArrowDirections = UIPopoverArrowDirectionAny;
+	    popPC.sourceView = picker.view;
+	    //popPC.sourceRect = nil;
+	}
 
     [self.viewController showViewController:picker sender:nil];
 }
