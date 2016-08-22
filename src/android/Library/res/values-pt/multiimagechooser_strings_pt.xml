@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="multi_app_name">MultiImageChooser</string>
+  <string name="free_version_label">Versão Gratuíta - Imagens faltando: %d</string>
+  <string name="error_database">Ocorreu um erro ao abrir a base de imagens. Por favor reporte o problema.</string>
+  <string name="requesting_thumbnails">Requisitando miniaturas, por favor seja paciente</string>
+  <string name="processing_images_header">Processando Imagens</string>
+  <string name="processing_images_message">Isso pode levar alguns minutos</string>
+  <string name="maximum_selection_count_error_header">Limite alcançado</string>
+  <string name="maximum_selection_count_error_message">Você pode selecionar somente %d imagens de cada vez.</string>
+  <string name="discard">Cancelar</string>
+  <string name="done">OK</string>
+</resources>
