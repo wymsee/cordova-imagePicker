@@ -18,6 +18,8 @@ function resize(inputFile, height, width, quality) {
     var newHeight;
 
     return new WinJS.Promise(function (completeDispatch, errorDispatch, progressDispatch) {
+
+
         inputFile.openAsync(Windows.Storage.FileAccessMode.read)
             .then(function (stream) {
                 inputStream = stream;
@@ -27,10 +29,10 @@ function resize(inputFile, height, width, quality) {
                 newHeight = transform.scaledHeight = height;
                 newWidth = transform.scaledWidth = width;
                 if (height == null) {
-                    newHeight = transform.scaledHeight = (decoder.pixelHeight / decoder.pixelWidth) * width;
+                    newHeight = transform.scaledHeight = ((decoder.pixelHeight / decoder.pixelWidth) * width) || decoder.pixelHeight;
                 }
                 if (width == null) {
-                    newWidth = transform.scaledHeight = (decoder.pixelWidth / decoder.pixelHeight) * height;
+                    newWidth = transform.scaledHeight = ((decoder.pixelWidth / decoder.pixelHeight) * height) || decoder.pixelWidth;
                 }
                 transform.interpolationMode = Windows.Graphics.Imaging.BitmapInterpolationMode.fant;
                 pixelFormat = decoder.bitmapPixelFormat;
@@ -48,6 +50,7 @@ function resize(inputFile, height, width, quality) {
                     Windows.Graphics.Imaging.ColorManagementMode.colorManageToSRgb
                 );
             })
+
             .then(function (pixelProvider) {
                 pixels = pixelProvider.detachPixelData();
 
@@ -71,6 +74,10 @@ function resize(inputFile, height, width, quality) {
 
                         return file.openAsync(Windows.Storage.FileAccessMode.readWrite);
                     });
+
+
+
+
             }).then(function (stream) {
                 outputStream = stream;
                 outputStream.size = 0;
@@ -99,7 +106,11 @@ function resize(inputFile, height, width, quality) {
                 inputStream && inputStream.close();
                 outputStream && outputStream.close();
             });
+
+
     })
+
+
 };
 
 var ImageOpener = {
