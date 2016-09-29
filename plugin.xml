@@ -24,7 +24,7 @@
 	<platform name="ios">
 	<preference name="PHOTO_LIBRARY_USAGE_DESCRIPTION" default=" " />
 
-		<config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription ">
+		<config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
 			<string>$PHOTO_LIBRARY_USAGE_DESCRIPTION</string>
 		</config-file>
 
