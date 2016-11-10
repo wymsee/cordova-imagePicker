@@ -111,4 +111,11 @@
 		<source-file src="src/android/Library/res/values-ja/multiimagechooser_strings_ja.xml" target-dir="res/values-ja"/>
 		<source-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target-dir="res/values-ko"/>
 	</platform>
+
+	<!-- windows -->
+	<platform name="windows">
+		<js-module src="src/windows/ImageOpener.js" name="ImageOpener">
+			<runs />
+		</js-module>
+	</platform>
 </plugin>
