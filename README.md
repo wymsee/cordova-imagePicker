@@ -73,7 +73,7 @@ Starting from iOS 10, Apple started asking for specifying the reason for accessi
 
 Example:
  
-cordova plugin add cordova-plugin-image-picker --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="your message"`
+`cordova plugin add cordova-plugin-image-picker --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="your message"`
 
 Empty string will be added as value if you dont pass the variable 
     
