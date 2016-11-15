@@ -173,6 +173,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         setupHeader();
         updateAcceptButton();
         progress = new ProgressDialog(this);
+	progress.setCancelable(false);
         progress.setTitle("Processing Images");
         progress.setMessage("This may take a few moments");
     }
