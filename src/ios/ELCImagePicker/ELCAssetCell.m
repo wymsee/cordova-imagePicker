@@ -44,6 +44,7 @@
 	}
     for (UIImageView *view in _overlayViewArray) {
         [view removeFromSuperview];
+
 	}
     //set up a pointer here so we don't keep calling [UIImage imageNamed:] if creating overlays
     UIImage *overlayImage = nil;
@@ -51,11 +52,24 @@
 
         ELCAsset *asset = [_rowAssets objectAtIndex:i];
 
+        // ALAsset's .thumbnail method's documention specifies that it returns an
+        // image of a size "appropirate for the platform", which makes it potentially
+        // highly unreliable. Indeed, before iOS9 it would return a 125px image, which
+        // was already too small for the 75 square (at double density), but the scaling
+        // artifacts were not that noticeable. As of iOS9, the AL* library is deprecated
+        // in favour of the new Photos library, and the .thumbnails method suddenly started
+        // returning images 75 pixels in width, which is half of what's needed for the
+        // double density 75 square, resulting in seriously pixelated thumbnails.
+        //
+        // Some dude on the internet pointed out that the aspectRatioThumbnail method
+        // still returns reasonably sized thumbs, and indeed they are on the order of 256 pixels.
         if (i < [_imageViewArray count]) {
             UIImageView *imageView = [_imageViewArray objectAtIndex:i];
-            imageView.image = [UIImage imageWithCGImage:asset.asset.thumbnail];
+            imageView.image = [UIImage imageWithCGImage:asset.asset.aspectRatioThumbnail];
         } else {
-            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:asset.asset.thumbnail]];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:asset.asset.aspectRatioThumbnail]];
+            [imageView setClipsToBounds:true];
+            [imageView setContentMode:UIViewContentModeScaleAspectFill];
             [_imageViewArray addObject:imageView];
         }
         
