@@ -25,6 +25,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 
+import com.synconset.ImageFetcher.BitmapFetcherTask;
+import com.synconset.ImageFetcher.DownloadedDrawable;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
