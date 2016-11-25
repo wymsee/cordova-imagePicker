@@ -14,7 +14,7 @@
         android:fastScrollEnabled="true"
         android:gravity="center"
         android:horizontalSpacing="8dip"
-        android:numColumns="3"
+        android:numColumns="2"
         android:requiresFadingEdge="vertical"
         android:scrollingCache="true"
         android:stretchMode="columnWidth"
