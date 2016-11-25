@@ -27,7 +27,6 @@
  * Code modified by Andrew Stephan for Sync OnSet
  *
  */
-jjjk
 package com.synconset;
 
 import java.net.URI;
