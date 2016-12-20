@@ -187,7 +187,7 @@ typedef enum : NSUInteger {
             // no scaling required
             if (self.outputType == BASE64_STRING){
                 UIImage* image = [UIImage imageNamed:item.image_fullsize];
-                [result_all addObject:[UIImageJPEGRepresentation(image, self.quality/100.0f) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+                [result_all addObject:[UIImageJPEGRepresentation(image, self.quality/100.0f) base64EncodedStringWithOptions:0]];
             } else {
                 if (self.quality == 100) {
                     // no scaling, no downsampling, this is the fastest option
@@ -215,7 +215,7 @@ typedef enum : NSUInteger {
                 break;
             } else {
                 if(self.outputType == BASE64_STRING){
-                    [result_all addObject:[data base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+                    [result_all addObject:[data base64EncodedStringWithOptions:0]];
                 } else {
                     [result_all addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
                 }
