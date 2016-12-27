@@ -27,6 +27,11 @@
                 <param name="ios-package" value="SOSPicker"/>
             </feature>
         </config-file>
+        
+        <preference name="PHOTO_LIBRARY_USAGE_DESCRIPTION" default=" " />
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+          <string>$PHOTO_LIBRARY_USAGE_DESCRIPTION</string>
+        </config-file>
 
         <header-file src="src/ios/SOSPicker.h" />
         <source-file src="src/ios/SOSPicker.m" />
