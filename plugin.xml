@@ -5,16 +5,16 @@
   version="1.1.1">
 
 	<name>ImagePicker</name>
-	 
+
 	<description>
 		This plugin allows selection of multiple images from the camera roll / gallery in a phonegap app
 	</description>
-	
+
 	<license>MIT</license>
 
 	<engines>
 		<engine name="cordova" version=">=3.0.0" />
-	</engines>  
+	</engines>
 
 	<js-module src="www/imagepicker.js" name="ImagePicker">
 		<clobbers target="plugins.imagePicker" />
@@ -67,22 +67,26 @@
 				<param name="android-package" value="com.synconset.ImagePicker"/>
 			</feature>
 		</config-file>
-		
+
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
 		    <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@android:style/Theme.Holo.Light">
             </activity>
+            <activity
+                android:name="com.synconset.GettingPermissionsActivity"></activity>
 		</config-file>
-		
+
 		<config-file target="AndroidManifest.xml" parent="/manifest">
 		    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 		</config-file>
 
 		<source-file src="src/android/com/synconset/ImagePicker/ImagePicker.java" target-dir="src/com/synconset" />
+        <source-file src="src/android/com/synconset/ImagePicker/GettingPermissionsActivity.java" target-dir="src/com/synconset" />
 		<source-file src="src/android/com/synconset/ImagePicker/FakeR.java" target-dir="src/com/synconset" />
-		
+
 		<source-file src="src/android/Library/src/ImageFetcher.java" target-dir="src/com/synconset"/>
 		<source-file src="src/android/Library/src/MultiImageChooserActivity.java" target-dir="src/com/synconset"/>
-		
+
         <source-file src="src/android/Library/res/anim/image_pop_in.xml" target-dir="res/anim"/>
 		<source-file src="src/android/Library/res/drawable/grid_background.xml" target-dir="res/drawable"/>
 		<source-file src="src/android/Library/res/drawable-hdpi/image_bg.9.png" target-dir="res/drawable-hdpi"/>
@@ -103,7 +107,7 @@
 		<source-file src="src/android/Library/res/layout/multiselectorgrid.xml" target-dir="res/layout"/>
 		<source-file src="src/android/Library/res/values/multiimagechooser_strings_en.xml" target-dir="res/values"/>
 		<source-file src="src/android/Library/res/values/themes.xml" target-dir="res/values"/>
-		
+
 		<source-file src="src/android/Library/res/values-de/multiimagechooser_strings_de.xml" target-dir="res/values-de"/>
 		<source-file src="src/android/Library/res/values-es/multiimagechooser_strings_es.xml" target-dir="res/values-es"/>
 		<source-file src="src/android/Library/res/values-fr/multiimagechooser_strings_fr.xml" target-dir="res/values-fr"/>
