@@ -690,7 +690,7 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bm.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
             byte[] byteArray = byteArrayOutputStream.toByteArray();
-            return Base64.encodeToString(byteArray, Base64.DEFAULT);
+            return Base64.encodeToString(byteArray, Base64.NO_WRAP);
         }
     }
 
