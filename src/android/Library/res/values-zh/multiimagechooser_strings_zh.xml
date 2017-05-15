@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="multi_app_name">图片选择器</string>
+    <string name="requesting_thumbnails">正在生成缩略图，请耐心等待</string>
+    <string name="multi_image_picker_processing_images_title">图片处理中</string>
+    <string name="multi_image_picker_processing_images_message">请等待片刻</string>
+    <string name="maximum_photos_title">最多选取 %1$d 张照片</string>
+    <string name="maximum_photos_message">您最多可以选取 %1$d 张照片</string>
+    <string name="discard" translatable="true">取消</string>
+    <string name="done" translatable="true">确认</string>
+</resources>
