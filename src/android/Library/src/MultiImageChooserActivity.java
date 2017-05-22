@@ -43,6 +43,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.synconset.FakeR;
+import com.zenput.mobile.R;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -56,8 +58,11 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -86,6 +91,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     public static final String WIDTH_KEY = "WIDTH";
     public static final String HEIGHT_KEY = "HEIGHT";
     public static final String QUALITY_KEY = "QUALITY";
+
+    private Typeface mDonkeyFont = null;
 
     private ImageAdapter ia;
 
@@ -124,6 +131,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         fakeR = new FakeR(this);
         setContentView(fakeR.getId("layout", "multiselectorgrid"));
         fileNames.clear();
+
+        mDonkeyFont = Typeface.createFromAsset(getAssets(), "fonts/donkeyfont-zencam.ttf");
 
         maxImages = getIntent().getIntExtra(MAX_IMAGES_KEY, NOLIMIT);
         desiredWidth = getIntent().getIntExtra(WIDTH_KEY, 0);
@@ -186,6 +195,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             return;
         }
         boolean isChecked = !isChecked(position);
+        ((SquareImageView)view).checked = isChecked;
         if (maxImages == 0 && isChecked) {
             isChecked = false;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -204,28 +214,16 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 this.selectClicked(null);
             } else {
                 maxImages--;
-                ImageView imageView = (ImageView)view;
-                if (android.os.Build.VERSION.SDK_INT>=16) {
-                  imageView.setImageAlpha(128);
-                } else {
-                  imageView.setAlpha(128);
-                }
-                view.setBackgroundColor(selectedColor);
             }
         } else {
             fileNames.remove(name);
             maxImages++;
-            ImageView imageView = (ImageView)view;
-            if (android.os.Build.VERSION.SDK_INT>=16) {
-                imageView.setImageAlpha(255);
-            } else {
-                imageView.setAlpha(255);
-            }
-            view.setBackgroundColor(Color.TRANSPARENT);
         }
 
         checkStatus.put(position, isChecked);
         updateAcceptButton();
+        //this forces a call to onDraw()
+        view.invalidate();
     }
 
     @Override
@@ -393,6 +391,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     * Nested Classes
     ********************/
     private class SquareImageView extends ImageView {
+
+        public boolean checked = false;
         public SquareImageView(Context context) {
 			super(context);
 		}
@@ -400,6 +400,27 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 		@Override
         public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+
+            Paint paint = new Paint();
+            paint.setTypeface(mDonkeyFont);
+            float width = this.getWidth() / 3.0f;
+            paint.setTextSize(width);
+
+            if(this.checked) {
+                int zenputBlue = getResources().getColor(R.color.zenputBlue);
+                paint.setColor(zenputBlue);
+                paint.setAlpha(255);
+                canvas.drawText("b", 2, 2+width, paint);
+            } else {
+                paint.setColor(Color.LTGRAY);
+                paint.setAlpha(128);
+                canvas.drawText("b", 2, 2+width, paint);
+            }
         }
     }
     
@@ -456,21 +477,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
             final int id = imagecursor.getInt(image_column_index);
             final int rotate = imagecursor.getInt(image_column_orientation);
-            if (isChecked(pos)) {
-                if (android.os.Build.VERSION.SDK_INT>=16) {
-                  imageView.setImageAlpha(128);
-                } else {
-                  imageView.setAlpha(128);	
-                }
-                imageView.setBackgroundColor(selectedColor);
-            } else {
-                if (android.os.Build.VERSION.SDK_INT>=16) {
-                  imageView.setImageAlpha(255);
-                } else {
-                  imageView.setAlpha(255);	
-                }
-                imageView.setBackgroundColor(Color.TRANSPARENT);
-            }
+
             if (shouldRequestThumb) {
                 fetcher.fetch(Integer.valueOf(id), imageView, colWidth, rotate);
             }
