@@ -408,18 +408,19 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
 
             Paint paint = new Paint();
             paint.setTypeface(mDonkeyFont);
-            float width = this.getWidth() / 3.0f;
-            paint.setTextSize(width);
+            float size = this.getWidth() * 0.25f;
+            float padding = this.getWidth() * 0.05f;
+            paint.setTextSize(size);
 
             if(this.checked) {
                 int zenputBlue = getResources().getColor(R.color.zenputBlue);
                 paint.setColor(zenputBlue);
                 paint.setAlpha(255);
-                canvas.drawText("b", 2, 2+width, paint);
+                canvas.drawText("b", padding, padding+size, paint);
             } else {
                 paint.setColor(Color.LTGRAY);
                 paint.setAlpha(128);
-                canvas.drawText("b", 2, 2+width, paint);
+                canvas.drawText("b", padding, padding+size, paint);
             }
         }
     }
