@@ -92,6 +92,9 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     public static final String HEIGHT_KEY = "HEIGHT";
     public static final String QUALITY_KEY = "QUALITY";
 
+    private final String mIconSelected = "\uE060";
+    private final String mIconUnselected = "\uE061";
+
     private Typeface mDonkeyFont = null;
 
     private ImageAdapter ia;
@@ -132,7 +135,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         setContentView(fakeR.getId("layout", "multiselectorgrid"));
         fileNames.clear();
 
-        mDonkeyFont = Typeface.createFromAsset(getAssets(), "fonts/donkeyfont-zencam.ttf");
+        mDonkeyFont = Typeface.createFromAsset(getAssets(), "www/font/donkeyfont.ttf");
 
         maxImages = getIntent().getIntExtra(MAX_IMAGES_KEY, NOLIMIT);
         desiredWidth = getIntent().getIntExtra(WIDTH_KEY, 0);
@@ -416,11 +419,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 int zenputBlue = getResources().getColor(R.color.zenputBlue);
                 paint.setColor(zenputBlue);
                 paint.setAlpha(255);
-                canvas.drawText("b", padding, padding+size, paint);
+                canvas.drawText(mIconSelected, padding, padding+size, paint);
             } else {
                 paint.setColor(Color.LTGRAY);
-                paint.setAlpha(128);
-                canvas.drawText("b", padding, padding+size, paint);
+                paint.setAlpha(255);
+                canvas.drawText(mIconUnselected, padding, padding+size, paint);
             }
         }
     }
