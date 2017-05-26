@@ -12,7 +12,7 @@
 
 @property (nonatomic, strong) NSArray *rowAssets;
 @property (nonatomic, strong) NSMutableArray *imageViewArray;
-@property (nonatomic, strong) NSMutableArray *overlayViewArray;
+@property (nonatomic, strong) NSMutableArray *selectedViewArray;
 
 @end
 
@@ -30,8 +30,8 @@
         NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.imageViewArray = mutableArray;
         
-        NSMutableArray *overlayArray = [[NSMutableArray alloc] initWithCapacity:4];
-        self.overlayViewArray = overlayArray;
+        NSMutableArray *selectedViewArray = [[NSMutableArray alloc] initWithCapacity:4];
+        self.selectedViewArray = selectedViewArray;
 	}
 	return self;
 }
@@ -42,11 +42,14 @@
 	for (UIImageView *view in _imageViewArray) {
         [view removeFromSuperview];
 	}
-    for (UIImageView *view in _overlayViewArray) {
+
+    for (UILabel *view in _selectedViewArray) {
         [view removeFromSuperview];
-	}
-    //set up a pointer here so we don't keep calling [UIImage imageNamed:] if creating overlays
-    UIImage *overlayImage = nil;
+    }
+
+    UIFont *donkeyFont = [UIFont fontWithName:@"DonkeyFont" size:25];
+    UILabel *overlayLabel = nil;
+    CGSize overlaySize;
     for (int i = 0; i < [_rowAssets count]; ++i) {
 
         ELCAsset *asset = [_rowAssets objectAtIndex:i];
@@ -54,21 +57,23 @@
         if (i < [_imageViewArray count]) {
             UIImageView *imageView = [_imageViewArray objectAtIndex:i];
             imageView.image = [UIImage imageWithCGImage:asset.asset.thumbnail];
+            overlaySize = CGSizeMake(CGRectGetWidth(imageView.frame), CGRectGetHeight(imageView.frame));
         } else {
             UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithCGImage:asset.asset.thumbnail]];
             [_imageViewArray addObject:imageView];
+            overlaySize = CGSizeMake(CGRectGetWidth(imageView.frame), CGRectGetHeight(imageView.frame));
         }
-        
-        if (i < [_overlayViewArray count]) {
-            UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
-            overlayView.hidden = asset.selected ? NO : YES;
+
+        if (i < [_selectedViewArray count]) {
+            UILabel *overlayLabel = [_selectedViewArray objectAtIndex:i];
+            [self selectLabel:overlayLabel selected:asset.selected];
         } else {
-            if (overlayImage == nil) {
-                overlayImage = [UIImage imageNamed:@"Overlay.png"];
-            }
-            UIImageView *overlayView = [[UIImageView alloc] initWithImage:overlayImage];
-            [_overlayViewArray addObject:overlayView];
-            overlayView.hidden = asset.selected ? NO : YES;
+            overlayLabel = [[UILabel alloc] init];
+            overlayLabel.textColor = [UIColor whiteColor];
+            overlayLabel.font = donkeyFont;
+            overlayLabel.textAlignment = NSTextAlignmentLeft;
+            [_selectedViewArray addObject:overlayLabel];
+            [self selectLabel:overlayLabel selected:asset.selected];
         }
     }
 }
@@ -81,12 +86,13 @@
     
 	CGRect frame = CGRectMake(startX, 2, 75, 75);
 	
-	for (int i = 0; i < [_rowAssets count]; ++i) {
+    for (int i = 0; i < [_rowAssets count]; ++i) {
+
         if (CGRectContainsPoint(frame, point)) {
             ELCAsset *asset = [_rowAssets objectAtIndex:i];
             asset.selected = !asset.selected;
-            UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
-            overlayView.hidden = !asset.selected;
+            UILabel *overlayLabel = [_selectedViewArray objectAtIndex:i];
+            [self selectLabel:overlayLabel selected:asset.selected];
             break;
         }
         frame.origin.x = frame.origin.x + frame.size.width + 4;
@@ -105,12 +111,24 @@
 		[imageView setFrame:frame];
 		[self addSubview:imageView];
         
-        UIImageView *overlayView = [_overlayViewArray objectAtIndex:i];
-        [overlayView setFrame:frame];
-        [self addSubview:overlayView];
+        UILabel *overlayLabel = [_selectedViewArray objectAtIndex:i];
+        CGRect overlayFrame = CGRectMake(frame.origin.x + 5,
+                                         frame.origin.y + 5,
+                                         frame.size.width,
+                                         frame.size.height / 3);
+        [overlayLabel setFrame:overlayFrame];
+        [self addSubview:overlayLabel];
 		
 		frame.origin.x = frame.origin.x + frame.size.width + 4;
 	}
+}
+
+- (void)selectLabel:(UILabel*)label selected:(bool)selected {
+    label.text = selected ? @"\uE060" : @"\uE061";
+    label.textColor = selected ? [UIColor colorWithRed:22.0f / 255.0f
+                                                 green:157 / 255.0f
+                                                  blue:217.0f / 255.0f
+                                                 alpha:1.0] : [UIColor whiteColor];
 }
 
 
