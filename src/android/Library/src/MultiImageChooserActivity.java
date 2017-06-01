@@ -138,7 +138,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         checkStatus.clear();
         fileNames.clear();
 
-        mDonkeyFont = Typeface.createFromAsset(getAssets(), "www/font/donkeyfont.ttf");
+        mDonkeyFont = Typeface.createFromAsset(getAssets(), "fonts/donkeyfont.ttf");
 
         maxImages = getIntent().getIntExtra(MAX_IMAGES_KEY, NOLIMIT);
         desiredWidth = getIntent().getIntExtra(WIDTH_KEY, 0);
