@@ -55,6 +55,7 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -106,9 +107,9 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     private static final int CURSORLOADER_THUMBS = 0;
     private static final int CURSORLOADER_REAL = 1;
 
-    public static Map<String, Integer> fileNames = new HashMap<String, Integer>();
+    public Map<String, Integer> fileNames = new HashMap<String, Integer>();
 
-    public static SparseBooleanArray checkStatus = new SparseBooleanArray();
+    public SparseBooleanArray checkStatus = new SparseBooleanArray();
 
     private int maxImages;
     private int maxImageCount;
@@ -131,8 +132,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         fakeR = new FakeR(this);
         setContentView(fakeR.getId("layout", "multiselectorgrid"));
+        checkStatus.clear();
+        fileNames.clear();
 
         mDonkeyFont = Typeface.createFromAsset(getAssets(), "www/font/donkeyfont.ttf");
 
@@ -288,8 +292,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     
     public void cancelClicked(View ignored) {
         setResult(RESULT_CANCELED);
-        checkStatus.clear();
-        fileNames.clear();
         finish();
     }
 
@@ -300,8 +302,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         Intent data = new Intent();
         if (fileNames.isEmpty()) {
             this.setResult(RESULT_CANCELED);
-            fileNames.clear();
-            checkStatus.clear();
             progress.dismiss();
             finish();
         } else {
@@ -351,8 +351,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         customActionBarView.findViewById(fakeR.getId("id", "actionbar_discard")).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fileNames.clear();
-                checkStatus.clear();
                 finish();
             }
         });
@@ -598,8 +596,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             }
 
             progress.dismiss();
-            fileNames.clear();
-            checkStatus.clear();
             finish();
         }
 
