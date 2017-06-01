@@ -58,6 +58,13 @@
 		<resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetTablePicker.xib" />
 		<resource-file src="src/ios/ELCImagePicker/Resources/Overlay.png" />
 		<resource-file src="src/ios/ELCImagePicker/Resources/Overlay@2x.png" />
+
+		<resource-file src="fonts/donkeyfont.ttf" />
+        <config-file target="*-Info.plist" platform="ios" parent="UIAppFonts">
+            <array>
+                <string>donkeyfont.ttf</string>
+            </array>
+        </config-file>
 	</platform>
 
 	<!-- android -->
