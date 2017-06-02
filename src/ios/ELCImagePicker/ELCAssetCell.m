@@ -12,7 +12,8 @@
 
 @property (nonatomic, strong) NSArray *rowAssets;
 @property (nonatomic, strong) NSMutableArray *imageViewArray;
-@property (nonatomic, strong) NSMutableArray *selectedViewArray;
+@property (nonatomic, strong) NSMutableArray *checkIconArray;
+@property (nonatomic, strong) NSMutableArray *circleIconArray;
 
 @end
 
@@ -30,8 +31,11 @@
         NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:4];
         self.imageViewArray = mutableArray;
         
-        NSMutableArray *selectedViewArray = [[NSMutableArray alloc] initWithCapacity:4];
-        self.selectedViewArray = selectedViewArray;
+        NSMutableArray *checkIconArray = [[NSMutableArray alloc] initWithCapacity:4];
+        self.checkIconArray = checkIconArray;
+        
+        NSMutableArray *circleIconArray = [[NSMutableArray alloc] initWithCapacity:4];
+        self.circleIconArray = circleIconArray;
 	}
 	return self;
 }
@@ -43,12 +47,17 @@
         [view removeFromSuperview];
 	}
 
-    for (UILabel *view in _selectedViewArray) {
+    for (UILabel *view in _checkIconArray) {
+        [view removeFromSuperview];
+    }
+    
+    for (UILabel *view in _circleIconArray) {
         [view removeFromSuperview];
     }
 
     UIFont *donkeyFont = [UIFont fontWithName:@"DonkeyFont" size:25];
-    UILabel *overlayLabel = nil;
+    UILabel *checkLabel = nil;
+    UILabel *circleLabel = nil;
     CGSize overlaySize;
     for (int i = 0; i < [_rowAssets count]; ++i) {
 
@@ -64,16 +73,25 @@
             overlaySize = CGSizeMake(CGRectGetWidth(imageView.frame), CGRectGetHeight(imageView.frame));
         }
 
-        if (i < [_selectedViewArray count]) {
-            UILabel *overlayLabel = [_selectedViewArray objectAtIndex:i];
-            [self selectLabel:overlayLabel selected:asset.selected];
+        assert([_checkIconArray count] == [_circleIconArray count]);
+        if (i < [_checkIconArray count]) {
+            UILabel *circleLabel = [_circleIconArray objectAtIndex:i];
+            UILabel *checkLabel = [_checkIconArray objectAtIndex:i];
+            [self selectThumbnail:checkLabel circleLabel:circleLabel selected:asset.selected];
         } else {
-            overlayLabel = [[UILabel alloc] init];
-            overlayLabel.textColor = [UIColor whiteColor];
-            overlayLabel.font = donkeyFont;
-            overlayLabel.textAlignment = NSTextAlignmentLeft;
-            [_selectedViewArray addObject:overlayLabel];
-            [self selectLabel:overlayLabel selected:asset.selected];
+            checkLabel = [[UILabel alloc] init];
+            checkLabel.textColor = [UIColor whiteColor];
+            checkLabel.font = donkeyFont;
+            checkLabel.textAlignment = NSTextAlignmentLeft;
+            [_checkIconArray addObject:checkLabel];
+            
+            circleLabel = [[UILabel alloc] init];
+            circleLabel.textColor = [UIColor whiteColor];
+            circleLabel.font = donkeyFont;
+            circleLabel.textAlignment = NSTextAlignmentLeft;
+            [_circleIconArray addObject:circleLabel];
+            
+            [self selectThumbnail:checkLabel circleLabel:circleLabel selected:asset.selected];
         }
     }
 }
@@ -86,13 +104,15 @@
     
 	CGRect frame = CGRectMake(startX, 2, 75, 75);
 	
+    assert([_checkIconArray count] == [_circleIconArray count]);
     for (int i = 0; i < [_rowAssets count]; ++i) {
 
         if (CGRectContainsPoint(frame, point)) {
             ELCAsset *asset = [_rowAssets objectAtIndex:i];
             asset.selected = !asset.selected;
-            UILabel *overlayLabel = [_selectedViewArray objectAtIndex:i];
-            [self selectLabel:overlayLabel selected:asset.selected];
+            UILabel *checkLabel = [_checkIconArray objectAtIndex:i];
+            UILabel *circleLabel = [_circleIconArray objectAtIndex:i];
+            [self selectThumbnail:checkLabel circleLabel:circleLabel selected:asset.selected];
             break;
         }
         frame.origin.x = frame.origin.x + frame.size.width + 4;
@@ -111,24 +131,34 @@
 		[imageView setFrame:frame];
 		[self addSubview:imageView];
         
-        UILabel *overlayLabel = [_selectedViewArray objectAtIndex:i];
-        CGRect overlayFrame = CGRectMake(frame.origin.x + 5,
+        UILabel *checkLabel = [_checkIconArray objectAtIndex:i];
+        UILabel *circleLabel = [_circleIconArray objectAtIndex:i];
+        CGRect iconFrame = CGRectMake(frame.origin.x + 5,
                                          frame.origin.y + 5,
                                          frame.size.width,
                                          frame.size.height / 3);
-        [overlayLabel setFrame:overlayFrame];
-        [self addSubview:overlayLabel];
+        [checkLabel setFrame:iconFrame];
+        [circleLabel setFrame:iconFrame];
+        [self addSubview:circleLabel];
+        
+        [self addSubview:checkLabel];
+        
+        
 		
 		frame.origin.x = frame.origin.x + frame.size.width + 4;
 	}
 }
 
-- (void)selectLabel:(UILabel*)label selected:(bool)selected {
-    label.text = selected ? @"\uE060" : @"\uE061";
-    label.textColor = selected ? [UIColor colorWithRed:22.0f / 255.0f
-                                                 green:157 / 255.0f
-                                                  blue:217.0f / 255.0f
-                                                 alpha:1.0] : [UIColor whiteColor];
+- (void)selectThumbnail:(UILabel*)checkLabel circleLabel:(UILabel*)circleLabel selected:(bool)selected {
+    checkLabel.text = selected ? @"\uE060" : @"\uE061";
+    checkLabel.textColor = selected ? [UIColor colorWithRed:22.0f / 255.0f
+                                                      green:157 / 255.0f
+                                                       blue:217.0f / 255.0f
+                                                      alpha:1.0] : [UIColor whiteColor];
+    
+    circleLabel.text = @"\uE06E";
+    circleLabel.textColor = [UIColor whiteColor];
+    circleLabel.alpha = selected ? 1.0f : 0.0f;
 }
 
 
