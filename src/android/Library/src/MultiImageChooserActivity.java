@@ -412,26 +412,26 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
 
-            Paint paint = new Paint();
-            paint.setTypeface(mDonkeyFont);
+            Paint iconPaint = new Paint();
+            iconPaint.setTypeface(mDonkeyFont);
             float size = this.getWidth() * 0.25f;
             float padding = this.getWidth() * 0.05f;
-            paint.setTextSize(size);
+            iconPaint.setTextSize(size);
 
             if(this.checked) {
                 int zenputBlue = getResources().getColor(R.color.zenputBlue);
-                paint.setColor(zenputBlue);
-                paint.setAlpha(255);
-                Paint temp = new Paint();
-                temp.setTypeface(mDonkeyFont);
-                temp.setColor(Color.WHITE);
-                temp.setTextSize(size);
-                canvas.drawText("\uE06E", padding, padding+size, temp);
-                canvas.drawText(mIconSelected, padding, padding+size, paint);
+                iconPaint.setColor(zenputBlue);
+                iconPaint.setAlpha(255);
+                Paint circlePaint = new Paint();
+                circlePaint.setTypeface(mDonkeyFont);
+                circlePaint.setColor(Color.WHITE);
+                circlePaint.setTextSize(size);
+                canvas.drawText("\uE06E", padding, padding+size, circlePaint);
+                canvas.drawText(mIconSelected, padding, padding+size, iconPaint);
             } else {
-                paint.setColor(Color.WHITE);
-                paint.setAlpha(255);
-                canvas.drawText(mIconUnselected, padding, padding+size, paint);
+                iconPaint.setColor(Color.WHITE);
+                iconPaint.setAlpha(255);
+                canvas.drawText(mIconUnselected, padding, padding+size, iconPaint);
             }
         }
     }
