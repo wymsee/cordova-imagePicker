@@ -27,7 +27,7 @@
                 <param name="ios-package" value="SOSPicker"/>
             </feature>
         </config-file>
-        
+
         <preference name="PHOTO_LIBRARY_USAGE_DESCRIPTION" default=" " />
         <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
           <string>$PHOTO_LIBRARY_USAGE_DESCRIPTION</string>
@@ -79,6 +79,7 @@
         <resource-file src="src/ios/GMImagePicker/fr.lproj" />
         <resource-file src="src/ios/GMImagePicker/it.lproj" />
         <resource-file src="src/ios/GMImagePicker/pt.lproj" />
+        <resource-file src="src/ios/GMImagePicker/pl.lproj" />
 
         <framework src="Accelerate.framework" />
         <framework src="Security.framework" />
@@ -140,6 +141,7 @@
         <source-file src="src/android/Library/res/values-hu/multiimagechooser_strings_hu.xml" target-dir="res/values-hu"/>
         <source-file src="src/android/Library/res/values-ja/multiimagechooser_strings_ja.xml" target-dir="res/values-ja"/>
         <source-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target-dir="res/values-ko"/>
+        <source-file src="src/android/Library/res/values-pl/multiimagechooser_strings_pl.xml" target-dir="res/values-pl"/>
 
         <framework src="src/android/ignorelinterrors.gradle" custom="true" type="gradleReference"/>
         <framework src="src/android/androidtarget.gradle" custom="true" type="gradleReference"/>

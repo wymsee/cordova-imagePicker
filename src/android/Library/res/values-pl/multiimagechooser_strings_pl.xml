@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="multi_app_name">MultiImageChooser</string>
+    <string name="free_version_label">Darmowa wersja - Zdjęć zostało: %d</string>
+    <string name="error_database">Wystąpił problem przy próbie otwarcia bazy zdjęć. Proszę, zgłoś problem.</string>
+    <string name="requesting_thumbnails">Pobieram miniaturki, proszę o cierpliwość</string>
+    <string name="multi_image_picker_processing_images_title">Przetwarzam zdjęcia</string>
+    <string name="multi_image_picker_processing_images_message">To może chwilę zająć</string>
+    <string name="discard" translatable="false">Anuluj</string>
+    <string name="done" translatable="false">OK</string>
+ </resources>
