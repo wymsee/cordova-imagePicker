@@ -20,6 +20,12 @@
 		<clobbers target="plugins.imagePicker" />
 	</js-module>
 
+    <platform name="windows">
+        <js-module src="src/windows/ImagePickerProxy.js" name="ImagePickerProxy">
+            <merges target="" />
+        </js-module>
+    </platform>
+
 	<!-- ios -->
 	<platform name="ios">
 	<preference name="PHOTO_LIBRARY_USAGE_DESCRIPTION" default=" " />
