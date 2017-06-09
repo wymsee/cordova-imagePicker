@@ -11,19 +11,19 @@ function getPictures(success, error, options) {
     function calculateScaledSize(size, max) {
         if (!max.height && !max.width) {
             return size;
-        } else if (max.width < max.height || !max.height) {
+        } else if (max.width <= max.height || !max.height) {
             return {
                 width: max.width,
                 height: (size.height / size.width) * max.width
             };
-        } else if (max.height < max.width || !max.width) {
+        } else if (max.height <= max.width || !max.width) {
             return {
                 width: (size.width / size.height) * max.height,
                 height: max.height
             };
         }
     }
-	
+    
     fileOpenPicker.pickMultipleFilesAsync().then(function (files) {
         var tempFolder = ApplicationData.current.temporaryFolder;
         var results = [];
@@ -81,11 +81,7 @@ function getPictures(success, error, options) {
 
                 return encoder.flushAsync();
             }.bind(this)).then(function () {
-                return outputFile.getBasicPropertiesAsync();
-            }).then(function (basicProperties) {
-                var result = new MediaFile(outputFile.name, 'ms-appdata:///temp/' + outputFile.name, outputFile.contentType, basicProperties.dateModified, basicProperties.size);
-                result.fullPath = outputFile.path;
-                results.push(result);
+                results.push('ms-appdata:///temp/' + outputFile.name);
 
             }, function (err) {
                 error();
@@ -95,15 +91,15 @@ function getPictures(success, error, options) {
         return Promise.all(promises).then(function () {
             success(results);
         } , error);
-			
+            
     }, error);
 }
 
 ImagePicker = {
     getPictures: function (success, error, params) {
         var options = params[0];
-	    getPictures(success, error, options);
-	}
+        getPictures(success, error, options);
+    }
 };
 
 require("cordova/exec/proxy").add("ImagePicker", ImagePicker);
