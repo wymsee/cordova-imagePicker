@@ -17,6 +17,13 @@
 
 @end
 
+static const float gThumbWidth = 75.0f;
+static const float gThumbHeight = 75.0f;
+static const float gTopBuffer = 2.0f;
+static const float gIconLeftBuffer = 5.0f;
+static const float gIconTopBuffer = 5.0f;
+static const unsigned int gRowMax = 4;
+
 @implementation ELCAssetCell
 
 //Using auto synthesizers
@@ -28,13 +35,13 @@
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTapped:)];
         [self addGestureRecognizer:tapRecognizer];
         
-        NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:4];
+        NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:gRowMax];
         self.imageViewArray = mutableArray;
         
-        NSMutableArray *checkIconArray = [[NSMutableArray alloc] initWithCapacity:4];
+        NSMutableArray *checkIconArray = [[NSMutableArray alloc] initWithCapacity:gRowMax];
         self.checkIconArray = checkIconArray;
         
-        NSMutableArray *circleIconArray = [[NSMutableArray alloc] initWithCapacity:4];
+        NSMutableArray *circleIconArray = [[NSMutableArray alloc] initWithCapacity:gRowMax];
         self.circleIconArray = circleIconArray;
 	}
 	return self;
@@ -73,7 +80,6 @@
             overlaySize = CGSizeMake(CGRectGetWidth(imageView.frame), CGRectGetHeight(imageView.frame));
         }
 
-        assert([_checkIconArray count] == [_circleIconArray count]);
         if (i < [_checkIconArray count]) {
             UILabel *circleLabel = [_circleIconArray objectAtIndex:i];
             UILabel *checkLabel = [_checkIconArray objectAtIndex:i];
@@ -99,12 +105,11 @@
 - (void)cellTapped:(UITapGestureRecognizer *)tapRecognizer
 {
     CGPoint point = [tapRecognizer locationInView:self];
-    CGFloat totalWidth = self.rowAssets.count * 75 + (self.rowAssets.count - 1) * 4;
+    CGFloat totalWidth = self.rowAssets.count * gThumbWidth + (self.rowAssets.count - 1) * gRowMax;
     CGFloat startX = (self.bounds.size.width - totalWidth) / 2;
     
-	CGRect frame = CGRectMake(startX, 2, 75, 75);
+	CGRect frame = CGRectMake(startX, gTopBuffer, gThumbWidth, gThumbHeight);
 	
-    assert([_checkIconArray count] == [_circleIconArray count]);
     for (int i = 0; i < [_rowAssets count]; ++i) {
 
         if (CGRectContainsPoint(frame, point)) {
@@ -115,16 +120,16 @@
             [self selectThumbnail:checkLabel circleLabel:circleLabel selected:asset.selected];
             break;
         }
-        frame.origin.x = frame.origin.x + frame.size.width + 4;
+        frame.origin.x = frame.origin.x + frame.size.width + gRowMax;
     }
 }
 
 - (void)layoutSubviews
 {    
-    CGFloat totalWidth = self.rowAssets.count * 75 + (self.rowAssets.count - 1) * 4;
+    CGFloat totalWidth = self.rowAssets.count * gThumbWidth + (self.rowAssets.count - 1) * gRowMax;
     CGFloat startX = (self.bounds.size.width - totalWidth) / 2;
     
-	CGRect frame = CGRectMake(startX, 2, 75, 75);
+	CGRect frame = CGRectMake(startX, gTopBuffer, gThumbWidth, gThumbHeight);
 	
 	for (int i = 0; i < [_rowAssets count]; ++i) {
 		UIImageView *imageView = [_imageViewArray objectAtIndex:i];
@@ -133,8 +138,8 @@
         
         UILabel *checkLabel = [_checkIconArray objectAtIndex:i];
         UILabel *circleLabel = [_circleIconArray objectAtIndex:i];
-        CGRect iconFrame = CGRectMake(frame.origin.x + 5,
-                                         frame.origin.y + 5,
+        CGRect iconFrame = CGRectMake(frame.origin.x + gIconLeftBuffer,
+                                         frame.origin.y + gIconTopBuffer,
                                          frame.size.width,
                                          frame.size.height / 3);
         [checkLabel setFrame:iconFrame];
@@ -145,7 +150,7 @@
         
         
 		
-		frame.origin.x = frame.origin.x + frame.size.width + 4;
+		frame.origin.x = frame.origin.x + frame.size.width + gRowMax;
 	}
 }
 
