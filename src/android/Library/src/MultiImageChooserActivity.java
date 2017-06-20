@@ -93,8 +93,8 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     public static final String HEIGHT_KEY = "HEIGHT";
     public static final String QUALITY_KEY = "QUALITY";
 
-    private final String mIconSelected = "\uE060";
-    private final String mIconUnselected = "\uE061";
+    private final String M_ICON_SELECTED = "\uE060";
+    private final String M_ICON_UNSELECTED = "\uE061";
 
     private Typeface mDonkeyFont = null;
 
@@ -418,7 +418,7 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
             float padding = this.getWidth() * 0.05f;
             iconPaint.setTextSize(size);
 
-            if(this.checked) {
+            if (this.checked) {
                 int zenputBlue = getResources().getColor(R.color.zenputBlue);
                 iconPaint.setColor(zenputBlue);
                 iconPaint.setAlpha(255);
@@ -427,11 +427,11 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 circlePaint.setColor(Color.WHITE);
                 circlePaint.setTextSize(size);
                 canvas.drawText("\uE06E", padding, padding+size, circlePaint);
-                canvas.drawText(mIconSelected, padding, padding+size, iconPaint);
+                canvas.drawText(M_ICON_SELECTED, padding, padding+size, iconPaint);
             } else {
                 iconPaint.setColor(Color.WHITE);
                 iconPaint.setAlpha(255);
-                canvas.drawText(mIconUnselected, padding, padding+size, iconPaint);
+                canvas.drawText(M_ICON_UNSELECTED, padding, padding+size, iconPaint);
             }
         }
     }
