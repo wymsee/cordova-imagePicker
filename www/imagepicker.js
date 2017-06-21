@@ -1,19 +1,19 @@
 /*global cordova,window,console*/
 /**
  * An Image Picker plugin for Cordova
- * 
+ *
  * Developed by Wymsee for Sync OnSet
  */
 
 var ImagePicker = function() {
-
+	this.hiddenInputElement = null;
 };
 
 /*
 *	success - success callback
 *	fail - error callback
 *	options
-*		.maximumImagesCount - max images to be selected, defaults to 15. If this is set to 1, 
+*		.maximumImagesCount - max images to be selected, defaults to 15. If this is set to 1,
 *		                      upon selection of a single image, the plugin will return it.
 *		.width - width to resize image to (if one of height/width is 0, will resize to fit the
 *		         other while keeping aspect ratio, if both height and width are 0, the full size
@@ -25,7 +25,7 @@ ImagePicker.prototype.getPictures = function(success, fail, options) {
 	if (!options) {
 		options = {};
 	}
-	
+
 	var params = {
 		maximumImagesCount: options.maximumImagesCount ? options.maximumImagesCount : 15,
 		width: options.width ? options.width : 0,
@@ -33,7 +33,27 @@ ImagePicker.prototype.getPictures = function(success, fail, options) {
 		quality: options.quality ? options.quality : 100
 	};
 
-	return cordova.exec(success, fail, "ImagePicker", "getPictures", [params]);
+	if (cordova.platformId === 'browser') {
+		function readURL() {
+			var reader = new FileReader();
+			reader.onerror = fail;
+			reader.onloadend = function() {
+				success([reader.result]);
+			}
+			reader.readAsDataURL(event.target.files[0]);
+		}
+		if (!this.hiddenInputElement) {
+			this.hiddenInputElement = document.createElement('input');
+			this.hiddenInputElement.setAttribute('type', 'file');
+			this.hiddenInputElement.style.display = 'none';
+			document.body.appendChild(this.hiddenInputElement);
+			this.hiddenInputElement.addEventListener('change', readURL, true);
+		}
+		this.hiddenInputElement.click();
+
+	} else {
+		return cordova.exec(success, fail, 'ImagePicker', 'getPictures', [params]);
+	}
 };
 
 window.imagePicker = new ImagePicker();
