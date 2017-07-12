@@ -3,6 +3,9 @@
  */
 package com.synconset;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 
@@ -14,59 +17,94 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 
 public class ImagePicker extends CordovaPlugin {
-	public static String TAG = "ImagePicker";
-	 
+
+	//required permissions
+	String [] permissions = {
+	        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+	};
+
 	private CallbackContext callbackContext;
-	private JSONObject params;
-	 
+
+	private Integer max = 20;
+	private Integer desiredWidth = 0;
+	private Integer desiredHeight = 0;
+	private Integer quality = 100;
+
 	public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
-		 this.callbackContext = callbackContext;
-		 this.params = args.getJSONObject(0);
-		if (action.equals("getPictures")) {
-			Intent intent = new Intent(cordova.getActivity(), MultiImageChooserActivity.class);
-			int max = 20;
-			int desiredWidth = 0;
-			int desiredHeight = 0;
-			int quality = 100;
-			if (this.params.has("maximumImagesCount")) {
-				max = this.params.getInt("maximumImagesCount");
+	    this.callbackContext = callbackContext;
+
+        JSONObject params = args.getJSONObject(0);
+
+        if (action.equals("getPictures")) {
+
+			if (params.has("maximumImagesCount")) {
+				max = params.getInt("maximumImagesCount");
 			}
-			if (this.params.has("width")) {
-				desiredWidth = this.params.getInt("width");
+			if (params.has("width")) {
+				desiredWidth = params.getInt("width");
 			}
-			if (this.params.has("height")) {
-				desiredHeight = this.params.getInt("height");
+			if (params.has("height")) {
+				desiredHeight = params.getInt("height");
 			}
-			if (this.params.has("quality")) {
-				quality = this.params.getInt("quality");
+			if (params.has("quality")) {
+				quality = params.getInt("quality");
 			}
-			intent.putExtra("MAX_IMAGES", max);
-			intent.putExtra("WIDTH", desiredWidth);
-			intent.putExtra("HEIGHT", desiredHeight);
-			intent.putExtra("QUALITY", quality);
-			if (this.cordova != null) {
-				this.cordova.startActivityForResult((CordovaPlugin) this, intent, 0);
+
+			if(cordova.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) && cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                selectImages();
+			} else {
+			    getReadPermission();
 			}
 		}
 		return true;
 	}
-	
+
+    private void selectImages() {
+	    /*
+	    * ATENTION:
+	    * Starts an extra activity because Matisse requires an Activity context
+	    * and passing `this.cordova.getActivity()` context, it doesn't return activity result
+	    * for this instance of CordovaPlugin
+	    * */
+        Intent intent = new Intent(this.cordova.getActivity(), ImgPickerActivity.class);
+        intent.putExtra(ImgPickerActivity.MAX_IMAGES_KEY, max);
+        intent.putExtra(ImgPickerActivity.WIDTH_KEY, desiredWidth);
+        intent.putExtra(ImgPickerActivity.HEIGHT_KEY, desiredHeight);
+        intent.putExtra(ImgPickerActivity.QUALITY_KEY, quality);
+        this.cordova.startActivityForResult(this, intent, 0);
+    }
+
+
+    @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
 		if (resultCode == Activity.RESULT_OK && data != null) {
-			ArrayList<String> fileNames = data.getStringArrayListExtra("MULTIPLEFILENAMES");
-			JSONArray res = new JSONArray(fileNames);
-			this.callbackContext.success(res);
-		} else if (resultCode == Activity.RESULT_CANCELED && data != null) {
-			String error = data.getStringExtra("ERRORMESSAGE");
-			this.callbackContext.error(error);
-		} else if (resultCode == Activity.RESULT_CANCELED) {
-			JSONArray res = new JSONArray();
+			ArrayList<String> names = data.getStringArrayListExtra("MULTIPLEFILENAMES");
+            JSONArray res = new JSONArray(names);
 			this.callbackContext.success(res);
 		} else {
 			this.callbackContext.error("No images selected");
 		}
 	}
+
+
+	protected void getReadPermission() {
+    	cordova.requestPermissions(this, 0, permissions);
+	}
+
+	public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException {
+	    for(int r:grantResults) {
+	        if(r == PackageManager.PERMISSION_DENIED) {
+				this.callbackContext.error("Permission denied!");
+	            return;
+	        }
+	    }
+
+		selectImages();
+	}
+
 }
