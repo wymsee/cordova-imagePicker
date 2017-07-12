@@ -1,16 +1,18 @@
 cordova-imagePicker
 ===================
 
-Cordova Plugin For Multiple Image Selection - implemented for iOS and Android 4.0 and above.
+Forked from: [wymsee/cordova-imagePicker](https://github.com/wymsee/cordova-imagePicker)
+
+Cordova Plugin For Multiple Image Selection - implemented for iOS and Android 3.0 and above.
 
 ## Installing the plugin
 
 The plugin conforms to the Cordova plugin specification, it can be installed
 using the Cordova / Phonegap command line interface.
 
-    phonegap plugin add cordova-plugin-image-picker
+    phonegap plugin add https://github.com/antonyalkmim/cordova-imagePicker
 
-    cordova plugin add cordova-plugin-image-picker
+    cordova plugin add https://github.com/antonyalkmim/cordova-imagePicker
 
 
 ## Using the plugin
