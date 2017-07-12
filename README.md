@@ -58,11 +58,12 @@ window.imagePicker.getPictures(
     	// will be at most 800 pixels wide and 800 pixels tall.  If the width is
     	// 800 and height 0 the image will be 800 pixels wide if the source
     	// is at least that wide.
-    	width: int,
+    	// only iOS => check Android issues below
+    	width: int, 
     	height: int,
     	
     	// quality of resized image, defaults to 100
-    	quality: int (0-100)
+    	quality: int (0-100) //only iOS => check Android issues below
     };
 	
 ### iOS 10 issues
@@ -76,10 +77,13 @@ Example:
 `cordova plugin add cordova-plugin-image-picker --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="your message"`
 
 Empty string will be added as value if you dont pass the variable 
-    
-### Note for Android Use
 
-The plugin returns images that are stored in a temporary directory.  These images will often not be deleted automatically though.  The files should be moved or deleted after you get their filepaths in javascript.
+### Android issues
+
+There is a few things that must be implemented:
+ [ ] Matisse Filter to resize images witdh and height.
+ [ ] Matisse Filter to decrease images quality. 
+ 
 
 ## Libraries used
 
@@ -89,17 +93,10 @@ For iOS this plugin uses the ELCImagePickerController, with slight modifications
 
 https://github.com/B-Sides/ELCImagePickerController
 
-#### MultiImageChooser
+#### Matisse
 
-For Android this plugin uses MultiImageChooser, with modifications.  MultiImageChooser uses the BSD 2-Clause License which can be found in the file BSD_LICENSE.  Some code inside MultImageChooser is licensed under the Apache license which can be found in the file APACHE_LICENSE.
-
-https://github.com/derosa/MultiImageChooser
-
-#### FakeR
-
-Code(FakeR) was also taken from the phonegap BarCodeScanner plugin.  This code uses the MIT license.
-
-https://github.com/wildabeast/BarcodeScanner
+For Android this plugin uses Matisse.  Matisse uses the Apache License which can be found in the file APACHE_LICENSE.
+https://github.com/zhihu/Matisse
 
 ## License
 
