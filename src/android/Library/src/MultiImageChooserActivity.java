@@ -42,7 +42,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.synconset.FakeR;
 import com.zenput.mobile.R;
 
 import android.app.Activity;
@@ -92,9 +91,6 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
     public static final String WIDTH_KEY = "WIDTH";
     public static final String HEIGHT_KEY = "HEIGHT";
     public static final String QUALITY_KEY = "QUALITY";
-
-    private final String M_ICON_SELECTED = "\uE060";
-    private final String M_ICON_UNSELECTED = "\uE061";
 
     private Typeface mDonkeyFont = null;
 
@@ -426,12 +422,14 @@ public class MultiImageChooserActivity extends Activity implements OnItemClickLi
                 circlePaint.setTypeface(mDonkeyFont);
                 circlePaint.setColor(Color.WHITE);
                 circlePaint.setTextSize(size);
-                canvas.drawText("\uE06E", padding, padding+size, circlePaint);
-                canvas.drawText(M_ICON_SELECTED, padding, padding+size, iconPaint);
+
+
+                canvas.drawText(getString(R.string.icon_zp_v2_circle), padding, padding + size, circlePaint);
+                canvas.drawText(getString(R.string.icon_zp_v2_gallery_image_selected), padding, padding+size, iconPaint);
             } else {
                 iconPaint.setColor(Color.WHITE);
                 iconPaint.setAlpha(255);
-                canvas.drawText(M_ICON_UNSELECTED, padding, padding+size, iconPaint);
+                canvas.drawText(getString(R.string.icon_zp_v2_gallery_image_unselected), padding, padding+size, iconPaint);
             }
         }
     }

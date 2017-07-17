@@ -7,6 +7,7 @@
 
 #import "ELCAssetCell.h"
 #import "ELCAsset.h"
+#import "Donkeyfont.h"
 
 @interface ELCAssetCell ()
 
@@ -155,13 +156,14 @@ static const unsigned int gRowMax = 4;
 }
 
 - (void)selectThumbnail:(UILabel*)checkLabel circleLabel:(UILabel*)circleLabel selected:(bool)selected {
-    checkLabel.text = selected ? @"\uE060" : @"\uE061";
+    NSLog(@"image selected icon: %@", ICON_ZP_V2_GALLERY_IMAGE_SELECTED);
+    checkLabel.text = selected ? ICON_ZP_V2_GALLERY_IMAGE_SELECTED : ICON_ZP_V2_GALLERY_IMAGE_UNSELECTED;
     checkLabel.textColor = selected ? [UIColor colorWithRed:22.0f / 255.0f
                                                       green:157 / 255.0f
                                                        blue:217.0f / 255.0f
                                                       alpha:1.0] : [UIColor whiteColor];
     
-    circleLabel.text = @"\uE06E";
+    circleLabel.text = ICON_ZP_V2_CIRCLE;
     circleLabel.textColor = [UIColor whiteColor];
     circleLabel.alpha = selected ? 1.0f : 0.0f;
 }
