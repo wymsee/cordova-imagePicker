@@ -156,7 +156,6 @@ static const unsigned int gRowMax = 4;
 }
 
 - (void)selectThumbnail:(UILabel*)checkLabel circleLabel:(UILabel*)circleLabel selected:(bool)selected {
-    NSLog(@"image selected icon: %@", ICON_ZP_V2_GALLERY_IMAGE_SELECTED);
     checkLabel.text = selected ? ICON_ZP_V2_GALLERY_IMAGE_SELECTED : ICON_ZP_V2_GALLERY_IMAGE_UNSELECTED;
     checkLabel.textColor = selected ? [UIColor colorWithRed:22.0f / 255.0f
                                                       green:157 / 255.0f
