@@ -79,7 +79,8 @@
         <resource-file src="src/ios/GMImagePicker/fr.lproj" />
         <resource-file src="src/ios/GMImagePicker/it.lproj" />
         <resource-file src="src/ios/GMImagePicker/pt.lproj" />
-
+        <resource-file src="src/ios/GMImagePicker/zh-Hans.lproj" />
+        
         <framework src="Accelerate.framework" />
         <framework src="Security.framework" />
         <framework src="Photos.framework" />
