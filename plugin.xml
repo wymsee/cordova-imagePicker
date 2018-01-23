@@ -4,6 +4,7 @@
   id="cordova-plugin-image-picker"
   version="1.1.1">
 
+	<dependency id="cordova-plugin-donkeyfont" url="https://github.com/zenput/cordova-plugin-donkeyfont" commit="v1.0" />
 	<name>ImagePicker</name>
 	 
 	<description>
@@ -19,6 +20,12 @@
 	<js-module src="www/imagepicker.js" name="ImagePicker">
 		<clobbers target="plugins.imagePicker" />
 	</js-module>
+
+    <platform name="windows">
+        <js-module src="src/windows/ImagePickerProxy.js" name="ImagePickerProxy">
+            <merges target="" />
+        </js-module>
+    </platform>
 
 	<!-- ios -->
 	<platform name="ios">
