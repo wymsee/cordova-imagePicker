@@ -1,3 +1,4 @@
+
 var ApplicationData = Windows.Storage.ApplicationData;
 var Imaging = Windows.Graphics.Imaging;
 
@@ -53,8 +54,8 @@ function getPictures(success, error, options) {
 
             return inputFile.openAsync(Windows.Storage.FileAccessMode.read).then(function (stream) {
                 inputStream = stream;
-                return tempFolder.createFileAsync("tmpImage", Windows.Storage.CreationCollisionOption.generateUniqueName);
-            }).then(function (file) {
+                return tempFolder.createFileAsync('tmpImage' + fileType, Windows.Storage.CreationCollisionOption.generateUniqueName);
+            }.bind(this)).then(function (file) {
                 outputFile = file;
                 return outputFile.openAsync(Windows.Storage.FileAccessMode.readWrite);
             }).then(function (output) {
