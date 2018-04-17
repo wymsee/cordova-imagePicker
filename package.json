@@ -4,7 +4,6 @@
   "cordova_name": "ImagePicker",
   "description": "This plugin allows selection of multiple images from the camera roll / gallery in a phonegap app",
   "license": "MIT",
-  "repo": "",
   "issue": "",
   "keywords": [],
   "platforms": [
