@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Sjerd/ImagePicker.git"
+    "url": "git+https://github.com/Telerik-Verified-Plugins/ImagePicker.git"
   },
   "engines": {
     "name": "cordova",
