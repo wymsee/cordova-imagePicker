@@ -290,7 +290,7 @@ public class ImageFetcher {
     private final HashMap<Integer, Bitmap> sHardBitmapCache = new LinkedHashMap<Integer, Bitmap>(
             HARD_CACHE_CAPACITY / 2, 0.75f, true) {
         @Override
-        protected boolean removeEldestEntry(LinkedHashMap.Entry<Integer, Bitmap> eldest) {
+        protected boolean removeEldestEntry(HashMap.Entry<Integer, Bitmap> eldest) {
             if (size() > HARD_CACHE_CAPACITY) {
                 // Entries push-out of hard reference cache are transferred to
                 // soft reference cache

@@ -68,7 +68,7 @@ static CGSize const kPopoverContentSize = {480, 720};
 
 
 @property (nonatomic, assign) BOOL allow_video;
-
+@property (nonatomic, assign) NSInteger maximumImagesCount;
 /**
  *  Grid customizations:
  *

@@ -434,6 +434,10 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(self.picker.selectedAssets.count >= self.picker.maximumImagesCount) {
+        return NO;
+    }
+    
     PHAsset *asset = self.assetsFetchResults[indexPath.item];
     //GMFetchItem * fetch_item = [dic_asset_fetches objectForKey:[ NSNumber numberWithLong:indexPath.item ]];
     GMFetchItem * fetch_item = [dic_asset_fetches objectForKey:asset];
@@ -454,7 +458,7 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
         [ ph_options setNetworkAccessAllowed:YES];
         
         // @BVL Set Deliverymode, in order to return highest quality
-		[ ph_options setDeliveryMode: PHImageRequestOptionsDeliveryModeHighQualityFormat ]; // Best Quality
+        [ ph_options setDeliveryMode: PHImageRequestOptionsDeliveryModeHighQualityFormat ]; // Best Quality
 
         [ ph_options setProgressHandler:^(double progress, NSError *error, BOOL *stop, NSDictionary *info) {
             
@@ -506,9 +510,10 @@ NSString * const GMGridViewCellIdentifier = @"GMGridViewCellIdentifier";
                 
                 UIImage *imageToDisplay = result.fixOrientation; //  UIImage+fixOrientation extension
                 
-          		NSLog(@"corrected orientation: %ld",(UIImageOrientation)imageToDisplay.imageOrientation);
+                NSLog(@"corrected orientation: %ld",(UIImageOrientation)imageToDisplay.imageOrientation);
 
-                if ( ![ UIImageJPEGRepresentation(imageToDisplay, 1.0f ) writeToFile:filePath atomically:YES ] ) {
+                // setting compression to a low value (high compression) impact performance, but not actual img quality
+                if ( ![ UIImageJPEGRepresentation(imageToDisplay, 0.2f ) writeToFile:filePath atomically:YES ] ) {
                     return;
                 }
                 
