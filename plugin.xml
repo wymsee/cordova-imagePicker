@@ -94,7 +94,7 @@
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="ImagePicker">
-                <param name="android-package" value="cordova-plugin-telerik-imagepicker"/>
+                <param name="android-package" value="com.synconset.ImagePicker"/>
             </feature>
         </config-file>
 
