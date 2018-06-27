@@ -28,7 +28,7 @@ ImagePicker.prototype.hasReadPermission = function(callback) {
   return cordova.exec(callback, null, "ImagePicker", "hasReadPermission", []);
 };
 
-ImagePicker.prototype.requestReadPermission = function(callback) {
+ImagePicker.prototype.requestReadPermission = function(callback, failureCallback) {
   return cordova.exec(callback, failureCallback, "ImagePicker", "requestReadPermission", []);
 };
 
