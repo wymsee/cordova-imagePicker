@@ -18,6 +18,7 @@ package com.synconset;
 
 import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,12 +45,12 @@ import android.widget.ImageView;
 /**
  * This helper class download images from the Internet and binds those with the
  * provided ImageView.
- * 
+ *
  * <p>
  * It requires the INTERNET permission, which should be added to your
  * application's manifest file.
  * </p>
- * 
+ *
  * A local cache of downloaded images is maintained internally to improve
  * performance.
  */
@@ -249,7 +250,7 @@ public class ImageFetcher {
     /**
      * A fake Drawable that will be attached to the imageView while the download
      * is in progress.
-     * 
+     *
      * <p>
      * Contains a reference to the actual download task, so that a download task
      * can be stopped if a new binding is required, and makes sure that only the
@@ -278,7 +279,7 @@ public class ImageFetcher {
 
     /*
      * Cache-related fields and methods.
-     * 
+     *
      * We use a hard and a soft cache. A soft reference cache is too aggressively cleared by the
      * Garbage Collector.
      */
@@ -290,7 +291,7 @@ public class ImageFetcher {
     private final HashMap<Integer, Bitmap> sHardBitmapCache = new LinkedHashMap<Integer, Bitmap>(
             HARD_CACHE_CAPACITY / 2, 0.75f, true) {
         @Override
-        protected boolean removeEldestEntry(LinkedHashMap.Entry<Integer, Bitmap> eldest) {
+        protected boolean removeEldestEntry(Map.Entry<Integer, Bitmap> eldest) {
             if (size() > HARD_CACHE_CAPACITY) {
                 // Entries push-out of hard reference cache are transferred to
                 // soft reference cache
@@ -315,7 +316,7 @@ public class ImageFetcher {
 
     /**
      * Adds this bitmap to the cache.
-     * 
+     *
      * @param bitmap
      *            The newly downloaded bitmap.
      */
