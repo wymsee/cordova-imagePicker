@@ -1,0 +1,14 @@
+{
+    "env": {
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6
+    },
+    "globals": {
+        "$f": false,
+        "_": false,
+        "Hammer": false,
+        "MediaFile": false
+    }
+}

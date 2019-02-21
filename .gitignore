@@ -12,3 +12,5 @@
 xcuserdata/
 project.xcworkspace/
 tags
+
+node_modules
