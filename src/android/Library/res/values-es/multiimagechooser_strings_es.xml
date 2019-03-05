@@ -4,4 +4,8 @@
     <string name="requesting_thumbnails">Solicitando miniaturas. Por favor, espere…</string>
     <string name="free_version_label">Versión gratuita - Imágenes restantes: %d</string>
     <string name="error_database">Error al abrir la base de datos de imágenes.</string>
+    <string name="multi_image_picker_processing_images_title">Procesando imágenes</string>
+    <string name="multi_image_picker_processing_images_message">Esto puede tomar un momento</string>
+    <string name="discard">Cancelar</string>
+    <string name="done">OK</string>
 </resources>
