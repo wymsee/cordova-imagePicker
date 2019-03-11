@@ -123,7 +123,11 @@ public class ImagePicker extends CordovaPlugin {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && data != null) {
-            ArrayList<String> fileNames = data.getStringArrayListExtra("MULTIPLEFILENAMES");
+            int sync = data.getIntExtra("bigdata:synccode", -1);
+            final Bundle bigData = ResultIPC.get().getLargeData(sync);
+      
+            ArrayList<String> fileNames = bigData.getStringArrayList("MULTIPLEFILENAMES");
+    
             JSONArray res = new JSONArray(fileNames);
             callbackContext.success(res);
 
