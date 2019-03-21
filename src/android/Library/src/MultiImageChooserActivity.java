@@ -608,7 +608,8 @@ public class MultiImageChooserActivity extends AppCompatActivity implements
                     res.putInt("TOTALFILES", imagecursor.getCount());
                 }
 
-                data.putExtras(res);
+                int sync = ResultIPC.get().setLargeData(res);
+                data.putExtra("bigdata:synccode", sync);
                 setResult(RESULT_OK, data);
 
             } else {
