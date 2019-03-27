@@ -2,8 +2,8 @@
 <resources>
     <string name="multi_app_name">MultiImageChooser</string>
     <string name="free_version_label">Freie Version - Nur noch %d Bilder können ausgewählt werden</string>
-    <string name="error_database">Beim öffnen der Bilder-Datenbank ist ein Fehler augetreten. Bitte melden Sie dieses Problem.</string>
+    <string name="error_database">Beim Öffnen der Bilder-Datenbank ist ein Fehler augetreten. Bitte melden Sie dieses Problem.</string>
     <string name="requesting_thumbnails">Vorschaubilder werden geladen, bitte haben Sie etwas Geduld</string>
     <string name="multi_image_picker_processing_images_title">Bilder werden verarbeitet</string>
-    <string name="multi_image_picker_processing_images_message">Dies kann einen Momenent dauern</string>
+    <string name="multi_image_picker_processing_images_message">Dies kann einen Moment dauern</string>
 </resources>
