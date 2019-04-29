@@ -262,7 +262,7 @@ static NSString * const CollectionCellReuseIdentifier = @"CollectionCell";
     cell.tag = currentTag;
 
     //Set the label
-    cell.textLabel.text = (self.collectionsFetchResultsTitles[indexPath.section])[indexPath.row];
+    cell.titleLabel.text = (self.collectionsFetchResultsTitles[indexPath.section])[indexPath.row];
     
     //Retrieve the pre-fetched assets for this album:
     PHFetchResult *assetsFetchResult = (self.collectionsFetchResultsAssets[indexPath.section])[indexPath.row];
@@ -270,7 +270,7 @@ static NSString * const CollectionCellReuseIdentifier = @"CollectionCell";
     //Display the number of assets
     if(self.picker.displayAlbumsNumberOfAssets)
     {
-        cell.detailTextLabel.text = [self tableCellSubtitle:assetsFetchResult];
+        cell.infoLabel.text = [self tableCellSubtitle:assetsFetchResult];
     }
     
     //Set the 3 images (if exists):
@@ -353,12 +353,12 @@ static NSString * const CollectionCellReuseIdentifier = @"CollectionCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    GMAlbumsViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
     //Init the GMGridViewController
     GMGridViewController *gridViewController = [[GMGridViewController alloc] initWithPicker:[self picker]];
     //Set the title
-    gridViewController.title = cell.textLabel.text;
+    gridViewController.title = cell.titleLabel.text;
     //Use the prefetched assets!
     gridViewController.assetsFetchResults = [[_collectionsFetchResultsAssets objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     gridViewController.dic_asset_fetches = dic_asset_fetches;
