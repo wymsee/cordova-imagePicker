@@ -68,8 +68,8 @@ static UIColor *disabledColor;
             _imageView.contentMode = UIViewContentModeScaleAspectFill;
         }*/
         _imageView.clipsToBounds = YES;
-        _imageView.translatesAutoresizingMaskIntoConstraints = NO;
-        _imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        //_imageView.translatesAutoresizingMaskIntoConstraints = NO;
+        //_imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [self addSubview:_imageView];
         
         
