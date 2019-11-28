@@ -150,4 +150,23 @@
         <framework src="src/android/ignorelinterrors.gradle" custom="true" type="gradleReference"/>
         <framework src="src/android/androidtarget.gradle" custom="true" type="gradleReference"/>
     </platform>
+  
+    <!-- browser -->
+    <platform name="browser">
+      <config-file parent="/*" target="config.xml">
+  				<feature name="ImagePicker">
+  						<param name="browser-package" value="ImagePicker"/>
+  				</feature>
+  		</config-file>
+      
+      <!-- Required for browserify: we always link module below as there is conditional reference
+      to this module from requestFileSystem and resolveLocalFileSystemURI modules. -->
+      <js-module src="www/browser/isChrome.js" name="isChrome">
+          <runs />
+      </js-module>
+
+  		<js-module src="src/browser/ImagePicker.js" name="ImagePickerProxy">
+  				<runs/>
+  		</js-module>
+    </platform>
 </plugin>
