@@ -7,7 +7,6 @@
 //
 
 #import "FeHourGlass.h"
-#import "UIColor+flat.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define kFe_HourGlass_Length 30.0f
