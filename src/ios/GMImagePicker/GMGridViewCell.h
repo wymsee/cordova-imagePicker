@@ -8,6 +8,7 @@
 
 //#import "MRCircularProgressView.h"
 #import <Photos/Photos.h>
+#import "FeHourGlass.h"
 
 
 @interface GMGridViewCell : UICollectionViewCell
@@ -29,6 +30,8 @@
 - (void)bind:(PHAsset *)asset;
 
 //@property (nonatomic, strong) MRCircularProgressView *circularProgressView;
+
+@property (strong, nonatomic) FeHourGlass *hourGlass;
 -(void)show_progress;
 -(void)set_progress:(float)value animated:(BOOL)animated;
 -(void)hide_progress;
