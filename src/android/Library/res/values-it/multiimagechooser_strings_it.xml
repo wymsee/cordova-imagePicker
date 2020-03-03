@@ -2,10 +2,10 @@
 <resources>
     <string name="multi_app_name">MultiImageChooser</string>
     <string name="free_version_label">Versione gratuita - Immagini rimaste: %d</string>
-    <string name="error_database">Si è verificato un errore durante l'apertura del database delle immagini. Si prega di segnalare il problema.</string>
+    <string name="error_database">Si è verificato un errore durante l\'apertura del database delle immagini. Si prega di segnalare il problema.</string>
     <string name="requesting_thumbnails">Richiesta miniature. Attendere...</string>
     <string name="multi_image_picker_processing_images_title">Elaborazione immagini</string>
-    <string name="multi_image_picker_processing_images_message">Potrebbe volerci un po' di tempo.</string>
+    <string name="multi_image_picker_processing_images_message">Potrebbe volerci un po\' di tempo.</string>
     <string name="discard" translatable="false">Annulla</string>
     <string name="done" translatable="false">Fatto</string>
  </resources>
