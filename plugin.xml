@@ -142,7 +142,6 @@
         <resource-file src="src/android/Library/res/values-es/multiimagechooser_strings_es.xml" target="res/values-es/multiimagechooser_strings_es.xml"/>
         <resource-file src="src/android/Library/res/values-fr/multiimagechooser_strings_fr.xml" target="res/values-fr/multiimagechooser_strings_fr.xml"/>
         <resource-file src="src/android/Library/res/values-hu/multiimagechooser_strings_hu.xml" target="res/values-hu/multiimagechooser_strings_hu.xml"/>
-        <resource-file src="src/android/Library/res/values-it/multiimagechooser_strings_it.xml" target="res/values-it/multiimagechooser_strings_it.xml"/>
         <resource-file src="src/android/Library/res/values-ja/multiimagechooser_strings_ja.xml" target="res/values-ja/multiimagechooser_strings_ja.xml"/>
         <resource-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target="res/values-ko/multiimagechooser_strings_ko.xml"/>
         <resource-file src="src/android/Library/res/values-pt/multiimagechooser_strings_pt.xml" target="res/values-pt/multiimagechooser_strings_pt.xml"/>
