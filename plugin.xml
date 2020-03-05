@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-image-picker" version="1.2.3">
-    <dependency id="@zenput/cordova-plugin-donkeyfont" version="1.0.1"/>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="cordova-plugin-image-picker" version="1.2.4">
+    <dependency id="cordova-plugin-donkeyfont" version="1.0.1"/>
     <name>cordova-plugin-donkeyfont</name>
     <description>
 		Allows selection of multiple images from the camera roll/gallery in a Cordova app
