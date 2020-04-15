@@ -8,4 +8,6 @@
     <string name="multi_image_picker_processing_images_message">To może chwilę zająć</string>
     <string name="discard" translatable="false">Anuluj</string>
     <string name="done" translatable="false">OK</string>
+    <string name="max_count_photos_title">Maksymalnie %d zdjęć</string>
+    <string name="max_count_photos_message">Możesz wybrać maksymalnie %d zdjęć.</string>
  </resources>
