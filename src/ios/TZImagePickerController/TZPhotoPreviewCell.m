@@ -48,15 +48,15 @@
 
 - (void)configSubviews {
     self.previewView = [[TZPhotoPreviewView alloc] initWithFrame:CGRectZero];
-    __weak typeof(self) weakSelf = self;
+    __weak TZPhotoPreviewCell *weakSelf = self;
     [self.previewView setSingleTapGestureBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZPhotoPreviewCell *strongSelf = weakSelf;
         if (strongSelf.singleTapGestureBlock) {
             strongSelf.singleTapGestureBlock();
         }
     }];
     [self.previewView setImageProgressUpdateBlock:^(double progress) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZPhotoPreviewCell *strongSelf = weakSelf;
         if (strongSelf.imageProgressUpdateBlock) {
             strongSelf.imageProgressUpdateBlock(progress);
         }
@@ -539,9 +539,9 @@
 
 - (void)configPreviewView {
     _previewView = [[TZPhotoPreviewView alloc] initWithFrame:CGRectZero];
-    __weak typeof(self) weakSelf = self;
+    __weak TZGifPreviewCell *weakSelf = self;
     [_previewView setSingleTapGestureBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZGifPreviewCell *strongSelf = weakSelf;
         [strongSelf signleTapAction];
     }];
     [self addSubview:_previewView];

@@ -221,9 +221,9 @@
         
         previewVc.photos = [NSMutableArray arrayWithArray:selectedPhotos];
         previewVc.currentIndex = index;
-        __weak typeof(self) weakSelf = self;
+        __weak TZImagePickerController *weakSelf = self;
         [previewVc setDoneButtonClickBlockWithPreviewType:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
+            __strong TZImagePickerController *strongSelf = weakSelf;
             [strongSelf dismissViewControllerAnimated:YES completion:^{
                 if (!strongSelf) return;
                 if (strongSelf.didFinishPickingPhotosHandle) {
@@ -249,9 +249,9 @@
         previewVc.photos = [NSMutableArray arrayWithArray:@[photo]];
         previewVc.isCropImage = YES;
         previewVc.currentIndex = 0;
-        __weak typeof(self) weakSelf = self;
+        __weak TZImagePickerController *weakSelf = self;
         [previewVc setDoneButtonClickBlockCropMode:^(UIImage *cropImage, id asset) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
+            __strong TZImagePickerController *strongSelf = weakSelf;
             [strongSelf dismissViewControllerAnimated:YES completion:^{
                 if (completion) {
                     completion(cropImage,asset);
@@ -450,9 +450,9 @@
     
     // if over time, dismiss HUD automatic
     self.HUDTimeoutCount++;
-    __weak typeof(self) weakSelf = self;
+    __weak TZImagePickerController *weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.timeout * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZImagePickerController *strongSelf = weakSelf;
         strongSelf.HUDTimeoutCount--;
         if (strongSelf.HUDTimeoutCount <= 0) {
             strongSelf.HUDTimeoutCount = 0;

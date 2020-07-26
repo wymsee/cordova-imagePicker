@@ -456,7 +456,7 @@
     TZAssetModel *model = _models[indexPath.item];
     
     TZAssetPreviewCell *cell;
-    __weak typeof(self) weakSelf = self;
+    __weak TZPhotoPreviewController *weakSelf = self;
     if (_tzImagePickerVc.allowPickingMultipleVideo && model.type == TZAssetModelMediaTypeVideo) {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"TZVideoPreviewCell" forIndexPath:indexPath];
         TZVideoPreviewCell *currentCell = (TZVideoPreviewCell *)cell;
@@ -479,14 +479,14 @@
         photoPreviewCell.cropRect = _tzImagePickerVc.cropRect;
         photoPreviewCell.allowCrop = _tzImagePickerVc.allowCrop;
         photoPreviewCell.scaleAspectFillCrop = _tzImagePickerVc.scaleAspectFillCrop;
-        __weak typeof(_tzImagePickerVc) weakTzImagePickerVc = _tzImagePickerVc;
-        __weak typeof(_collectionView) weakCollectionView = _collectionView;
-        __weak typeof(photoPreviewCell) weakCell = photoPreviewCell;
+        __weak TZImagePickerController *weakTzImagePickerVc = _tzImagePickerVc;
+        __weak UICollectionView *weakCollectionView = _collectionView;
+        __weak TZPhotoPreviewCell *weakCell = photoPreviewCell;
         [photoPreviewCell setImageProgressUpdateBlock:^(double progress) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-            __strong typeof(weakTzImagePickerVc) strongTzImagePickerVc = weakTzImagePickerVc;
-            __strong typeof(weakCollectionView) strongCollectionView = weakCollectionView;
-            __strong typeof(weakCell) strongCell = weakCell;
+            __strong TZPhotoPreviewController *strongSelf = weakSelf;
+            __strong TZImagePickerController *strongTzImagePickerVc = weakTzImagePickerVc;
+            __strong UICollectionView *strongCollectionView = weakCollectionView;
+            __strong TZPhotoPreviewCell *strongCell = weakCell;
             strongSelf.progress = progress;
             if (progress >= 1) {
                 if (strongSelf.isSelectOriginalPhoto) [strongSelf showPhotoBytes];
@@ -506,7 +506,7 @@
     
     cell.model = model;
     [cell setSingleTapGestureBlock:^{
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZPhotoPreviewController *strongSelf = weakSelf;
         [strongSelf didTapPreviewCell];
     }];
 

@@ -547,13 +547,13 @@ static CGFloat itemMargin = 5;
         cell.cannotSelectLayerButton.hidden = YES;
     }
     
-    __weak typeof(cell) weakCell = cell;
-    __weak typeof(self) weakSelf = self;
-    __weak typeof(_numberImageView.layer) weakLayer = _numberImageView.layer;
+    __weak TZAssetCell *weakCell = cell;
+    __weak TZPhotoPickerController *weakSelf = self;
+    __weak CALayer *weakLayer = _numberImageView.layer;
     cell.didSelectPhotoBlock = ^(BOOL isSelected) {
-        __strong typeof(weakCell) strongCell = weakCell;
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        __strong typeof(weakLayer) strongLayer = weakLayer;
+        __strong TZAssetCell *strongCell = weakCell;
+        __strong TZPhotoPickerController *strongSelf = weakSelf;
+        __strong CALayer *strongLayer = weakLayer;
         TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)strongSelf.navigationController;
         // 1. cancel select / 取消选择
         if (isSelected) {
@@ -694,12 +694,12 @@ static CGFloat itemMargin = 5;
     // 提前定位
     TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
     if (tzImagePickerVc.allowCameraLocation) {
-        __weak typeof(self) weakSelf = self;
+        __weak TZPhotoPickerController *weakSelf = self;
         [[TZLocationManager manager] startLocationWithSuccessBlock:^(NSArray<CLLocation *> *locations) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
+            __strong TZPhotoPickerController *strongSelf = weakSelf;
             strongSelf.location = [locations firstObject];
         } failureBlock:^(NSError *error) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
+            __strong TZPhotoPickerController *strongSelf = weakSelf;
             strongSelf.location = nil;
         }];
     }
@@ -750,10 +750,10 @@ static CGFloat itemMargin = 5;
 }
 
 - (void)pushPhotoPrevireViewController:(TZPhotoPreviewController *)photoPreviewVc needCheckSelectedModels:(BOOL)needCheckSelectedModels {
-    __weak typeof(self) weakSelf = self;
+    __weak TZPhotoPickerController *weakSelf = self;
     photoPreviewVc.isSelectOriginalPhoto = _isSelectOriginalPhoto;
     [photoPreviewVc setBackButtonClickBlock:^(BOOL isSelectOriginalPhoto) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZPhotoPickerController *strongSelf = weakSelf;
         strongSelf.isSelectOriginalPhoto = isSelectOriginalPhoto;
         if (needCheckSelectedModels) {
             [strongSelf checkSelectedModels];
@@ -762,12 +762,12 @@ static CGFloat itemMargin = 5;
         [strongSelf refreshBottomToolBarStatus];
     }];
     [photoPreviewVc setDoneButtonClickBlock:^(BOOL isSelectOriginalPhoto) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZPhotoPickerController *strongSelf = weakSelf;
         strongSelf.isSelectOriginalPhoto = isSelectOriginalPhoto;
         [strongSelf doneButtonClick];
     }];
     [photoPreviewVc setDoneButtonClickBlockCropMode:^(UIImage *cropedImage, id asset) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
+        __strong TZPhotoPickerController *strongSelf = weakSelf;
         [strongSelf didGetAllPhotos:@[cropedImage] assets:@[asset] infoArr:nil];
     }];
     [self.navigationController pushViewController:photoPreviewVc animated:YES];
