@@ -42,6 +42,7 @@
     imagePickerVc.allowPickingOriginalPhoto = NO;
     imagePickerVc.oKButtonTitleColorNormal = color;
     imagePickerVc.iconThemeColor = color;
+    imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
     //imagePickerVc.allowPickingGif = NO;
     imagePickerVc.naviBgColor = color;
     imagePickerVc.photoPreviewPageUIConfigBlock = ^(UICollectionView *collectionView, UIView *naviBar, UIButton *backButton, UIButton *selectButton, UILabel *indexLabel, UIView *toolBar, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel) {
