@@ -29,28 +29,29 @@
     
     self.callbackId = command.callbackId;
     
-    [self.commandDelegate runInBackground:^{
-        TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:maximumImagesCount delegate:self];
-        
-        UIColor *color = [UIColor colorWithRed:251 / 255.0 green:192 / 255.0 blue:45 / 255.0 alpha:1];
-        
-        imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
-        imagePickerVc.allowTakePicture = NO;
-        imagePickerVc.allowCameraLocation = NO;
-        imagePickerVc.allowTakeVideo = NO;
-        imagePickerVc.allowPickingVideo = NO;
-        imagePickerVc.allowPickingOriginalPhoto = NO;
-        imagePickerVc.oKButtonTitleColorNormal = color;
-        //imagePickerVc.allowPickingGif = NO;
-        imagePickerVc.naviBgColor = color;
-        imagePickerVc.photoPreviewPageUIConfigBlock = ^(UICollectionView *collectionView, UIView *naviBar, UIButton *backButton, UIButton *selectButton, UILabel *indexLabel, UIView *toolBar, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel) {
-            naviBar.backgroundColor = color;
-        };
+    //[self.commandDelegate runInBackground:^{
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:maximumImagesCount delegate:self];
+    
+    UIColor *color = [UIColor colorWithRed:251 / 255.0 green:192 / 255.0 blue:45 / 255.0 alpha:1];
+    
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
+    imagePickerVc.allowTakePicture = NO;
+    imagePickerVc.allowCameraLocation = NO;
+    imagePickerVc.allowTakeVideo = NO;
+    imagePickerVc.allowPickingVideo = NO;
+    imagePickerVc.allowPickingOriginalPhoto = NO;
+    imagePickerVc.oKButtonTitleColorNormal = color;
+    imagePickerVc.iconThemeColor = color;
+    //imagePickerVc.allowPickingGif = NO;
+    imagePickerVc.naviBgColor = color;
+    imagePickerVc.photoPreviewPageUIConfigBlock = ^(UICollectionView *collectionView, UIView *naviBar, UIButton *backButton, UIButton *selectButton, UILabel *indexLabel, UIView *toolBar, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel) {
+        naviBar.backgroundColor = color;
+    };
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.viewController presentViewController:imagePickerVc animated:YES completion:nil];
-        });
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.viewController presentViewController:imagePickerVc animated:YES completion:nil];
+    });
+    //}];
 }
 
 - (void) imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto infos:(NSArray<NSDictionary *> *)infos {
