@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
   xmlns:android="http://schemas.android.com/apk/res/android"
   id="cordova-plugin-telerik-imagepicker"
-  version="2.3.3">
+  version="2.3.5">
 
     <name>ImagePicker</name>
 
@@ -151,7 +151,7 @@
         <framework src="src/android/ignorelinterrors.gradle" custom="true" type="gradleReference"/>
         <framework src="src/android/androidtarget.gradle" custom="true" type="gradleReference"/>
     </platform>
-  
+
     <!-- browser -->
     <platform name="browser">
       <config-file parent="/*" target="config.xml">
@@ -159,7 +159,7 @@
   						<param name="browser-package" value="ImagePicker"/>
   				</feature>
   		</config-file>
-      
+
       <!-- Required for browserify: we always link module below as there is conditional reference
       to this module from requestFileSystem and resolveLocalFileSystemURI modules. -->
       <js-module src="www/browser/isChrome.js" name="isChrome">
