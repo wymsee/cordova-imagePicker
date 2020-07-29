@@ -32,7 +32,8 @@
     //[self.commandDelegate runInBackground:^{
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:maximumImagesCount delegate:self];
     
-    UIColor *color = [UIColor colorWithRed:251 / 255.0 green:192 / 255.0 blue:45 / 255.0 alpha:1];
+    //UIColor *color = [UIColor colorWithRed:251 / 255.0 green:192 / 255.0 blue:45 / 255.0 alpha:1];
+    UIColor *color = [UIColor colorWithRed:9 / 255.0 green:99 / 255.0 blue:158 / 255.0 alpha:1];
     
     imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     imagePickerVc.allowTakePicture = NO;
@@ -43,6 +44,7 @@
     imagePickerVc.oKButtonTitleColorNormal = color;
     imagePickerVc.iconThemeColor = color;
     imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
+    imagePickerVc.photoSelImage = [UIImage imageNamed:@"photo_sel_photoPickerVc_t"];
     //imagePickerVc.allowPickingGif = NO;
     imagePickerVc.naviBgColor = color;
     imagePickerVc.photoPreviewPageUIConfigBlock = ^(UICollectionView *collectionView, UIView *naviBar, UIButton *backButton, UIButton *selectButton, UILabel *indexLabel, UIView *toolBar, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel) {
