@@ -13,50 +13,50 @@
 @synthesize callbackId;
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
-    NSDictionary *options = [command.arguments objectAtIndex: 0];
-
-    NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
-
-    NSString uiThemeColor = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"uiThemeColor"] stringValue];
-//	self.width = [[options objectForKey:@"width"] integerValue];
-//	self.height = [[options objectForKey:@"height"] integerValue];
-//	self.quality = [[options objectForKey:@"quality"] integerValue];
-	
-//	if (nil == result) {
-//		result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resultStrings];
-//	}
-//
-//	[self.viewController dismissViewControllerAnimated:YES completion:nil];
-//	[self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
-    
     self.callbackId = command.callbackId;
+    NSDictionary *options = [command.arguments objectAtIndex: 0];
+    NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
+    NSString *uiThemeColor = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"uiThemeColor"] stringValue];
     
-    //[self.commandDelegate runInBackground:^{
+    UIColor *color = nil;
+    NSString *photoSelImageName = nil;
+    
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:maximumImagesCount delegate:self];
     
-    //UIColor *color = [UIColor colorWithRed:251 / 255.0 green:192 / 255.0 blue:45 / 255.0 alpha:1];
-    UIColor *color = [UIColor colorWithRed:97 / 255.0 green:170 / 255.0 blue:238 / 255.0 alpha:1];
+    if ([uiThemeColor isEqual:@"Yellow"]) {
+        photoSelImageName = @"photo_sel_photoPickerVc_p";
+        color = [UIColor colorWithRed:251 / 255.0 green:192 / 255.0 blue:45 / 255.0 alpha:1];
+    } else if ([uiThemeColor isEqual:@"Blue"]) {
+        photoSelImageName = @"photo_sel_photoPickerVc_t";
+        color = [UIColor colorWithRed:97 / 255.0 green:170 / 255.0 blue:238 / 255.0 alpha:1];
+    }
     
+    if (color != nil) {
+        imagePickerVc.oKButtonTitleColorNormal = color;
+        imagePickerVc.iconThemeColor = color;
+        imagePickerVc.naviBgColor = color;
+        imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
+        imagePickerVc.photoPreviewPageUIConfigBlock = ^(UICollectionView *collectionView, UIView *naviBar, UIButton *backButton, UIButton *selectButton, UILabel *indexLabel, UIView *toolBar, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel) {
+            naviBar.backgroundColor = color;
+        };
+    }
+    
+    if (photoSelImageName != nil) {
+        // Must be set after setting the color
+        imagePickerVc.photoSelImage = [UIImage tz_imageNamedFromMyBundle:photoSelImageName];
+    }
+
     imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     imagePickerVc.allowTakePicture = NO;
     imagePickerVc.allowCameraLocation = NO;
     imagePickerVc.allowTakeVideo = NO;
     imagePickerVc.allowPickingVideo = NO;
     imagePickerVc.allowPickingOriginalPhoto = NO;
-    imagePickerVc.oKButtonTitleColorNormal = color;
-    imagePickerVc.iconThemeColor = color;
-    imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
-    imagePickerVc.photoSelImage = [UIImage tz_imageNamedFromMyBundle:@"photo_sel_photoPickerVc_t"];
-    //imagePickerVc.allowPickingGif = NO;
-    imagePickerVc.naviBgColor = color;
-    imagePickerVc.photoPreviewPageUIConfigBlock = ^(UICollectionView *collectionView, UIView *naviBar, UIButton *backButton, UIButton *selectButton, UILabel *indexLabel, UIView *toolBar, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel) {
-        naviBar.backgroundColor = color;
-    };
+    imagePickerVc.allowPickingGif = NO;
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.viewController presentViewController:imagePickerVc animated:YES completion:nil];
     });
-    //}];
 }
 
 - (void) imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto infos:(NSArray<NSDictionary *> *)infos {
@@ -68,8 +68,8 @@
     NSData *data = nil;
     NSError *err = nil;
     
-    NSString *filePath;
-    NSString *fileName;
+    NSString *filePath = nil;
+    NSString *fileName = nil;
     
     for (UIImage *photo in photos) {
         fileName = [assets valueForKey:@"filename"];
