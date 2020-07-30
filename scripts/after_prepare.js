@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require("path");
+var plist = require('plist');
 var Utilities = require("./lib/utilities");
 
 var IOS_DIR = 'platforms/ios';
