@@ -13,9 +13,11 @@
 @synthesize callbackId;
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
-	NSDictionary *options = [command.arguments objectAtIndex: 0];
+    NSDictionary *options = [command.arguments objectAtIndex: 0];
 
-	NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
+    NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
+
+    NSString uiThemeColor = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"uiThemeColor"] stringValue];
 //	self.width = [[options objectForKey:@"width"] integerValue];
 //	self.height = [[options objectForKey:@"height"] integerValue];
 //	self.quality = [[options objectForKey:@"quality"] integerValue];

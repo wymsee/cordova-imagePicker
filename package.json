@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wymsee/cordova-imagePicker.git"
+    "url": "git+https://github.com/leyserkids/cordova-imagePicker.git"
   },
   "keywords": [
     "ecosystem:cordova",
@@ -24,10 +24,16 @@
       "version": ">=3.0.0"
     }
   ],
-  "author": "Wymsee",
+  "author": "leyserkids",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wymsee/cordova-imagePicker/issues"
+    "url": "https://github.com/leyserkids/cordova-imagePicker/issues"
   },
-  "homepage": "https://github.com/wymsee/cordova-imagePicker#readme"
+  "homepage": "https://github.com/leyserkids/cordova-imagePicker#readme",
+  "dependencies": {
+    "plist": "^3.0.1",
+    "xcode": "^3.0.1",
+    "xml-js": "^1.6.11",
+    "semver": "^7.3.2"
+  }
 }
