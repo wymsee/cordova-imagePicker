@@ -4,111 +4,139 @@
   id="cordova-plugin-image-picker"
   version="1.1.1">
 
-	<name>ImagePicker</name>
-	 
-	<description>
-		This plugin allows selection of multiple images from the camera roll / gallery in a phonegap app
-	</description>
-	
-	<license>MIT</license>
+    <name>ImagePicker</name>
+     
+    <description>
+        This plugin allows selection of multiple images from the camera roll / gallery in a phonegap app
+    </description>
+    
+    <license>MIT</license>
 
-	<engines>
-		<engine name="cordova" version=">=3.0.0" />
-	</engines>  
+    <engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>  
 
-	<js-module src="www/imagepicker.js" name="ImagePicker">
-		<clobbers target="plugins.imagePicker" />
-	</js-module>
+    <js-module src="www/imagepicker.js" name="ImagePicker">
+        <clobbers target="plugins.imagePicker" />
+    </js-module>
 
-	<!-- ios -->
-	<platform name="ios">
-	<preference name="PHOTO_LIBRARY_USAGE_DESCRIPTION" default=" " />
-		<config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
-			<string>$PHOTO_LIBRARY_USAGE_DESCRIPTION</string>
-		</config-file>
-		<config-file target="config.xml" parent="/*">
-			<feature name="ImagePicker">
-				<param name="ios-package" value="SOSPicker"/>
-			</feature>
-		</config-file>
+    <!-- ios -->
+    <platform name="ios">
+        <preference name="PHOTOLIBRARY_USAGE_DESCRIPTION" default="PHOTOLIBRARY_USAGE_DESCRIPTION" />
+        <preference name="UI_THEME_COLOR" default="Yellow"/>
 
-		<header-file src="src/ios/SOSPicker.h" />
-		<source-file src="src/ios/SOSPicker.m" />
+        <hook type="after_prepare" src="scripts/after_prepare.js" />
 
-		<header-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.h" />
-		<source-file src="src/ios/ELCImagePicker/ELCAlbumPickerController.m" />
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+            <string>$PHOTOLIBRARY_USAGE_DESCRIPTION</string>
+        </config-file>
 
-		<header-file src="src/ios/ELCImagePicker/ELCAsset.h" />
-		<source-file src="src/ios/ELCImagePicker/ELCAsset.m" />
+        <config-file target="config.xml" parent="/*">
+            <feature name="ImagePicker">
+                <param name="ios-package" value="SOSPicker"/>
+            </feature>
+        </config-file>
 
-		<header-file src="src/ios/ELCImagePicker/ELCAssetCell.h" />
-		<source-file src="src/ios/ELCImagePicker/ELCAssetCell.m" />
+        <header-file src="src/ios/SOSPicker.h" />
+        <source-file src="src/ios/SOSPicker.m" />
 
-		<header-file src="src/ios/ELCImagePicker/ELCAssetPickerFilterDelegate.h" />
-		<header-file src="src/ios/ELCImagePicker/ELCAssetSelectionDelegate.h" />
+        <header-file src="src/ios/TZImagePickerController/NSBundle+TZImagePicker.h" />
+        <source-file src="src/ios/TZImagePickerController/NSBundle+TZImagePicker.m" />
 
-		<header-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.h" />
-		<source-file src="src/ios/ELCImagePicker/ELCAssetTablePicker.m" />
+        <header-file src="src/ios/TZImagePickerController/TZAssetCell.h" />
+        <source-file src="src/ios/TZImagePickerController/TZAssetCell.m" />
 
-		<header-file src="src/ios/ELCImagePicker/ELCImagePickerController.h" />
-		<source-file src="src/ios/ELCImagePicker/ELCImagePickerController.m" />
+        <header-file src="src/ios/TZImagePickerController/TZAssetModel.h" />
+        <source-file src="src/ios/TZImagePickerController/TZAssetModel.m" />
 
-		<resource-file src="src/ios/ELCImagePicker/Resources/ELCAlbumPickerController.xib" />
-		<resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetPicker.xib" />
-		<resource-file src="src/ios/ELCImagePicker/Resources/ELCAssetTablePicker.xib" />
-		<resource-file src="src/ios/ELCImagePicker/Resources/Overlay.png" />
-		<resource-file src="src/ios/ELCImagePicker/Resources/Overlay@2x.png" />
-	</platform>
+        <header-file src="src/ios/TZImagePickerController/TZGifPhotoPreviewController.h" />
+        <source-file src="src/ios/TZImagePickerController/TZGifPhotoPreviewController.m" />
 
-	<!-- android -->
-	<platform name="android">
-		<config-file target="res/xml/config.xml" parent="/*">
-			<feature name="ImagePicker">
-				<param name="android-package" value="com.synconset.ImagePicker"/>
-			</feature>
-		</config-file>
-		
-		<config-file target="AndroidManifest.xml" parent="/manifest/application">
-		    <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@android:style/Theme.Holo.Light">
+        <header-file src="src/ios/TZImagePickerController/TZImageCropManager.h" />
+        <source-file src="src/ios/TZImagePickerController/TZImageCropManager.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZImageManager.h" />
+        <source-file src="src/ios/TZImagePickerController/TZImageManager.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZImagePickerController.h" />
+        <source-file src="src/ios/TZImagePickerController/TZImagePickerController.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZImageRequestOperation.h" />
+        <source-file src="src/ios/TZImagePickerController/TZImageRequestOperation.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZLocationManager.h" />
+        <source-file src="src/ios/TZImagePickerController/TZLocationManager.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZPhotoPickerController.h" />
+        <source-file src="src/ios/TZImagePickerController/TZPhotoPickerController.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZPhotoPreviewCell.h" />
+        <source-file src="src/ios/TZImagePickerController/TZPhotoPreviewCell.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZPhotoPreviewController.h" />
+        <source-file src="src/ios/TZImagePickerController/TZPhotoPreviewController.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZProgressView.h" />
+        <source-file src="src/ios/TZImagePickerController/TZProgressView.m" />
+
+        <header-file src="src/ios/TZImagePickerController/TZVideoPlayerController.h" />
+        <source-file src="src/ios/TZImagePickerController/TZVideoPlayerController.m" />
+
+        <header-file src="src/ios/TZImagePickerController/UIView+Layout.h" />
+        <source-file src="src/ios/TZImagePickerController/UIView+Layout.m" />
+
+        <resource-file src="src/ios/TZImagePickerController/TZImagePickerController.bundle" />
+    </platform>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ImagePicker">
+                <param name="android-package" value="com.synconset.ImagePicker"/>
+            </feature>
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@android:style/Theme.Holo.Light">
             </activity>
-		</config-file>
-		
-		<config-file target="AndroidManifest.xml" parent="/manifest">
-		    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-		</config-file>
+        </config-file>
+        
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+        </config-file>
 
-		<source-file src="src/android/com/synconset/ImagePicker/ImagePicker.java" target-dir="src/com/synconset" />
-		<source-file src="src/android/com/synconset/ImagePicker/FakeR.java" target-dir="src/com/synconset" />
-		
-		<source-file src="src/android/Library/src/ImageFetcher.java" target-dir="src/com/synconset"/>
-		<source-file src="src/android/Library/src/MultiImageChooserActivity.java" target-dir="src/com/synconset"/>
-		
+        <source-file src="src/android/com/synconset/ImagePicker/ImagePicker.java" target-dir="src/com/synconset" />
+        <source-file src="src/android/com/synconset/ImagePicker/FakeR.java" target-dir="src/com/synconset" />
+        
+        <source-file src="src/android/Library/src/ImageFetcher.java" target-dir="src/com/synconset"/>
+        <source-file src="src/android/Library/src/MultiImageChooserActivity.java" target-dir="src/com/synconset"/>
+        
         <source-file src="src/android/Library/res/anim/image_pop_in.xml" target-dir="res/anim"/>
-		<source-file src="src/android/Library/res/drawable/grid_background.xml" target-dir="res/drawable"/>
-		<source-file src="src/android/Library/res/drawable-hdpi/image_bg.9.png" target-dir="res/drawable-hdpi"/>
-		<source-file src="src/android/Library/res/drawable-hdpi/loading_icon.png" target-dir="res/drawable-hdpi"/>
-		<source-file src="src/android/Library/res/drawable-mdpi/ic_action_discard_dark.png" target-dir="res/drawable-mdpi"/>
-		<source-file src="src/android/Library/res/drawable-mdpi/ic_action_discard_light.png" target-dir="res/drawable-mdpi"/>
-		<source-file src="src/android/Library/res/drawable-mdpi/ic_action_done_dark.png" target-dir="res/drawable-mdpi"/>
-		<source-file src="src/android/Library/res/drawable-mdpi/ic_action_done_light.png" target-dir="res/drawable-mdpi"/>
-		<source-file src="src/android/Library/res/drawable-mdpi/ic_launcher.png" target-dir="res/drawable-mdpi"/>
-		<source-file src="src/android/Library/res/drawable-xhdpi/ic_action_discard_dark.png" target-dir="res/drawable-xhdpi"/>
-		<source-file src="src/android/Library/res/drawable-xhdpi/ic_action_discard_light.png" target-dir="res/drawable-xhdpi"/>
-		<source-file src="src/android/Library/res/drawable-xhdpi/ic_action_done_dark.png" target-dir="res/drawable-xhdpi"/>
-		<source-file src="src/android/Library/res/drawable-xhdpi/ic_action_done_light.png" target-dir="res/drawable-xhdpi"/>
-		<source-file src="src/android/Library/res/drawable-xhdpi/ic_launcher.png" target-dir="res/drawable-xhdpi"/>
-		<source-file src="src/android/Library/res/layout/actionbar_custom_view_done_discard.xml" target-dir="res/layout"/>
-		<source-file src="src/android/Library/res/layout/actionbar_discard_button.xml" target-dir="res/layout"/>
-		<source-file src="src/android/Library/res/layout/actionbar_done_button.xml" target-dir="res/layout"/>
-		<source-file src="src/android/Library/res/layout/multiselectorgrid.xml" target-dir="res/layout"/>
-		<source-file src="src/android/Library/res/values/multiimagechooser_strings_en.xml" target-dir="res/values"/>
-		<source-file src="src/android/Library/res/values/themes.xml" target-dir="res/values"/>
-		
-		<source-file src="src/android/Library/res/values-de/multiimagechooser_strings_de.xml" target-dir="res/values-de"/>
-		<source-file src="src/android/Library/res/values-es/multiimagechooser_strings_es.xml" target-dir="res/values-es"/>
-		<source-file src="src/android/Library/res/values-fr/multiimagechooser_strings_fr.xml" target-dir="res/values-fr"/>
-		<source-file src="src/android/Library/res/values-hu/multiimagechooser_strings_hu.xml" target-dir="res/values-hu"/>
-		<source-file src="src/android/Library/res/values-ja/multiimagechooser_strings_ja.xml" target-dir="res/values-ja"/>
-		<source-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target-dir="res/values-ko"/>
-	</platform>
+        <source-file src="src/android/Library/res/drawable/grid_background.xml" target-dir="res/drawable"/>
+        <source-file src="src/android/Library/res/drawable-hdpi/image_bg.9.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/Library/res/drawable-hdpi/loading_icon.png" target-dir="res/drawable-hdpi"/>
+        <source-file src="src/android/Library/res/drawable-mdpi/ic_action_discard_dark.png" target-dir="res/drawable-mdpi"/>
+        <source-file src="src/android/Library/res/drawable-mdpi/ic_action_discard_light.png" target-dir="res/drawable-mdpi"/>
+        <source-file src="src/android/Library/res/drawable-mdpi/ic_action_done_dark.png" target-dir="res/drawable-mdpi"/>
+        <source-file src="src/android/Library/res/drawable-mdpi/ic_action_done_light.png" target-dir="res/drawable-mdpi"/>
+        <source-file src="src/android/Library/res/drawable-mdpi/ic_launcher.png" target-dir="res/drawable-mdpi"/>
+        <source-file src="src/android/Library/res/drawable-xhdpi/ic_action_discard_dark.png" target-dir="res/drawable-xhdpi"/>
+        <source-file src="src/android/Library/res/drawable-xhdpi/ic_action_discard_light.png" target-dir="res/drawable-xhdpi"/>
+        <source-file src="src/android/Library/res/drawable-xhdpi/ic_action_done_dark.png" target-dir="res/drawable-xhdpi"/>
+        <source-file src="src/android/Library/res/drawable-xhdpi/ic_action_done_light.png" target-dir="res/drawable-xhdpi"/>
+        <source-file src="src/android/Library/res/drawable-xhdpi/ic_launcher.png" target-dir="res/drawable-xhdpi"/>
+        <source-file src="src/android/Library/res/layout/actionbar_custom_view_done_discard.xml" target-dir="res/layout"/>
+        <source-file src="src/android/Library/res/layout/actionbar_discard_button.xml" target-dir="res/layout"/>
+        <source-file src="src/android/Library/res/layout/actionbar_done_button.xml" target-dir="res/layout"/>
+        <source-file src="src/android/Library/res/layout/multiselectorgrid.xml" target-dir="res/layout"/>
+        <source-file src="src/android/Library/res/values/multiimagechooser_strings_en.xml" target-dir="res/values"/>
+        <source-file src="src/android/Library/res/values/themes.xml" target-dir="res/values"/>
+        
+        <source-file src="src/android/Library/res/values-de/multiimagechooser_strings_de.xml" target-dir="res/values-de"/>
+        <source-file src="src/android/Library/res/values-es/multiimagechooser_strings_es.xml" target-dir="res/values-es"/>
+        <source-file src="src/android/Library/res/values-fr/multiimagechooser_strings_fr.xml" target-dir="res/values-fr"/>
+        <source-file src="src/android/Library/res/values-hu/multiimagechooser_strings_hu.xml" target-dir="res/values-hu"/>
+        <source-file src="src/android/Library/res/values-ja/multiimagechooser_strings_ja.xml" target-dir="res/values-ja"/>
+        <source-file src="src/android/Library/res/values-ko/multiimagechooser_strings_ko.xml" target-dir="res/values-ko"/>
+    </platform>
 </plugin>

@@ -7,15 +7,13 @@
 //
 
 #import <Cordova/CDVPlugin.h>
-#import "ELCAlbumPickerController.h"
-#import "ELCImagePickerController.h"
+#import "TZImagePickerController.h"
 
-@interface SOSPicker : CDVPlugin <ELCImagePickerControllerDelegate, UINavigationControllerDelegate, UIScrollViewDelegate>
+@interface SOSPicker : CDVPlugin <TZImagePickerControllerDelegate>
 
-@property (copy)   NSString* callbackId;
+@property (copy) NSString* callbackId;
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command;
-- (UIImage*)imageByScalingNotCroppingForSize:(UIImage*)anImage toSize:(CGSize)frameSize;
 
 @property (nonatomic, assign) NSInteger width;
 @property (nonatomic, assign) NSInteger height;

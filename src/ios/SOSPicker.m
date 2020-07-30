@@ -7,157 +7,95 @@
 //
 
 #import "SOSPicker.h"
-#import "ELCAlbumPickerController.h"
-#import "ELCImagePickerController.h"
-#import "ELCAssetTablePicker.h"
-
-#define CDV_PHOTO_PREFIX @"cdv_photo_"
 
 @implementation SOSPicker
 
 @synthesize callbackId;
 
 - (void) getPictures:(CDVInvokedUrlCommand *)command {
-	NSDictionary *options = [command.arguments objectAtIndex: 0];
+    self.callbackId = command.callbackId;
+    NSDictionary *options = [command.arguments objectAtIndex: 0];
+    NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
+    NSString *uiThemeColor = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"uiThemeColor"] stringValue];
+    
+    UIColor *color = nil;
+    NSString *photoSelImageName = nil;
+    
+    TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:maximumImagesCount delegate:self];
+    
+    if ([uiThemeColor isEqual:@"Yellow"]) {
+        photoSelImageName = @"photo_sel_photoPickerVc_p";
+        color = [UIColor colorWithRed:251 / 255.0 green:192 / 255.0 blue:45 / 255.0 alpha:1];
+    } else if ([uiThemeColor isEqual:@"Blue"]) {
+        photoSelImageName = @"photo_sel_photoPickerVc_t";
+        color = [UIColor colorWithRed:97 / 255.0 green:170 / 255.0 blue:238 / 255.0 alpha:1];
+    }
+    
+    if (color != nil) {
+        imagePickerVc.oKButtonTitleColorNormal = color;
+        imagePickerVc.iconThemeColor = color;
+        imagePickerVc.naviBgColor = color;
+        imagePickerVc.oKButtonTitleColorDisabled = [UIColor lightGrayColor];
+        imagePickerVc.photoPreviewPageUIConfigBlock = ^(UICollectionView *collectionView, UIView *naviBar, UIButton *backButton, UIButton *selectButton, UILabel *indexLabel, UIView *toolBar, UIButton *originalPhotoButton, UILabel *originalPhotoLabel, UIButton *doneButton, UIImageView *numberImageView, UILabel *numberLabel) {
+            naviBar.backgroundColor = color;
+        };
+    }
+    
+    if (photoSelImageName != nil) {
+        // Must be set after setting the color
+        imagePickerVc.photoSelImage = [UIImage tz_imageNamedFromMyBundle:photoSelImageName];
+    }
 
-	NSInteger maximumImagesCount = [[options objectForKey:@"maximumImagesCount"] integerValue];
-	self.width = [[options objectForKey:@"width"] integerValue];
-	self.height = [[options objectForKey:@"height"] integerValue];
-	self.quality = [[options objectForKey:@"quality"] integerValue];
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
+    imagePickerVc.allowTakePicture = NO;
+    imagePickerVc.allowCameraLocation = NO;
+    imagePickerVc.allowTakeVideo = NO;
+    imagePickerVc.allowPickingVideo = NO;
+    imagePickerVc.allowPickingOriginalPhoto = NO;
+    imagePickerVc.allowPickingGif = NO;
 
-	// Create the an album controller and image picker
-	ELCAlbumPickerController *albumController = [[ELCAlbumPickerController alloc] init];
-	
-	if (maximumImagesCount == 1) {
-      albumController.immediateReturn = true;
-      albumController.singleSelection = true;
-   } else {
-      albumController.immediateReturn = false;
-      albumController.singleSelection = false;
-   }
-   
-   ELCImagePickerController *imagePicker = [[ELCImagePickerController alloc] initWithRootViewController:albumController];
-   imagePicker.maximumImagesCount = maximumImagesCount;
-   imagePicker.returnsOriginalImage = 1;
-   imagePicker.imagePickerDelegate = self;
-
-   albumController.parent = imagePicker;
-	self.callbackId = command.callbackId;
-	// Present modally
-	[self.viewController presentViewController:imagePicker
-	                       animated:YES
-	                     completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.viewController presentViewController:imagePickerVc animated:YES completion:nil];
+    });
 }
 
-
-- (void)elcImagePickerController:(ELCImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info {
-	CDVPluginResult* result = nil;
-	NSMutableArray *resultStrings = [[NSMutableArray alloc] init];
-    NSData* data = nil;
-    NSString* docsPath = [NSTemporaryDirectory()stringByStandardizingPath];
-    NSError* err = nil;
-    NSFileManager* fileMgr = [[NSFileManager alloc] init];
-    NSString* filePath;
-    ALAsset* asset = nil;
-    UIImageOrientation orientation = UIImageOrientationUp;;
-    CGSize targetSize = CGSizeMake(self.width, self.height);
-	for (NSDictionary *dict in info) {
-        asset = [dict objectForKey:@"ALAsset"];
-        // From ELCImagePickerController.m
-
-        int i = 1;
-        do {
-            filePath = [NSString stringWithFormat:@"%@/%@%03d.%@", docsPath, CDV_PHOTO_PREFIX, i++, @"jpg"];
-        } while ([fileMgr fileExistsAtPath:filePath]);
+- (void) imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray<UIImage *> *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto infos:(NSArray<NSDictionary *> *)infos {
+    CDVPluginResult *result = nil;
+    
+    NSMutableArray *resultPathArray = [[NSMutableArray alloc] init];
+    NSString *tmpPath = [NSTemporaryDirectory() stringByStandardizingPath];
+    
+    NSData *data = nil;
+    NSError *err = nil;
+    
+    NSString *filePath = nil;
+    NSString *fileName = nil;
+    
+    for (UIImage *photo in photos) {
+        fileName = [assets valueForKey:@"filename"];
+        filePath = [NSString stringWithFormat:@"%@/%@%@", tmpPath, [[NSProcessInfo processInfo] globallyUniqueString], fileName];
         
         @autoreleasepool {
-            ALAssetRepresentation *assetRep = [asset defaultRepresentation];
-            CGImageRef imgRef = NULL;
-            
-            //defaultRepresentation returns image as it appears in photo picker, rotated and sized,
-            //so use UIImageOrientationUp when creating our image below.
-            if (picker.returnsOriginalImage) {
-                imgRef = [assetRep fullResolutionImage];
-                orientation = [assetRep orientation];
-            } else {
-                imgRef = [assetRep fullScreenImage];
-            }
-            
-            UIImage* image = [UIImage imageWithCGImage:imgRef scale:1.0f orientation:orientation];
-            if (self.width == 0 && self.height == 0) {
-                data = UIImageJPEGRepresentation(image, self.quality/100.0f);
-            } else {
-                UIImage* scaledImage = [self imageByScalingNotCroppingForSize:image toSize:targetSize];
-                data = UIImageJPEGRepresentation(scaledImage, self.quality/100.0f);
-            }
-            
+            data = UIImageJPEGRepresentation(photo, 1);
             if (![data writeToFile:filePath options:NSAtomicWrite error:&err]) {
                 result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsString:[err localizedDescription]];
                 break;
             } else {
-                [resultStrings addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
+                [resultPathArray addObject:[[NSURL fileURLWithPath:filePath] absoluteString]];
             }
         }
-
-	}
-	
-	if (nil == result) {
-		result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resultStrings];
-	}
-
-	[self.viewController dismissViewControllerAnimated:YES completion:nil];
-	[self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
-}
-
-- (void)elcImagePickerControllerDidCancel:(ELCImagePickerController *)picker {
-	[self.viewController dismissViewControllerAnimated:YES completion:nil];
-	CDVPluginResult* pluginResult = nil;
-    NSArray* emptyArray = [NSArray array];
-	pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:emptyArray];
-	[self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
-}
-
-- (UIImage*)imageByScalingNotCroppingForSize:(UIImage*)anImage toSize:(CGSize)frameSize
-{
-    UIImage* sourceImage = anImage;
-    UIImage* newImage = nil;
-    CGSize imageSize = sourceImage.size;
-    CGFloat width = imageSize.width;
-    CGFloat height = imageSize.height;
-    CGFloat targetWidth = frameSize.width;
-    CGFloat targetHeight = frameSize.height;
-    CGFloat scaleFactor = 0.0;
-    CGSize scaledSize = frameSize;
-
-    if (CGSizeEqualToSize(imageSize, frameSize) == NO) {
-        CGFloat widthFactor = targetWidth / width;
-        CGFloat heightFactor = targetHeight / height;
-
-        // opposite comparison to imageByScalingAndCroppingForSize in order to contain the image within the given bounds
-        if (widthFactor == 0.0) {
-            scaleFactor = heightFactor;
-        } else if (heightFactor == 0.0) {
-            scaleFactor = widthFactor;
-        } else if (widthFactor > heightFactor) {
-            scaleFactor = heightFactor; // scale to fit height
-        } else {
-            scaleFactor = widthFactor; // scale to fit width
-        }
-        scaledSize = CGSizeMake(width * scaleFactor, height * scaleFactor);
+    }
+    
+    if (result == nil) {
+        result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:resultPathArray];
     }
 
-    UIGraphicsBeginImageContext(scaledSize); // this will resize
+    [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
+}
 
-    [sourceImage drawInRect:CGRectMake(0, 0, scaledSize.width, scaledSize.height)];
-
-    newImage = UIGraphicsGetImageFromCurrentImageContext();
-    if (newImage == nil) {
-        NSLog(@"could not scale image");
-    }
-
-    // pop the context to get back to the default
-    UIGraphicsEndImageContext();
-    return newImage;
+- (void) tz_imagePickerControllerDidCancel:(TZImagePickerController *)picker {
+    CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:[NSArray array]];
+    [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
 }
 
 @end
