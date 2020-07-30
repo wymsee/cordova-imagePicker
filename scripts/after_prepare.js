@@ -25,7 +25,7 @@ function parseConfigVariables () {
 
 module.exports = function (context) {
     var platforms = context.opts.platforms;
-    if (platforms.indexOf('ios') !== -1 && directoryExists(IOS_DIR)){
+    if (platforms.indexOf('ios') !== -1 && Utilities.directoryExists(IOS_DIR)){
         Utilities.log('Preparing image picker on iOS');
 
         var appPlistModified = false;
