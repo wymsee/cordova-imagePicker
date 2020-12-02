@@ -36,6 +36,9 @@
         <header-file src="src/ios/SOSPicker.h" />
         <source-file src="src/ios/SOSPicker.m" />
 
+        <header-file src="src/ios/GMImagePicker/FeHourGlass.h" />
+        <source-file src="src/ios/GMImagePicker/FeHourGlass.m" />
+      
         <header-file src="src/ios/GMImagePicker/UIImage+fixOrientation.h" />
         <source-file src="src/ios/GMImagePicker/UIImage+fixOrientation.m" />
 
