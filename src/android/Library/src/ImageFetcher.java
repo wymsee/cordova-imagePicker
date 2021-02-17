@@ -196,7 +196,6 @@ public class ImageFetcher {
 	                } else {
 	                    if (rotate != 0) {
 	                        Matrix matrix = new Matrix();
-	                        matrix.setRotate(rotate);
 	                        thumb = Bitmap.createBitmap(thumb, 0, 0, thumb.getWidth(), thumb.getHeight(), matrix, true);
 	                    }
 	                    return thumb;
