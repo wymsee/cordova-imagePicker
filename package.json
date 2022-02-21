@@ -4,7 +4,7 @@
   "description": "Allows selection of multiple images from the camera roll/gallery in a Cordova app",
   "author": "Zenput",
   "cordova": {
-    "id": "cordova-plugin-image-picker",
+    "id": "@zenput/cordova-plugin-image-picker",
     "platforms": [
       "ios",
       "android",
