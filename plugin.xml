@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="@zenput/cordova-plugin-image-picker" version="21.5.20-H10M15S50">
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android" id="@zenput/cordova-plugin-image-picker" version="22.3.5-H12M50S59">
     <dependency id="@zenput/cordova-plugin-donkeyfont" version="1.0.1-draft1"/>
     <name>@zenput/cordova-plugin-image-picker</name>
     <description>

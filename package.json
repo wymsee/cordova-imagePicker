@@ -1,6 +1,6 @@
 {
   "name": "@zenput/cordova-plugin-image-picker",
-  "version": "21.5.20-H10M15S50",
+  "version": "22.3.5-H12M50S59",
   "description": "Allows selection of multiple images from the camera roll/gallery in a Cordova app",
   "author": "Zenput",
   "cordova": {
