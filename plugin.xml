@@ -102,7 +102,7 @@
 		<source-file src="src/android/Library/res/layout/actionbar_done_button.xml" target-dir="res/layout"/>
 		<source-file src="src/android/Library/res/layout/multiselectorgrid.xml" target-dir="res/layout"/>
 		<source-file src="src/android/Library/res/values/multiimagechooser_strings_en.xml" target-dir="res/values"/>
-		<source-file src="src/android/Library/res/values/themes.xml" target-dir="res/values"/>
+		<!-- <source-file src="src/android/Library/res/values/themes.xml" target-dir="res/values"/> -->
 		
 		<source-file src="src/android/Library/res/values-de/multiimagechooser_strings_de.xml" target-dir="res/values-de"/>
 		<source-file src="src/android/Library/res/values-es/multiimagechooser_strings_es.xml" target-dir="res/values-es"/>
